@@ -4,8 +4,10 @@ export const CategoryWrapper = styled.div`
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 5rem;
-  padding: 8rem 12rem;
+  gap: 4rem;
+  padding: 8rem 5rem;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const CategoryListContainer = styled.div`
@@ -14,23 +16,36 @@ export const CategoryListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.5rem;
 `;
 
 export const CategoryImageContainer = styled.div`
   position: relative;
-  height: 180px;
-  width: 180px;
+  height: 170px;
+  width: 170px;
   border-radius: 50%;
-  border: 1px solid var(--light-green);
   cursor: pointer;
-  transition: all 0.5s;
+  outline-offset: 8px;
+  outline: 2px solid var(--light-green);
+  box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 
-  &:hover {
-    transform: scale(1.08);
+  img {
+    transition: all ease 0.5s;
+
+    &:hover {
+      transform: scale(1.08);
+    }
   }
 `;
 
 export const CategoryName = styled.p`
   position: relative;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--light-green);
+  }
 `;
