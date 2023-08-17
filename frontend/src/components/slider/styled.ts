@@ -14,7 +14,7 @@ export const SwiperSlider = styled(SwiperSlide)`
   position: relative;
   display: flex;
   width: 100%;
-  height: 85vh;
+  /* height: 85vh; */
   align-items: center;
   justify-content: center;
   background-color: #000000;

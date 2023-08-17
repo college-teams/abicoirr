@@ -4,6 +4,8 @@
 
 :root {
     --light-green: #008000;
+    --white-color: #fff;
+    --black-color: #000000;
 }
 
 * {
@@ -14,7 +16,7 @@
 
 html {
     font-size: 10px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 
 /* Scrollbar */
@@ -39,5 +41,4 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #086108;
-    ;
 }
