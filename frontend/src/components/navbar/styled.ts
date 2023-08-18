@@ -11,7 +11,8 @@ export const NavbarContainer = styled.div<{ active: boolean }>`
   display: flex;
   align-items: center;
   color: ${({ active }) => (active ? "#000" : "#fff")};
-  transition: background-color ease-in-out 0.3s;
+  transition: background-color ease-in-out 0.3s, box-shadow ease-in-out 0.3s;
+  box-shadow: ${({ active }) => (active ? "0 1rem 2rem rgba(0,0,0,0.2)" : "0")};
 
   ul {
     li {
@@ -30,7 +31,7 @@ export const NavLinksWrapper = styled.div`
   margin: 0 auto;
 `;
 
-export const NavLinks = styled.ul<{ active: boolean }>`
+export const NavLinks = styled.ul`
   position: relative;
   display: flex;
   gap: 3rem;
@@ -71,15 +72,15 @@ export const NavLogoWrapper = styled.div`
 `;
 
 export const Icons = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 
-    font-size: 3rem;
+  font-size: 3rem;
 
-    & > * {
-        cursor: pointer;
-    }
+  & > * {
+    cursor: pointer;
+  }
 `;

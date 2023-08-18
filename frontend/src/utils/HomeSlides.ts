@@ -10,5 +10,5 @@ export const HomeSlideContents: SliderContent[] = [
   {
     imagePath: slide2,
     name: "slide-2",
-  },
+  }
 ];

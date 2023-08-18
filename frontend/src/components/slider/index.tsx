@@ -9,7 +9,7 @@ export default function Slider(props: SliderProps) {
   return (
     <>
       <SwipperWrapper
-        spaceBetween={10}
+        spaceBetween={0}
         centeredSlides={true}
         autoplay={{
           delay: 3000,
