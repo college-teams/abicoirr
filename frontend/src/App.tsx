@@ -6,6 +6,7 @@ import PopularProducts from "./components/popularItems";
 import Slider from "./components/slider";
 import { CategoryLists } from "./utils/CategoryList";
 import { HomeSlideContents } from "./utils/HomeSlides";
+import Process from "./assets/process.webp";
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
       <LatestProducts />
       <Location />
       <PopularProducts />
+      <div className=" h-5/6 relative">
+        <img className=" object-contain h-5/6" src={Process} alt="process" />
+      </div>
     </div>
   );
 }
