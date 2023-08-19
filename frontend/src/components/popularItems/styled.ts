@@ -4,7 +4,7 @@ export const PopularProductsContainer = styled.div`
   position: relative;
   width: 75%;
   margin: 0 auto;
-  padding: 1rem 2rem 5rem 2rem;
+  padding: 10rem 2rem;
   height: auto;
 `;
 
