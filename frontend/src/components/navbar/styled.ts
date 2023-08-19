@@ -58,6 +58,7 @@ export const NavLogoWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin-top: -3rem;
 
   img {
     position: relative;

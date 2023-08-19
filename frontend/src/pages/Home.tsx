@@ -1,5 +1,4 @@
 import Slider from "../components/slider";
-import Process from "../assets/process.webp";
 import CocoBg from "../assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
 import { CategoryLists } from "../utils/CategoryList";
@@ -82,12 +81,6 @@ const Home = () => {
           </p>
         </div>
       </InfoStepsContainer>
-
-      {/* Process */}
-      <div className="relative ">
-        <img className="object-contain  bg-fixed" src={Process} alt="process" />
-        </div>
-
     </div>
   );
 };
