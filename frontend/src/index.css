@@ -42,3 +42,7 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #086108;
 }
+
+.mid-size-card {
+  width: 300px !important;
+}

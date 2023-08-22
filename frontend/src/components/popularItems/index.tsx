@@ -105,7 +105,7 @@ const PopularProducts = () => {
           shouldResetAutoplay
           showDots={false}
           sliderClass=""
-          slidesToSlide={2}
+          slidesToSlide={1}
           swipeable
         >
           {tempPopularProducts.map((e, i) => (

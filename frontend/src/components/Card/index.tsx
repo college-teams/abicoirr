@@ -8,9 +8,9 @@ import {
   CardPrice,
 } from "./styled";
 
-const Card = ({ name, price, image, buttonText }: CardProps) => {
+const Card = ({ name, price, image, buttonText,classNames }: CardProps) => {
   return (
-    <CardContainer>
+    <CardContainer className={classNames}>
       <CardImageContainer>
         <img src={image} alt={name} />
       </CardImageContainer>

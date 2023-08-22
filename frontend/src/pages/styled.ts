@@ -59,3 +59,7 @@ export const InfoStepsContainer = styled.div`
     background-repeat: repeat-y;
   }
 `;
+
+export const ProductContainer = styled.div`
+  position: relative;
+`;

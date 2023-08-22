@@ -4,4 +4,5 @@ export interface CardProps{
     price: string;
     buttonText: string;
     buttonRedirectLink?: string;
+    classNames?: string;
 }

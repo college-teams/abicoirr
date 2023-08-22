@@ -11,7 +11,7 @@ export const NavbarContainer = styled.div<{ active: boolean }>`
   display: flex;
   align-items: center;
   color: ${({ active }) => (active ? "#000" : "#fff")};
-  transition: background-color ease-in-out 0.3s, box-shadow ease-in-out 0.3s;
+  transition: background-color ease-in-out 0.3s;
   box-shadow: ${({ active }) => (active ? "0 1rem 2rem rgba(0,0,0,0.2)" : "0")};
 
   ul {

@@ -6,27 +6,33 @@ import {
   NavbarContainer,
 } from "./styled";
 import logoSvg from "../../assets/logo.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import type { Location } from "react-router-dom";
 
 const Navbar = () => {
+  const { pathname }: Location = useLocation();
   const [active, setActive] = useState(false);
 
-  const handleScroll = () => {
-    if (window.scrollY >= 100) {
+  const handleScroll = useCallback(() => {
+    if (window.scrollY >= 100 || pathname !== "/") {
       setActive(true);
     } else {
       setActive(false);
     }
-  };
+  }, [pathname]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
+
+  useEffect(() => {
+    handleScroll();
+  }, [pathname, handleScroll]);
 
   return (
     <NavbarContainer active={active}>
@@ -42,7 +48,7 @@ const Navbar = () => {
             <Link to="/products">Products</Link>
           </li>
           <li>
-            <Link to="/contacts">Contact us</Link>
+            <Link to="/contact">Contact us</Link>
           </li>
         </NavLinks>
         <Icons>
