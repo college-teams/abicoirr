@@ -8,6 +8,7 @@ import {
 import logoSvg from "../../assets/logo.svg";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -34,9 +35,15 @@ const Navbar = () => {
           <img src={logoSvg} alt="logo" />
         </NavLogoWrapper>
         <NavLinks>
-          <li>Home</li>
-          <li>Products</li>
-          <li>Contact us</li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/products">Products</Link>
+          </li>
+          <li>
+            <Link to="/contacts">Contact us</Link>
+          </li>
         </NavLinks>
         <Icons>
           <Icon icon="fluent:search-32-regular" />
