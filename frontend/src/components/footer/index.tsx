@@ -43,10 +43,10 @@ const Footer = () => {
               icon="teenyicons:instagram-solid"
             />
             <Icon
-              className="text-[2.8rem] cursor-pointer"
+              className="text-[3rem] cursor-pointer"
               icon="ic:outline-facebook"
             />
-            <Icon className="text-[2.8rem] cursor-pointer" icon="bi:youtube" />
+            <Icon className="text-[3.1rem] cursor-pointer" icon="bi:youtube" />
           </div>
         </div>
       </div>

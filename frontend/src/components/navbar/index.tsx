@@ -37,9 +37,11 @@ const Navbar = () => {
   return (
     <NavbarContainer active={active}>
       <NavLinksWrapper>
+      <Link to="/">
         <NavLogoWrapper>
           <img src={logoSvg} alt="logo" />
         </NavLogoWrapper>
+        </Link>
         <NavLinks>
           <li>
             <Link to="/">Home</Link>
