@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 import { Icon } from "@iconify/react";
 
@@ -16,9 +17,15 @@ const Footer = () => {
             <h2 className="text-[2rem] font-medium mb-5 text-black">
               Policies
             </h2>
-            <p className="mb-2 cursor-pointer">Privacy Policy</p>
-            <p className="mb-2 cursor-pointer">Terms-condition</p>
-            <p className="cursor-pointer">Shipping Policy</p>
+            <p className="mb-2 cursor-pointer">
+              <Link to={"/privacy-policy"}>Privacy Policy</Link>
+            </p>
+            <p className="mb-2 cursor-pointer">
+              <Link to={"/terms-conditions"}>Terms-condition</Link>
+            </p>
+            <p className="cursor-pointer">
+              <Link to={"/shipping-policy"}>Shipping Policy</Link>
+            </p>
           </div>
         </div>
 
