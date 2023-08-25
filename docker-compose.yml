@@ -9,9 +9,27 @@ services:
       dockerfile: docker/Dockerfile
     container_name: frontend-dev
     ports:
-      - "4000:5173"
+      - "4000:4000"
     volumes:
       - ./:/frontend
       - /frontend/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+
+  mysql_db:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: abicoirr
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql   
+      - mysql-conf-d:/etc/mysql/conf.d  
+
+volumes:
+  mysql-data: 
+    driver: local
+  mysql-conf-d:
+    driver: local
