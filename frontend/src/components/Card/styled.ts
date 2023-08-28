@@ -5,6 +5,7 @@ export const CardContainer = styled.div`
   /* height: 400px; */
   height: auto;
   width: 250px;
+  cursor: pointer;
 `;
 
 export const CardImageContainer = styled.div`

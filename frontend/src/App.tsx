@@ -1,4 +1,5 @@
 import Home from "./pages/Home";
+import { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Products from "./pages/Products";
 import Contacts from "./pages/Contacts";
@@ -7,14 +8,21 @@ import NotFound from "./pages/NotFound";
 import Shippingpolicy from "./pages/Shippingpolicy";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ProductDetail from "./pages/ProductDetail";
+import ScrollToTop from "./hooks/ScrollToTop";
 
 function App() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Layout>
+      <ScrollToTop  />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="products" element={<Products />} />
-        <Route path="contact" element={<Contacts />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/contact" element={<Contacts />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/shipping-policy" element={<Shippingpolicy />} />

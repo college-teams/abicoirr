@@ -15,6 +15,7 @@ import Product3 from "../../assets/card5.jpg";
 import Product4 from "../../assets/card6.jpg";
 import Product5 from "../../assets/card7.jpeg";
 import Card from "../Card";
+import { useNavigate } from "react-router-dom";
 
 const tempLatestProducts: CardProps[] = [
   {
@@ -45,13 +46,19 @@ const tempLatestProducts: CardProps[] = [
 ];
 
 const LatestProducts = () => {
+  const navigate = useNavigate();
+
+  const clickHandler = () => {
+    navigate("/products");
+  };
+
   return (
     <LatestProductsContainer>
       <Header>latest</Header>
       <Header>products</Header>
       <CurveLine />
       <Description>Meet our most lovable plants.</Description>
-      <ViewButton>
+      <ViewButton onClick={clickHandler}>
         View more <Icon icon="bi:arrow-right" />
       </ViewButton>
       <div className=" mt-20">
