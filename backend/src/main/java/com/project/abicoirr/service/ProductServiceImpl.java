@@ -49,21 +49,15 @@ public class ProductServiceImpl implements ProductService {
     Product productFromDb = productsFromDb.get();
 
     if (Objects.nonNull(productname) && !"".equals(productname))
-    	productFromDb.setProductname(productname);
+      productFromDb.setProductname(productname);
     if (Objects.nonNull(productDesc) && !"".equals(productDesc))
-    	productFromDb.setProductDescription(productDesc);
-    if (Objects.nonNull(productDisc))
-    	productFromDb.setDiscountPercent(productDisc);
-    if (Objects.nonNull(productAvgRat))
-    	productFromDb.setAvgRating(productAvgRat);
-    if (Objects.nonNull(maxOrder)) 
-    	productFromDb.setMaxOrder(maxOrder);
-    if (Objects.nonNull(minOrder)) 
-    	productFromDb.setMinOrder(minOrder);
-    if (Objects.nonNull(price)) 
-    	productFromDb.setPrice(price);
-    if (Objects.nonNull(stockQuantity))
-    	productFromDb.setStockQuantity(stockQuantity);
+      productFromDb.setProductDescription(productDesc);
+    if (Objects.nonNull(productDisc)) productFromDb.setDiscountPercent(productDisc);
+    if (Objects.nonNull(productAvgRat)) productFromDb.setAvgRating(productAvgRat);
+    if (Objects.nonNull(maxOrder)) productFromDb.setMaxOrder(maxOrder);
+    if (Objects.nonNull(minOrder)) productFromDb.setMinOrder(minOrder);
+    if (Objects.nonNull(price)) productFromDb.setPrice(price);
+    if (Objects.nonNull(stockQuantity)) productFromDb.setStockQuantity(stockQuantity);
 
     return productRepo.save(productFromDb);
   }
