@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import { CardProps } from "../types/Card";
 import Product1 from "../assets/card3.jpg";
@@ -7,6 +7,7 @@ import Product3 from "../assets/card5.jpg";
 import Product4 from "../assets/card6.jpg";
 import Product5 from "../assets/card7.jpeg";
 import Card from "../components/Card";
+import RedirectSite from "../components/RedirectSite";
 
 const tempPopularProducts: CardProps[] = [
   {
@@ -37,6 +38,8 @@ const tempPopularProducts: CardProps[] = [
 ];
 
 const ProductDetail = () => {
+  const [redirect, setRedirect] = useState(false);
+
   return (
     <div className="relative mt-[14rem]">
       <div className="relative flex w-[90%] mx-auto gap-[5rem] mb-20">
@@ -51,18 +54,33 @@ const ProductDetail = () => {
 
           <div className="relative flex gap-5 justify-center   w-[500px] overflow-x-auto no-scrollbar">
             <div className="relative h-[7rem] w-[8rem] cursor-pointer">
-              <img src={Product1} alt="product1" className="h-full w-full object-cover" />
+              <img
+                src={Product1}
+                alt="product1"
+                className="h-full w-full object-cover"
+              />
             </div>
             <div className="relative h-[7rem] w-[8rem] cursor-pointer">
-              <img src={Product1} alt="product1" className="h-full w-full object-cover " />
+              <img
+                src={Product1}
+                alt="product1"
+                className="h-full w-full object-cover "
+              />
             </div>
             <div className="relative h-[7rem] w-[8rem] cursor-pointer">
-              <img src={Product1} alt="product1" className="h-full w-full object-cover" />
+              <img
+                src={Product1}
+                alt="product1"
+                className="h-full w-full object-cover"
+              />
             </div>
             <div className="relative h-[7rem] w-[8rem] cursor-pointer">
-              <img src={Product1} alt="product1" className="h-full w-full object-cover" />
+              <img
+                src={Product1}
+                alt="product1"
+                className="h-full w-full object-cover"
+              />
             </div>
-            
           </div>
         </div>
         <div className="flex-1">
@@ -80,7 +98,7 @@ const ProductDetail = () => {
             <span className="ml-5 font-normal text-[1.6rem]">10% off</span>
           </p>
           <div className="mb-8 w-[40%]">
-            <button className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]">
+            <button className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]" onClick={()=>setRedirect(true)}>
               Shop now
             </button>
           </div>
@@ -178,6 +196,8 @@ const ProductDetail = () => {
           </Carousel>
         </div>
       </div>
+
+      <RedirectSite open={redirect} close={() => setRedirect(false)} />
     </div>
   );
 };
