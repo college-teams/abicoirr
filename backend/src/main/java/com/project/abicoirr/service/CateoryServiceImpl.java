@@ -10,22 +10,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class CateoryServiceImpl implements CategoryService {
 
-  @Autowired private CategoryRepository CateoryRepo;
+  @Autowired private CategoryRepository cateoryRepo;
 
+  @Override
   public CategoryEntity saveCategory(CategoryEntity category) {
-    return CateoryRepo.save(category);
+    return cateoryRepo.save(category);
   }
 
   @Override
   public void deleteCategoryById(Long categoryId) {
     // TODO Auto-generated method stub
-    CateoryRepo.deleteById(categoryId);
+    cateoryRepo.deleteById(categoryId);
   }
 
   @Override
   public CategoryEntity getCategoryById(Long categoryId) {
     // TODO Auto-generated method stub
-    Optional<CategoryEntity> category = CateoryRepo.findById(categoryId);
+    Optional<CategoryEntity> category = cateoryRepo.findById(categoryId);
 
     if (!category.isPresent()) return null;
 
@@ -34,7 +35,7 @@ public class CateoryServiceImpl implements CategoryService {
 
   @Override
   public CategoryEntity updateCategoryById(Long categoryId, CategoryEntity category) {
-    Optional<CategoryEntity> categorysFromDb = CateoryRepo.findById(categoryId);
+    Optional<CategoryEntity> categorysFromDb = cateoryRepo.findById(categoryId);
 
     if (!categorysFromDb.isPresent()) return null;
 
@@ -48,6 +49,6 @@ public class CateoryServiceImpl implements CategoryService {
     if (Objects.nonNull(cateoryDescription) && !"".equals(cateoryDescription))
       categoryFromDb.setCategoryDescription(cateoryDescription);
 
-    return CateoryRepo.save(categoryFromDb);
+    return cateoryRepo.save(categoryFromDb);
   }
 }
