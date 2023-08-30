@@ -17,4 +17,6 @@ public interface ProductService {
   public List<Product> getAllProducts();
 
   public List<Product> searchProduct(String keyword);
+
+  public List<Product> getProductsFromSameCategory(Long productId);
 }

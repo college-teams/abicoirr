@@ -53,4 +53,9 @@ public class ProductController {
   public List<Product> searchProduct(@RequestParam String keyword){
 	  return productService.searchProduct(keyword);
   }
+  
+  @GetMapping("/getProduct-byCategory/{id}")
+  public List<Product> getProductsFromSameCategory(@PathVariable("id") Long productId){
+	  return productService.getProductsFromSameCategory(productId);
+  }
 }

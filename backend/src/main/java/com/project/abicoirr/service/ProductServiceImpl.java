@@ -170,5 +170,20 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> searchProduct(String keyword) {
 		return productRepo.findByProductNameContainingIgnoreCase(keyword);
 	}
+
+	@Override
+	public List<Product> getProductsFromSameCategory(Long productId) {
+		Product product = getProductById(productId);
+		
+		if(product == null)
+			throw new RuntimeException("Product not found");
+		
+		CategoryEntity category = product.getCategory();
+		
+		if(category == null)
+			throw new RuntimeException("Product does not have a Category");
+		
+		return productRepo.findByCategory(category);
+	}
 	
 }
