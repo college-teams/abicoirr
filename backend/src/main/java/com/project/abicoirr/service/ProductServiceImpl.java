@@ -5,6 +5,7 @@ import com.project.abicoirr.entity.ExternalLinks;
 import com.project.abicoirr.entity.Product;
 import com.project.abicoirr.entity.ProductImage;
 import com.project.abicoirr.repository.ProductRepository;
+import com.project.abicoirr.util.Util;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ public class ProductServiceImpl implements ProductService {
 
     product.setCategory(linkedCategory);
 
-    // Clearing the images and links from the product to avoid duplicate insertion
     product.setImages(new ArrayList<>());
     product.setLinks(new ArrayList<>());
 
@@ -50,8 +50,25 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  @Transactional
   public void deleteProductById(Long productId) {
-    productRepo.deleteById(productId);
+    Product product = getProductById(productId);
+
+    if (product == null) throw new RuntimeException("Product not found");
+
+    List<ProductImage> images = product.getImages();
+    List<ExternalLinks> links = product.getLinks();
+
+    for (ProductImage image : images) image.setProduct(null);
+    product.getImages().clear();
+
+    for (ExternalLinks link : links) link.setProduct(null);
+    links.clear();
+
+    product.getLinks().forEach(link -> link.setProduct(null));
+    product.getLinks().clear();
+
+    productRepo.delete(product);
   }
 
   @Override
@@ -63,13 +80,42 @@ public class ProductServiceImpl implements ProductService {
     return product.get();
   }
 
+  //  @Override
+  //  public Product updateProductById(Long productId, Product product) {
+  //    Optional<Product> productsFromDb = productRepo.findById(productId);
+  //
+  //    if (!productsFromDb.isPresent()) return null;
+  //
+  //    String productname = product.getProductName();
+  //    String productDesc = product.getProductDescription();
+  //    float productDisc = product.getDiscountPercent();
+  //    float productAvgRat = product.getAvgRating();
+  //    int maxOrder = product.getMaxOrder();
+  //    int minOrder = product.getMinOrder();
+  //    float price = product.getPrice();
+  //    int stockQuantity = product.getStockQuantity();
+  //
+  //    Product productFromDb = productsFromDb.get();
+  //
+  //    if (Objects.nonNull(productname) && !"".equals(productname))
+  //      productFromDb.setProductName(productname);
+  //    if (Objects.nonNull(productDesc) && !"".equals(productDesc))
+  //      productFromDb.setProductDescription(productDesc);
+  //    if (Objects.nonNull(productDisc)) productFromDb.setDiscountPercent(productDisc);
+  //    if (Objects.nonNull(productAvgRat)) productFromDb.setAvgRating(productAvgRat);
+  //    if (Objects.nonNull(maxOrder)) productFromDb.setMaxOrder(maxOrder);
+  //    if (Objects.nonNull(minOrder)) productFromDb.setMinOrder(minOrder);
+  //    if (Objects.nonNull(price)) productFromDb.setPrice(price);
+  //    if (Objects.nonNull(stockQuantity)) productFromDb.setStockQuantity(stockQuantity);
+  //
+  //    return productRepo.save(productFromDb);
+  //  }
   @Override
+  @Transactional
   public Product updateProductById(Long productId, Product product) {
-    Optional<Product> productsFromDb = productRepo.findById(productId);
+    Product existingProduct = getProductById(productId);
 
-    if (!productsFromDb.isPresent()) return null;
-
-    String productname = product.getProductName();
+    String productName = product.getProductName();
     String productDesc = product.getProductDescription();
     float productDisc = product.getDiscountPercent();
     float productAvgRat = product.getAvgRating();
@@ -78,19 +124,52 @@ public class ProductServiceImpl implements ProductService {
     float price = product.getPrice();
     int stockQuantity = product.getStockQuantity();
 
-    Product productFromDb = productsFromDb.get();
+    if (!Util.isEmpty(productName)) existingProduct.setProductName(productName);
 
-    if (Objects.nonNull(productname) && !"".equals(productname))
-      productFromDb.setProductName(productname);
-    if (Objects.nonNull(productDesc) && !"".equals(productDesc))
-      productFromDb.setProductDescription(productDesc);
-    if (Objects.nonNull(productDisc)) productFromDb.setDiscountPercent(productDisc);
-    if (Objects.nonNull(productAvgRat)) productFromDb.setAvgRating(productAvgRat);
-    if (Objects.nonNull(maxOrder)) productFromDb.setMaxOrder(maxOrder);
-    if (Objects.nonNull(minOrder)) productFromDb.setMinOrder(minOrder);
-    if (Objects.nonNull(price)) productFromDb.setPrice(price);
-    if (Objects.nonNull(stockQuantity)) productFromDb.setStockQuantity(stockQuantity);
+    if (!Util.isEmpty(productDesc)) existingProduct.setProductDescription(productDesc);
 
-    return productRepo.save(productFromDb);
+    if (Objects.nonNull(productDisc)) existingProduct.setDiscountPercent(productDisc);
+
+    if (Objects.nonNull(productAvgRat)) existingProduct.setAvgRating(productAvgRat);
+
+    if (Objects.nonNull(maxOrder)) existingProduct.setMaxOrder(maxOrder);
+
+    if (Objects.nonNull(minOrder)) existingProduct.setMinOrder(minOrder);
+
+    if (Objects.nonNull(price)) existingProduct.setPrice(price);
+
+    if (Objects.nonNull(stockQuantity)) existingProduct.setStockQuantity(stockQuantity);
+
+    // Update the product_images table
+    List<ProductImage> updatedImages = product.getImages();
+    if (Objects.nonNull(updatedImages)) {
+      List<ProductImage> existingImages = existingProduct.getImages();
+
+      for (ProductImage image : existingImages) image.setProduct(null);
+
+      existingProduct.getImages().clear();
+
+      for (ProductImage updatedImage : updatedImages) {
+        updatedImage.setProduct(existingProduct);
+        existingProduct.getImages().add(updatedImage);
+      }
+    }
+
+    // Update the external_Links table
+    List<ExternalLinks> updatedLinks = product.getLinks();
+    if (Objects.nonNull(updatedLinks)) {
+      List<ExternalLinks> existingLinks = existingProduct.getLinks();
+
+      for (ExternalLinks link : existingLinks) link.setProduct(null);
+
+      existingProduct.getLinks().clear();
+
+      for (ExternalLinks updatedLink : updatedLinks) {
+        updatedLink.setProduct(existingProduct);
+        existingProduct.getLinks().add(updatedLink);
+      }
+    }
+
+    return productRepo.save(existingProduct);
   }
 }
