@@ -2,6 +2,8 @@ package com.project.abicoirr.service;
 
 import com.project.abicoirr.entity.CategoryEntity;
 import com.project.abicoirr.repository.CategoryRepository;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,10 @@ public class CateoryServiceImpl implements CategoryService {
       categoryFromDb.setCategoryDescription(cateoryDescription);
 
     return cateoryRepo.save(categoryFromDb);
+  }
+
+  @Override
+  public List<CategoryEntity> searchCategory(String keyword) {
+	  return cateoryRepo.findByCategorynameContainingIgnoreCase(keyword);
   }
 }

@@ -91,7 +91,7 @@
 						</googleJavaFormat>
 					</java>
 				</configuration>
-				<executions>
+				<!--<executions>
 					<execution>
 						<id>spotless</id>
 						<phase>verify</phase>
@@ -100,7 +100,7 @@
 							<goal>apply</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions>-->
 			</plugin>
 
 		</plugins>
