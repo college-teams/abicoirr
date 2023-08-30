@@ -9,6 +9,7 @@ import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
+import SearchProduct from "./pages/SearchProduct";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/contact" element={<Contacts />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/search" element={<SearchProduct />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/shipping-policy" element={<Shippingpolicy />} />
         <Route path="/404" element={<NotFound />} />

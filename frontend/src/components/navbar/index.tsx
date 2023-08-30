@@ -15,7 +15,7 @@ import Auth from "../Auth";
 const Navbar = () => {
   const { pathname }: Location = useLocation();
   const [active, setActive] = useState(false);
-  const [showAuth, setShowAuth] = useState(true);
+  const [showAuth, setShowAuth] = useState(false);
 
   const handleScroll = useCallback(() => {
     if (window.scrollY >= 100 || pathname !== "/") {
@@ -57,12 +57,14 @@ const Navbar = () => {
             </li>
           </NavLinks>
           <Icons>
-            <Icon icon="fluent:search-32-regular" />
-            <Icon icon="ph:user" onClick={()=>setShowAuth(true)} />
+            <Link to="/search">
+              <Icon icon="fluent:search-32-regular" />
+            </Link>
+            <Icon icon="ph:user" onClick={() => setShowAuth(true)} />
           </Icons>
         </NavLinksWrapper>
       </NavbarContainer>
-      <Auth open={showAuth} close={()=>setShowAuth(false)} />
+      <Auth open={showAuth} close={() => setShowAuth(false)} />
     </>
   );
 };
