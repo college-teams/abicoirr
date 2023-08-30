@@ -10,7 +10,7 @@ interface PropType {
 }
 
 const Auth = ({ open, close }: PropType) => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const toggleAuthMode = () => {
     setIsLogin((prev) => !prev);

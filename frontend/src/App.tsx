@@ -1,5 +1,4 @@
 import Home from "./pages/Home";
-import { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Products from "./pages/Products";
 import Contacts from "./pages/Contacts";
@@ -12,9 +11,6 @@ import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
 
 function App() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <Layout>
       <ScrollToTop  />
