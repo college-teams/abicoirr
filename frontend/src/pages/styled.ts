@@ -63,3 +63,11 @@ export const InfoStepsContainer = styled.div`
 export const ProductContainer = styled.div`
   position: relative;
 `;
+
+export const SearchBoxWrapper = styled.div`
+  background: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+  /* background: radial-gradient(circle at 10% 20%, rgb(0, 93, 133) 0%, rgb(0, 181, 149) 90%); */
+  /* background: linear-gradient(107deg, rgb(13, 198, 180) 8.1%, rgb(33, 198, 138) 79.5%); */
+  border: 1px solid #777;
+  opacity: 0.9;
+`;
