@@ -37,6 +37,14 @@ export const RedirectCard = styled.div`
   opacity: 0;
 
   animation: ${OpacityAnimation} 0.5s ease-in-out forwards;
+
+  @media (max-width: 1280px) {
+    width: 60%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
 `;
 
 export const RedirectLink = styled.div`
@@ -61,6 +69,14 @@ export const RedirectLink = styled.div`
   img {
     position: relative;
     height: 100%;
+
+    @media (max-width: 768px) {
+      height: 90%;
+    }
+
+    @media (max-width: 500px) {
+      height: 80%;
+    }
   }
 `;
 

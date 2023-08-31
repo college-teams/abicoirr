@@ -62,7 +62,7 @@ const Products = () => {
           <p className="relative text-[1.4rem] mb-8 font-medium text-black/60 mt-[5rem]">
             Showing all 52 result(s)
           </p>
-          <div className="flex flex-wrap gap-16">
+          <div className="flex  flex-wrap gap-16 justify-around">
             {Array.from({ length: 3 }).map((_, repetitionIndex) =>
               tempPopularProducts.map((e, i) => (
                 <Card

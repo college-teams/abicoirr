@@ -42,9 +42,9 @@ const ProductDetail = () => {
 
   return (
     <div className="relative mt-[14rem]">
-      <div className="relative flex w-[90%] mx-auto gap-[5rem] mb-20">
-        <div className="relative flex-1">
-          <div className="h-[400px] w-[600px] mb-8">
+      <div className="relative flex w-[90%] mx-auto  mlg:gap-[5rem] gap-[7rem] mb-20 flex-col mlg:flex-row ">
+        <div className="relative flex-1 ">
+          <div className="h-[200px] w-full sm:h-[250px]  lg:w-[600px] lg:h-[300px] xl:h-[400px]  mb-8">
             <img
               src={Product4}
               alt="product1"
@@ -52,7 +52,7 @@ const ProductDetail = () => {
             />
           </div>
 
-          <div className="relative flex gap-5 justify-center   w-[500px] overflow-x-auto no-scrollbar">
+          <div className="relative flex gap-5 justify-center  mlg:w-[500px] w-full overflow-x-auto no-scrollbar">
             <div className="relative h-[7rem] w-[8rem] cursor-pointer">
               <img
                 src={Product1}
@@ -84,25 +84,25 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className="flex-1">
-          <p className="relative text-[1.6rem] mb-6">
+          <p className="relative text-center mlg:text-left text-[1.4rem] xl:text-[1.6rem] mb-6 ">
             Avaliability : <span>{"In stock"}</span>
           </p>
-          <p className="relative uppercase text-[2.5rem] mb-6 font-medium">
+          <p className="relative uppercase text-[2rem] xl:text-[2.5rem] mb-6 font-medium  text-center mlg:text-left">
             COCOPEAT BLOCK(4-5KG)
           </p>
-          <p className="relative mb-6 text-[1.8rem]">
+          <p className="relative mb-6 text-[1.6rem]  xl:text-[1.8rem] text-center mlg:text-left">
             <span className="relative font-semibold">&#8377;30.00</span>
             <span className="font-light ml-3 text-[1.6rem] line-through ">
               &#8377;10.00
             </span>
             <span className="ml-5 font-normal text-[1.6rem]">10% off</span>
           </p>
-          <div className="mb-8 w-[40%]">
+          <div className="mb-10 mlg:mb-8 w-[50%] sm:w-[30%] lg:w-[60%] xl:w-[40%] mx-auto mlg:ml-0">
             <button className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]" onClick={()=>setRedirect(true)}>
               Shop now
             </button>
           </div>
-          <p className="relative text-[1.4rem] text-justify">
+          <p className="relative text-[1.4rem] text-center w-[70%] mx-auto mlg:text-justify mlg:w-full ">
             Images are for reference purposes only. Actual product may vary in
             shape or appearance based on climate, age, height, etc. The product
             is replaceable but not returnable.
