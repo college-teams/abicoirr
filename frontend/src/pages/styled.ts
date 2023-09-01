@@ -58,6 +58,22 @@ export const InfoStepsContainer = styled.div`
     background-position: center 1060px;
     background-repeat: repeat-y;
   }
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
+
+  @media screen and (max-width: 768px) {
+    .top,
+    .right,
+    .bottom,
+    .left {
+      display: none;
+    }
+
+    margin: 6rem auto;
+  }
+
 `;
 
 export const ProductContainer = styled.div`

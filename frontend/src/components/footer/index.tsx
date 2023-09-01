@@ -5,7 +5,11 @@ import { Icon } from "@iconify/react";
 const Footer = () => {
   return (
     <div className="bg-[#f3f3f3] h-full w-full">
-      <div className="footer relative flex items-center justify-center gap-[12rem] py-[8rem]">
+      <div className="footer relative flex flex-wrap lg:flex-nowrap items-center justify-center gap-[12rem] py-[8rem] w-[90%] mx-auto">
+        <div className="relative mt-[-1rem] w-[200px] md:w-[230px] lg:w-[260px] xl:[300px] ">
+          <img src={Logo} alt="logo" />
+        </div>
+
         <div className="relative flex justify-center gap-[7rem] font-medium">
           <div className="relative text-[1.4rem] text-black/60">
             <h2 className="text-[2rem] font-medium mb-5 text-black">General</h2>
@@ -29,9 +33,6 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="relative mt-[-1rem] w-[300px]">
-          <img src={Logo} alt="logo" />
-        </div>
         <div className="relative text-[1.4rem] text-black/60">
           <h2 className="relative text-black text-[2rem] font-semibold mb-5">
             STAY IN THE LOOP

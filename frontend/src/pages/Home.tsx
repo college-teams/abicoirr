@@ -26,12 +26,12 @@ const Home = () => {
           style={{ backgroundImage: `url(${CocoBg})` }}
         />
 
-        <div className="absolute bg-white/75 w-[55%] px-4 py-16 rounded-md">
+        <div className="absolute bg-white/75 w-[70%] md:w-[55%] px-4 py-16 rounded-md">
           <div className=" flex flex-col gap-8 items-center justify-center w-[80%] m-auto">
-            <p className="relative uppercase text-center text-[3.4rem] font-black text-[#a15125]">
+            <p className="relative uppercase text-center text-[3rem] md:text-[3.4rem] font-black text-[#a15125]">
               Changing the world one coconut at a time
             </p>
-            <p className="relative text-[1.5rem] font-medium text-center">
+            <p className="relative text-[1.8rem] md:text-[1.5rem] font-medium text-center">
               Our range of peat-free compost, doormats and gardening accessories
               covers all your plant growing needs. Based on sustainable 100%
               natural coco coir, a by-product of the coconut industry. Coir in
@@ -46,7 +46,7 @@ const Home = () => {
       </div>
 
       {/* info steps */}
-      <InfoStepsContainer className="relative flex items-center justify-center p-32">
+      <InfoStepsContainer className="relative flex-wrap gap-14 lg:flex-nowrap lg:flex-row flex items-center justify-center p-24 lg:p-32">
         <div className="top" />
         <div className="right" />
         <div className="bottom" />

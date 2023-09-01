@@ -85,14 +85,22 @@ const LatestProducts = () => {
             desktop: {
               breakpoint: {
                 max: 3000,
-                min: 1024,
+                min: 1536,
               },
               items: 4,
               partialVisibilityGutter: 40,
             },
+            desktop2: {
+              breakpoint: {
+                max: 1536,
+                min: 1280,
+              },
+              items:3,
+              partialVisibilityGutter: 30,
+            },
             mobile: {
               breakpoint: {
-                max: 464,
+                max: 500,
                 min: 0,
               },
               items: 1,
@@ -100,10 +108,10 @@ const LatestProducts = () => {
             },
             tablet: {
               breakpoint: {
-                max: 1024,
-                min: 464,
+                max: 1280,
+                min: 768,
               },
-              items: 3,
+              items: 2,
               partialVisibilityGutter: 20,
             },
           }}

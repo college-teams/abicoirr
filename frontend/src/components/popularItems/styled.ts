@@ -23,6 +23,21 @@ export const CurveLine = styled.div`
   border-color: transparent transparent #000 transparent;
   border-radius: 0 0 240px 50%/60px;
   margin: 0 auto;
+
+  @media screen and (max-width: 1024px) {
+    width: 250px;
+
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 220px;
+
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 200px;
+
+  }
 `;
 
 export const Description = styled.p`

@@ -37,6 +37,21 @@ export const CategoryImageContainer = styled.div`
       transform: scale(1.08);
     }
   }
+
+  @media screen and (max-width: 1024px) {
+    height: 150px;
+    width: 150px;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 120px;
+    width: 120px;
+  }
+
+  @media screen and (max-width: 500px) {
+    height: 80px;
+    width: 80px;
+  }
 `;
 
 export const CategoryName = styled.p`
