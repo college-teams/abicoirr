@@ -1,7 +1,9 @@
 package com.project.abicoirr.controller;
 
+import com.project.abicoirr.entity.Product;
+import com.project.abicoirr.service.ProductService;
+import jakarta.validation.Valid;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.project.abicoirr.entity.Product;
-import com.project.abicoirr.service.ProductService;
-
-import jakarta.validation.Valid;
 
 @RestController
 public class ProductController {
@@ -43,19 +40,19 @@ public class ProductController {
       @PathVariable("id") Long productId, @RequestBody Product product) {
     return productService.updateProductById(productId, product);
   }
-  
+
   @GetMapping("/getProducts")
-  public List<Product> getAllProducts(){
-	  return productService.getAllProducts();
+  public List<Product> getAllProducts() {
+    return productService.getAllProducts();
   }
-  
+
   @GetMapping("/search-product")
-  public List<Product> searchProduct(@RequestParam String keyword){
-	  return productService.searchProduct(keyword);
+  public List<Product> searchProduct(@RequestParam String keyword) {
+    return productService.searchProduct(keyword);
   }
-  
+
   @GetMapping("/getProduct-byCategory/{id}")
-  public List<Product> getProductsFromSameCategory(@PathVariable("id") Long productId){
-	  return productService.getProductsFromSameCategory(productId);
+  public List<Product> getProductsFromSameCategory(@PathVariable("id") Long productId) {
+    return productService.getProductsFromSameCategory(productId);
   }
 }

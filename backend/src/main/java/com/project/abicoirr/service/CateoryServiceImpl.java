@@ -2,7 +2,6 @@ package com.project.abicoirr.service;
 
 import com.project.abicoirr.entity.CategoryEntity;
 import com.project.abicoirr.repository.CategoryRepository;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,6 +55,6 @@ public class CateoryServiceImpl implements CategoryService {
 
   @Override
   public List<CategoryEntity> searchCategory(String keyword) {
-	  return cateoryRepo.findByCategorynameContainingIgnoreCase(keyword);
+    return cateoryRepo.findByCategorynameContainingIgnoreCase(keyword);
   }
 }

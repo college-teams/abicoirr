@@ -17,173 +17,160 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	@Autowired private ProductRepository productRepo;
-	@Autowired private CategoryService categoryService;
+  @Autowired private ProductRepository productRepo;
+  @Autowired private CategoryService categoryService;
 
-	@Override
-	@Transactional
-	public Product saveProduct(Product product) {
-		List<ProductImage> images = product.getImages();
-		List<ExternalLinks> links = product.getLinks();
+  @Override
+  @Transactional
+  public Product saveProduct(Product product) {
+    List<ProductImage> images = product.getImages();
+    List<ExternalLinks> links = product.getLinks();
 
-		CategoryEntity linkedCategory = categoryService.getCategoryById(product.getCategory().getId());
+    CategoryEntity linkedCategory = categoryService.getCategoryById(product.getCategory().getId());
 
-		if (linkedCategory == null)
-			throw new RuntimeException("No Category is associated with the product");
+    if (linkedCategory == null)
+      throw new RuntimeException("No Category is associated with the product");
 
-		product.setCategory(linkedCategory);
+    product.setCategory(linkedCategory);
 
-		product.setImages(new ArrayList<>());
-		product.setLinks(new ArrayList<>());
+    product.setImages(new ArrayList<>());
+    product.setLinks(new ArrayList<>());
 
-		Product savedProduct = productRepo.save(product);
+    Product savedProduct = productRepo.save(product);
 
-		for (ProductImage image : images) image.setProduct(savedProduct);
+    for (ProductImage image : images) image.setProduct(savedProduct);
 
-		savedProduct.setImages(images);
+    savedProduct.setImages(images);
 
-		for (ExternalLinks link : links) link.setProduct(savedProduct);
+    for (ExternalLinks link : links) link.setProduct(savedProduct);
 
-		savedProduct.setLinks(links);
+    savedProduct.setLinks(links);
 
-		return savedProduct;
-	}
+    return savedProduct;
+  }
 
-	@Override
-	@Transactional
-	public void deleteProductById(Long productId) {
-		Product product = getProductById(productId);
+  @Override
+  @Transactional
+  public void deleteProductById(Long productId) {
+    Product product = getProductById(productId);
 
-		if (product == null) throw new RuntimeException("Product not found");
+    if (product == null) throw new RuntimeException("Product not found");
 
-		List<ProductImage> images = product.getImages();
-		List<ExternalLinks> links = product.getLinks();
+    List<ProductImage> images = product.getImages();
+    List<ExternalLinks> links = product.getLinks();
 
-		for (ProductImage image : images) image.setProduct(null);
-		product.getImages().clear();
+    for (ProductImage image : images) image.setProduct(null);
+    product.getImages().clear();
 
-		for (ExternalLinks link : links) link.setProduct(null);
-		links.clear();
+    for (ExternalLinks link : links) link.setProduct(null);
+    links.clear();
 
-		product.getLinks().forEach(link -> link.setProduct(null));
-		product.getLinks().clear();
+    product.getLinks().forEach(link -> link.setProduct(null));
+    product.getLinks().clear();
 
-		productRepo.delete(product);
-	}
+    productRepo.delete(product);
+  }
 
-	@Override
-	public Product getProductById(Long productId) {
-		Optional<Product> product = productRepo.findById(productId);
+  @Override
+  public Product getProductById(Long productId) {
+    Optional<Product> product = productRepo.findById(productId);
 
-		if (!product.isPresent()) return null;
+    if (!product.isPresent()) return null;
 
-		return product.get();
-	}
+    return product.get();
+  }
 
-	@Override
-	@Transactional
-	public Product updateProductById(Long productId, Product product) {
-		Product existingProduct = getProductById(productId);
+  @Override
+  @Transactional
+  public Product updateProductById(Long productId, Product product) {
+    Product existingProduct = getProductById(productId);
 
-		String productName = product.getProductName();
-		String productDesc = product.getProductDescription();
-		float productDisc = product.getDiscountPercent();
-		float productAvgRat = product.getAvgRating();
-		int maxOrder = product.getMaxOrder();
-		int minOrder = product.getMinOrder();
-		float price = product.getPrice();
-		int stockQuantity = product.getStockQuantity();
+    String productName = product.getProductName();
+    String productDesc = product.getProductDescription();
+    float productDisc = product.getDiscountPercent();
+    float productAvgRat = product.getAvgRating();
+    int maxOrder = product.getMaxOrder();
+    int minOrder = product.getMinOrder();
+    float price = product.getPrice();
+    int stockQuantity = product.getStockQuantity();
 
-		if (!Util.isEmpty(productName)) 
-			existingProduct.setProductName(productName);
+    if (!Util.isEmpty(productName)) existingProduct.setProductName(productName);
 
-		if (!Util.isEmpty(productDesc)) 
-			existingProduct.setProductDescription(productDesc);
+    if (!Util.isEmpty(productDesc)) existingProduct.setProductDescription(productDesc);
 
-		if (Objects.nonNull(productDisc)) 
-			existingProduct.setDiscountPercent(productDisc);
+    if (Objects.nonNull(productDisc)) existingProduct.setDiscountPercent(productDisc);
 
-		if (Objects.nonNull(productAvgRat)) 
-			existingProduct.setAvgRating(productAvgRat);
+    if (Objects.nonNull(productAvgRat)) existingProduct.setAvgRating(productAvgRat);
 
-		if (Objects.nonNull(maxOrder)) 
-			existingProduct.setMaxOrder(maxOrder);
+    if (Objects.nonNull(maxOrder)) existingProduct.setMaxOrder(maxOrder);
 
-		if (Objects.nonNull(minOrder)) 
-			existingProduct.setMinOrder(minOrder);
+    if (Objects.nonNull(minOrder)) existingProduct.setMinOrder(minOrder);
 
-		if (Objects.nonNull(price)) 
-			existingProduct.setPrice(price);
+    if (Objects.nonNull(price)) existingProduct.setPrice(price);
 
-		if (Objects.nonNull(stockQuantity)) 
-			existingProduct.setStockQuantity(stockQuantity);
+    if (Objects.nonNull(stockQuantity)) existingProduct.setStockQuantity(stockQuantity);
 
-		// Update the product_images table
-		updateProductImageTable(product, existingProduct);
+    // Update the product_images table
+    updateProductImageTable(product, existingProduct);
 
-		// Update the external_Links table
-		updateExternalLinksTable(product, existingProduct);
+    // Update the external_Links table
+    updateExternalLinksTable(product, existingProduct);
 
-		return productRepo.save(existingProduct);
-	}
-	
-	private void updateProductImageTable(Product product, Product existingProduct) {
-		List<ProductImage> updatedImages = product.getImages();
-		if (Objects.nonNull(updatedImages)) {
-			List<ProductImage> existingImages = existingProduct.getImages();
+    return productRepo.save(existingProduct);
+  }
 
-			for (ProductImage image : existingImages)
-				image.setProduct(null);
+  private void updateProductImageTable(Product product, Product existingProduct) {
+    List<ProductImage> updatedImages = product.getImages();
+    if (Objects.nonNull(updatedImages)) {
+      List<ProductImage> existingImages = existingProduct.getImages();
 
-			existingProduct.getImages().clear();
+      for (ProductImage image : existingImages) image.setProduct(null);
 
-			for (ProductImage updatedImage : updatedImages) {
-				updatedImage.setProduct(existingProduct);
-				existingProduct.getImages().add(updatedImage);
-			}
-		}
-	}
-	
-	private void updateExternalLinksTable(Product product, Product existingProduct) {
-		List<ExternalLinks> updatedLinks = product.getLinks();
-		if (Objects.nonNull(updatedLinks)) {
-			List<ExternalLinks> existingLinks = existingProduct.getLinks();
+      existingProduct.getImages().clear();
 
-			for (ExternalLinks link : existingLinks)
-				link.setProduct(null);
+      for (ProductImage updatedImage : updatedImages) {
+        updatedImage.setProduct(existingProduct);
+        existingProduct.getImages().add(updatedImage);
+      }
+    }
+  }
 
-			existingProduct.getLinks().clear();
+  private void updateExternalLinksTable(Product product, Product existingProduct) {
+    List<ExternalLinks> updatedLinks = product.getLinks();
+    if (Objects.nonNull(updatedLinks)) {
+      List<ExternalLinks> existingLinks = existingProduct.getLinks();
 
-			for (ExternalLinks updatedLink : updatedLinks) {
-				updatedLink.setProduct(existingProduct);
-				existingProduct.getLinks().add(updatedLink);
-			}
-		}
-	}
+      for (ExternalLinks link : existingLinks) link.setProduct(null);
 
-	@Override
-	public List<Product> getAllProducts() {
-		return productRepo.findAll();
-	}
+      existingProduct.getLinks().clear();
 
-	@Override
-	public List<Product> searchProduct(String keyword) {
-		return productRepo.findByProductNameContainingIgnoreCase(keyword);
-	}
+      for (ExternalLinks updatedLink : updatedLinks) {
+        updatedLink.setProduct(existingProduct);
+        existingProduct.getLinks().add(updatedLink);
+      }
+    }
+  }
 
-	@Override
-	public List<Product> getProductsFromSameCategory(Long productId) {
-		Product product = getProductById(productId);
-		
-		if(product == null)
-			throw new RuntimeException("Product not found");
-		
-		CategoryEntity category = product.getCategory();
-		
-		if(category == null)
-			throw new RuntimeException("Product does not have a Category");
-		
-		return productRepo.findByCategory(category);
-	}
-	
+  @Override
+  public List<Product> getAllProducts() {
+    return productRepo.findAll();
+  }
+
+  @Override
+  public List<Product> searchProduct(String keyword) {
+    return productRepo.findByProductNameContainingIgnoreCase(keyword);
+  }
+
+  @Override
+  public List<Product> getProductsFromSameCategory(Long productId) {
+    Product product = getProductById(productId);
+
+    if (product == null) throw new RuntimeException("Product not found");
+
+    CategoryEntity category = product.getCategory();
+
+    if (category == null) throw new RuntimeException("Product does not have a Category");
+
+    return productRepo.findByCategory(category);
+  }
 }

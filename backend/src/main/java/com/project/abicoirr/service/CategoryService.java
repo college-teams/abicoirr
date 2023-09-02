@@ -1,8 +1,7 @@
 package com.project.abicoirr.service;
 
-import java.util.List;
-
 import com.project.abicoirr.entity.CategoryEntity;
+import java.util.List;
 
 public interface CategoryService {
 

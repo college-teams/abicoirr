@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,12 @@ public abstract class CommonEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false)
   protected long id;
+
+  @Version
+  @Column(name = "version")
+  protected Long version = 0L;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
