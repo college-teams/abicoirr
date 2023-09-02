@@ -23,6 +23,14 @@ export const CardImageContainer = styled.div`
     background-repeat: no-repeat;
     object-fit: cover;
   }
+
+  @media screen and (max-width: 1280px) {
+    height: 220px;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 200px;
+  }
 `;
 
 export const CardDetailsContainer = styled.div`

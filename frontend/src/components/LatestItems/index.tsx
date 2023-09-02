@@ -79,21 +79,21 @@ const LatestProducts = () => {
           minimumTouchDrag={80}
           pauseOnHover
           renderArrowsWhenDisabled={false}
-          renderButtonGroupOutside={false}
+          renderButtonGroupOutside={true}
           renderDotsOutside={false}
           responsive={{
             desktop: {
               breakpoint: {
                 max: 3000,
-                min: 1536,
+                min: 1440,
               },
               items: 4,
               partialVisibilityGutter: 40,
             },
             desktop2: {
               breakpoint: {
-                max: 1536,
-                min: 1280,
+                max: 1440,
+                min: 992,
               },
               items:3,
               partialVisibilityGutter: 30,
@@ -108,7 +108,7 @@ const LatestProducts = () => {
             },
             tablet: {
               breakpoint: {
-                max: 1280,
+                max: 992,
                 min: 768,
               },
               items: 2,

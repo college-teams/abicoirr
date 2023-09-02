@@ -6,6 +6,10 @@ export const LatestProductsContainer = styled.div`
   margin: 0 auto;
   padding: 1rem 2rem 5rem 2rem;
   height: auto;
+
+  @media screen and (max-width: 1280px) {
+    width: 85%;
+  }
 `;
 
 export const Header = styled.p`
