@@ -27,6 +27,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql   
       - mysql-conf-d:/etc/mysql/conf.d  
+    restart: always 
 
 volumes:
   mysql-data: 
