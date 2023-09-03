@@ -1,0 +1,68 @@
+package com.project.abicoirr.exception;
+
+import static com.project.abicoirr.codes.ErrorCodes.CONSTRAINT_VIOLATIONS;
+
+import com.project.abicoirr.codes.ErrorCodes;
+import com.project.abicoirr.models.response.AbstractResponse.StatusType;
+import com.project.abicoirr.models.response.ApiResponse;
+import jakarta.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class ExceptionController {
+
+  @ExceptionHandler(BaseException.class)
+  public ResponseEntity<ApiResponse> handleApplicationException(BaseException baseException) {
+    ApiResponse apiResponse =
+        new ApiResponse(
+            baseException.getStatusCodes(), StatusType.FAILURE, baseException.getMessage());
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(
+      MethodArgumentNotValidException ex) {
+    BindingResult result = ex.getBindingResult();
+    final List<FieldError> fieldErrors = result.getFieldErrors();
+    Optional<String> errors =
+        fieldErrors.stream()
+            .map(
+                fieldError ->
+                    "'"
+                        + fieldError.getField()
+                        + "'"
+                        + " parameter "
+                        + fieldError.getDefaultMessage())
+            .findFirst();
+    String error = null;
+    if (errors.isPresent()) error = errors.get();
+    ApiResponse apiResponse = new ApiResponse(CONSTRAINT_VIOLATIONS, StatusType.FAILURE, error);
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ApiResponse> handleConStraintViolationException(
+      ConstraintViolationException ex) {
+    ApiResponse apiResponse = new ApiResponse(CONSTRAINT_VIOLATIONS, StatusType.FAILURE);
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ApiResponse> handleGlobalApplicationException(Exception ex) {
+    StringBuilder sb = new StringBuilder();
+    if (StringUtils.isNotBlank(ex.getMessage())) {
+      sb.append(ex.getMessage());
+    }
+    ApiResponse apiResponse =
+        new ApiResponse(ErrorCodes.INTERNAL_SERVER_ERROR, StatusType.FAILURE, sb);
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+}

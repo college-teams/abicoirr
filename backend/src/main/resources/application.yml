@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: abicoirr-backend
+  profiles:
+    active: ${ENVIRONMENT:local}
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: com.mysql.jdbc.Driver
+
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8000
