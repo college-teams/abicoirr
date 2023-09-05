@@ -21,6 +21,9 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes ADMIN_ORDER_UPDATED =
       new SuccessCodes(200, HttpStatus.OK, "ADMIN_ORDER_UPDATED");
 
+  public static final StatusCodes IMAGE_UPLOAD_SUCCESS =
+      new SuccessCodes(200, HttpStatus.OK, "IMAGE_UPLOAD_SUCCESS");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }

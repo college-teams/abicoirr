@@ -1,9 +1,15 @@
 package com.project.abicoirr.service;
 
+import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
+
 import com.project.abicoirr.entity.CategoryEntity;
 import com.project.abicoirr.entity.ExternalLinks;
 import com.project.abicoirr.entity.Product;
 import com.project.abicoirr.entity.ProductImage;
+import com.project.abicoirr.exception.BaseException;
+import com.project.abicoirr.models.response.AbstractResponse.StatusType;
+import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.ProductRepository;
 import com.project.abicoirr.util.Util;
 import jakarta.transaction.Transactional;
@@ -11,14 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
   @Autowired private ProductRepository productRepo;
   @Autowired private CategoryService categoryService;
+  @Autowired private AwsService awsService;
 
   @Override
   @Transactional
@@ -172,5 +182,16 @@ public class ProductServiceImpl implements ProductService {
     if (category == null) throw new RuntimeException("Product does not have a Category");
 
     return productRepo.findByCategory(category);
+  }
+
+  @Override
+  public ApiResponse uploadImage(MultipartFile multipartFile) throws BaseException {
+    try {
+      String productImageLink = awsService.uploadFile("product", multipartFile);
+    } catch (Exception ex) {
+      log.error("Error ", ex);
+      throw new BaseException(IMAGE_UPLOAD_FAILED);
+    }
+    return new ApiResponse<>(IMAGE_UPLOAD_SUCCESS, StatusType.SUCCESS);
   }
 }

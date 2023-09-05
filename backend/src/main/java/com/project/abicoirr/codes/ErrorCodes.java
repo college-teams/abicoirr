@@ -11,6 +11,8 @@ public class ErrorCodes extends StatusCodes {
 
   public static final StatusCodes ADMIN_ORDER_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "ADMIN_ORDER_NOT_FOUND");
+  public static final StatusCodes IMAGE_UPLOAD_FAILED =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "IMAGE_UPLOAD_FAILED");
   public static final StatusCodes INTERNAL_SERVER_ERROR =
       new ErrorCodes(500, HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR");
 
