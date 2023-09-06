@@ -63,7 +63,10 @@ public class ProductController {
 
   @PostMapping("/product/{id}/upload")
   public ResponseEntity<ApiResponse<?>> uploadImages(
-      @Valid @RequestParam("file") MultipartFile multipartFile) throws BaseException {
-    return new ResponseEntity<>(productService.uploadImage(multipartFile), HttpStatus.OK);
+      @PathVariable(name = "id") Long productId,
+      @Valid @RequestParam("files") List<MultipartFile> multipartFiles)
+      throws BaseException {
+    return new ResponseEntity<>(
+        productService.uploadImage(productId, multipartFiles), HttpStatus.OK);
   }
 }

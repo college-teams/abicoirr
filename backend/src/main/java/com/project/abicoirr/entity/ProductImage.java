@@ -1,5 +1,6 @@
 package com.project.abicoirr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,8 +16,10 @@ public class ProductImage extends CommonEntity {
 
   private String imagePath;
   private Boolean isPrimary;
+  private String imageKey;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "productId")
   private Product product;
 }

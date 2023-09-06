@@ -1,6 +1,8 @@
 package com.project.abicoirr.service;
 
+import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
 
 import com.project.abicoirr.entity.CategoryEntity;
@@ -13,6 +15,7 @@ import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.ProductRepository;
 import com.project.abicoirr.util.Util;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -185,13 +188,75 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ApiResponse uploadImage(MultipartFile multipartFile) throws BaseException {
+  public ApiResponse<?> uploadImage(Long productId, List<MultipartFile> multipartFiles)
+      throws BaseException {
     try {
-      String productImageLink = awsService.uploadFile("product", multipartFile);
+      Product product = getProductById(productId);
+
+      List<ProductImage> productImages = uploadImages(multipartFiles);
+
+      product.getImages().addAll(productImages);
+      productRepo.save(product);
+
+      return new ApiResponse<>(IMAGE_UPLOAD_SUCCESS, StatusType.SUCCESS);
     } catch (Exception ex) {
       log.error("Error ", ex);
       throw new BaseException(IMAGE_UPLOAD_FAILED);
     }
-    return new ApiResponse<>(IMAGE_UPLOAD_SUCCESS, StatusType.SUCCESS);
+  }
+
+  private List<ProductImage> uploadImages(List<MultipartFile> multipartFiles) {
+    List<ProductImage> productImages = new ArrayList<>();
+
+    List<String> uploadedImageKeys = new ArrayList<>();
+
+    try {
+      multipartFiles.forEach(
+          multipartFile -> {
+            String uniqueKey =
+                Util.generateUniqueImageKey("product", multipartFile.getOriginalFilename());
+            String productImageLink = null;
+            try {
+              productImageLink = awsService.uploadFile(uniqueKey, multipartFile);
+
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+
+            uploadedImageKeys.add(uniqueKey);
+            ProductImage productImage = new ProductImage();
+            productImage.setImageKey(uniqueKey);
+            productImage.setImagePath(productImageLink);
+            productImage.setIsPrimary(
+                true); // TODO: decide which file to make the main file and how?
+            productImages.add(productImage);
+          });
+    } catch (Exception e) {
+      // Handle any errors during image upload
+      log.info("Rollback the uploaded images");
+      rollbackUploads(uploadedImageKeys);
+      throw e;
+    }
+
+    return productImages;
+  }
+
+  private void rollbackUploads(List<String> keysToDelete) {
+    try {
+      awsService.deleteFiles(keysToDelete);
+    } catch (Exception e) {
+      log.error("Error during image rollback deletion", e);
+    }
+  }
+
+  @Override
+  public ApiResponse<?> deleteImage(String key) throws BaseException {
+    try {
+      awsService.deleteFile(key);
+    } catch (Exception ex) {
+      log.error("Error ", ex);
+      throw new BaseException(IMAGE_DELETE_FAILED);
+    }
+    return new ApiResponse<>(IMAGE_DELETE_SUCCESS, StatusType.SUCCESS);
   }
 }

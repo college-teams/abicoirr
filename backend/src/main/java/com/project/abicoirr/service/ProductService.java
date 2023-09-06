@@ -22,5 +22,8 @@ public interface ProductService {
 
   public List<Product> getProductsFromSameCategory(Long productId);
 
-  public ApiResponse uploadImage(MultipartFile multipartFile) throws BaseException;
+  public ApiResponse<?> uploadImage(Long productId, List<MultipartFile> multipartFiles)
+      throws BaseException;
+
+  public ApiResponse<?> deleteImage(String key) throws BaseException;
 }

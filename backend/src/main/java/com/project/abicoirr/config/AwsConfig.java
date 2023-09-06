@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AwsConfig {
 
-  private String AWS_REGION = AWSRegion.ApSouth1.toString();
+  private final String AWS_REGION = AWSRegion.ApSouth1.toString();
 
   @Bean
   public AmazonS3 amazonS3Client() {
