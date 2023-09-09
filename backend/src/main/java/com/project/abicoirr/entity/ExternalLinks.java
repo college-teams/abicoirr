@@ -1,5 +1,6 @@
 package com.project.abicoirr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,6 +16,7 @@ public class ExternalLinks extends CommonEntity {
   private String link;
   private ECommercePlatformName platformName;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "productId")
   private Product product;

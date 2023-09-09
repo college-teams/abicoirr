@@ -62,7 +62,7 @@ public class ExceptionController {
       sb.append(ex.getMessage());
     }
     ApiResponse apiResponse =
-        new ApiResponse(ErrorCodes.INTERNAL_SERVER_ERROR, StatusType.FAILURE, sb);
+        new ApiResponse(ErrorCodes.INTERNAL_SERVER_ERROR, StatusType.FAILURE, sb.toString());
     return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
   }
 }

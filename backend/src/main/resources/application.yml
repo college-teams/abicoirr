@@ -7,7 +7,10 @@ spring:
     url: ${spring.datasource.url}
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
-    driver-class-name: com.mysql.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 15MB # Maximum file size allowed
+      max-request-size: 50MB  # Maximum request size allowed
 
 server:
   servlet:

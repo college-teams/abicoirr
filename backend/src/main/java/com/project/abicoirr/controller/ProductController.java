@@ -1,10 +1,14 @@
 package com.project.abicoirr.controller;
 
 import com.project.abicoirr.entity.Product;
+import com.project.abicoirr.exception.BaseException;
+import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class ProductController {
@@ -20,7 +25,7 @@ public class ProductController {
   @Autowired private ProductService productService;
 
   @PostMapping("/save-product")
-  public Product saveProduct(@Valid @RequestBody Product product) {
+  public Product saveProduct(@Valid @RequestBody Product product) throws BaseException {
     return productService.saveProduct(product);
   }
 
@@ -54,5 +59,14 @@ public class ProductController {
   @GetMapping("/getProduct-byCategory/{id}")
   public List<Product> getProductsFromSameCategory(@PathVariable("id") Long productId) {
     return productService.getProductsFromSameCategory(productId);
+  }
+
+  @PostMapping("/product/{id}/upload")
+  public ResponseEntity<ApiResponse<?>> uploadImages(
+      @PathVariable(name = "id") Long productId,
+      @Valid @RequestParam("files") List<MultipartFile> multipartFiles)
+      throws BaseException {
+    return new ResponseEntity<>(
+        productService.uploadImage(productId, multipartFiles), HttpStatus.OK);
   }
 }
