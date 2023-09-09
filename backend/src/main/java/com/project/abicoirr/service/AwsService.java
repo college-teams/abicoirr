@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -122,5 +123,8 @@ public class AwsService {
   private boolean checkFileIsExists(String key) {
     return amazonS3.doesObjectExist(BUCKET_NAME, key);
   }
-  //  TODO: Add scheduler to delete unknown images
+
+  public List<S3ObjectSummary> getBucketObjectsSummary() {
+    return amazonS3.listObjects(BUCKET_NAME).getObjectSummaries();
+  }
 }

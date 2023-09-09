@@ -13,4 +13,7 @@ public class CategoryEntity extends CommonEntity {
 
   private String categoryname;
   private String categoryDescription;
+
+  private String imagePath;
+  private String imageKey;
 }
