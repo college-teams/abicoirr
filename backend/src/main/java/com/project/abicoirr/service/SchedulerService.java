@@ -1,7 +1,7 @@
 package com.project.abicoirr.service;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.project.abicoirr.entity.CategoryEntity;
+import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.entity.ProductImage;
 import com.project.abicoirr.repository.CategoryRepository;
 import com.project.abicoirr.repository.ProductImageRepository;
@@ -57,7 +57,7 @@ public class SchedulerService {
 
   private void handleCategoryImageCleanup(String objectKey) {
     try {
-      Optional<CategoryEntity> categoryImage = categoryRepository.findByImageKey(objectKey);
+      Optional<Category> categoryImage = categoryRepository.findByImageKey(objectKey);
       if (categoryImage.isEmpty()) {
         awsService.deleteFile(objectKey);
         log.info("Deleted non-linked category object: {}", objectKey);

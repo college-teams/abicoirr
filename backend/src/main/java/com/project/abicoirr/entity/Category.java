@@ -1,17 +1,23 @@
 package com.project.abicoirr.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
-public class CategoryEntity extends CommonEntity {
+@NoArgsConstructor
+public class Category extends CommonEntity {
 
+  @Column(nullable = false)
   private String categoryname;
+
+  @Column(nullable = false)
   private String categoryDescription;
 
   private String imagePath;

@@ -1,13 +1,13 @@
 package com.project.abicoirr.repository;
 
-import com.project.abicoirr.entity.CategoryEntity;
+import com.project.abicoirr.entity.Category;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends AbstractRepository<CategoryEntity> {
-  List<CategoryEntity> findByCategorynameContainingIgnoreCase(String categoryName);
+public interface CategoryRepository extends AbstractRepository<Category> {
+  List<Category> findByCategorynameContainingIgnoreCase(String categoryName);
 
-  Optional<CategoryEntity> findByImageKey(String key);
+  Optional<Category> findByImageKey(String key);
 }

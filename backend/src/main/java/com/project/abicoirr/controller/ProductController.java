@@ -25,7 +25,7 @@ public class ProductController {
   @Autowired private ProductService productService;
 
   @PostMapping("/save-product")
-  public Product saveProduct(@Valid @RequestBody Product product) {
+  public Product saveProduct(@Valid @RequestBody Product product) throws BaseException {
     return productService.saveProduct(product);
   }
 

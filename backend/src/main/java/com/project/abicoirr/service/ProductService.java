@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
 
-  public Product saveProduct(Product product);
+  public Product saveProduct(Product product) throws BaseException;
 
   public void deleteProductById(Long productId);
 

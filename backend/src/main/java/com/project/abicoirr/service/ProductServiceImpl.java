@@ -5,7 +5,7 @@ import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
 
-import com.project.abicoirr.entity.CategoryEntity;
+import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.entity.ExternalLinks;
 import com.project.abicoirr.entity.Product;
 import com.project.abicoirr.entity.ProductImage;
@@ -35,11 +35,11 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Product saveProduct(Product product) {
+  public Product saveProduct(Product product) throws BaseException {
     List<ProductImage> images = product.getImages();
     List<ExternalLinks> links = product.getLinks();
 
-    CategoryEntity linkedCategory = categoryService.getCategoryById(product.getCategory().getId());
+    Category linkedCategory = categoryService.getCategoryById(product.getCategory().getId());
 
     if (linkedCategory == null)
       throw new RuntimeException("No Category is associated with the product");
@@ -180,7 +180,7 @@ public class ProductServiceImpl implements ProductService {
 
     if (product == null) throw new RuntimeException("Product not found");
 
-    CategoryEntity category = product.getCategory();
+    Category category = product.getCategory();
 
     if (category == null) throw new RuntimeException("Product does not have a Category");
 

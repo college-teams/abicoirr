@@ -22,7 +22,7 @@ public class Product extends CommonEntity {
 
   @ManyToOne
   @JoinColumn(name = "categoryId")
-  private CategoryEntity category;
+  private Category category;
 
   private String productName;
   private String productDescription;
