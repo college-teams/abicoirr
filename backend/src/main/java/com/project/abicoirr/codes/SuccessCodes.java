@@ -24,6 +24,18 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes IMAGE_UPLOAD_SUCCESS =
       new SuccessCodes(200, HttpStatus.OK, "IMAGE_UPLOAD_SUCCESS");
 
+  public static final StatusCodes CATEGORY_LIST_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "CATEGORY_LIST_FETCHED");
+
+  public static final StatusCodes CATEGORY_DELETE_SUCCESS =
+      new SuccessCodes(200, HttpStatus.OK, "CATEGORY_DELETE_SUCCESS");
+
+  public static final StatusCodes CATEGORY_CREATED =
+      new SuccessCodes(200, HttpStatus.CREATED, "CATEGORY_CREATED");
+
+  public static final StatusCodes CATEGORY_UPDATED =
+      new SuccessCodes(200, HttpStatus.OK, "CATEGORY_UPDATED");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }
