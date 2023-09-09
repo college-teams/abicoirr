@@ -1,7 +1,12 @@
 package com.project.abicoirr.service;
 
-import static com.project.abicoirr.codes.ErrorCodes.*;
-import static com.project.abicoirr.codes.SuccessCodes.*;
+import static com.project.abicoirr.codes.ErrorCodes.CATEGORY_NOT_FOUND;
+import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
+import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
+import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_CREATED;
+import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
 
 import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.exception.BaseException;
@@ -75,10 +80,13 @@ public class CategoryService {
       categoryRepository.save(category);
 
       return new ApiResponse<>(IMAGE_UPLOAD_SUCCESS, AbstractResponse.StatusType.SUCCESS);
+    } catch (BaseException ex) {
+      log.error("Error occurred while uploading image to aws {}", ex.getMessage());
+      throw ex;
     } catch (Exception ex) {
       log.info("Rollback the uploaded images");
       deleteImage(uniqueKey);
-      log.error("Error ", ex);
+      log.error("Unknown exception occurred while uploading image to aws {}", ex.getMessage());
       throw new BaseException(IMAGE_UPLOAD_FAILED);
     }
   }

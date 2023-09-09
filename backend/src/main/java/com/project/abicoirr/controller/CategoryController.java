@@ -2,6 +2,7 @@ package com.project.abicoirr.controller;
 
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Category.CategoryResponse;
+import com.project.abicoirr.models.Category.CreateCategoryRequest;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.CategoryService;
 import jakarta.validation.Valid;
@@ -23,6 +24,12 @@ public class CategoryController {
   @GetMapping("/")
   public ResponseEntity<ApiResponse<List<CategoryResponse>>> getCategoryList() {
     return new ResponseEntity<>(categoryService.getCategoryList(), HttpStatus.OK);
+  }
+
+  @PostMapping("/")
+  public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(
+      @RequestBody CreateCategoryRequest createCategoryRequest) {
+    return new ResponseEntity<>(categoryService.addCategory(createCategoryRequest), HttpStatus.OK);
   }
 
   @PostMapping("/{id}/upload")
