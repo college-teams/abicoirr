@@ -45,7 +45,7 @@ public class CategoryService {
     return new ApiResponse<>(CATEGORY_CREATED, StatusType.SUCCESS, categoryResponse);
   }
 
-  private Category getCategoryById(Long id) throws BaseException {
+  public Category getCategoryById(Long id) throws BaseException {
     Optional<Category> category = categoryRepository.findById(id);
 
     if (category.isEmpty()) {

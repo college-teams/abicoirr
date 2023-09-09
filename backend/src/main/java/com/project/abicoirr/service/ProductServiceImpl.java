@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Product saveProduct(Product product) {
+  public Product saveProduct(Product product) throws BaseException {
     List<ProductImage> images = product.getImages();
     List<ExternalLinks> links = product.getLinks();
 
