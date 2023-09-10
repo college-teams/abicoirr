@@ -10,9 +10,14 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
 import SearchProduct from "./pages/SearchProduct";
+import { Toaster } from "react-hot-toast";
+import { useAppSelector } from "./store/configureStore";
 
 function App() {
-  return (
+ const {isAdmin} = useAppSelector(state=>state.user);
+ console.log(isAdmin);
+ 
+  return ( 
     <Layout>
       <ScrollToTop  />
       <Routes>
@@ -27,6 +32,7 @@ function App() {
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace={true} />} />
       </Routes>
+      <Toaster />
     </Layout>
   );
 }

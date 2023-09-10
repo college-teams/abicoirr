@@ -1,6 +1,8 @@
+import { Provider } from "react-redux";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from "react-router-dom";
+import { store } from "../store/configureStore";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,11 +10,13 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <BrowserRouter>
-      <Navbar />
-      {children}
-      <Footer />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Navbar />
+        {children}
+        <Footer />
+      </BrowserRouter>
+    </Provider>
   );
 };
 
