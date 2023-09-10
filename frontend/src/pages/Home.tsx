@@ -1,4 +1,4 @@
-import Slider from "../components/slider";
+import Slider from "../components/Slider";
 import CocoBg from "../assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
 import { CategoryLists } from "../utils/CategoryList";
