@@ -78,10 +78,23 @@ export const Icons = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2rem;
-
   font-size: 3rem;
 
   & > * {
     cursor: pointer;
+  }
+
+  .dropdown {
+    &:before {
+      content: " ";
+      top: -21px;
+      display: block;
+      height: 20px;
+      left: 115px;
+      position: absolute;
+      border-color:transparent transparent  #a9a9a9   transparent;
+      border-style: solid;
+      border-width: 11px;
+    }
   }
 `;

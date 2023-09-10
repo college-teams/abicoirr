@@ -11,15 +11,12 @@ import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
 import SearchProduct from "./pages/SearchProduct";
 import { Toaster } from "react-hot-toast";
-import { useAppSelector } from "./store/configureStore";
+import AdminHome from "./pages/AdminHome";
 
 function App() {
- const {isAdmin} = useAppSelector(state=>state.user);
- console.log(isAdmin);
- 
-  return ( 
+  return (
     <Layout>
-      <ScrollToTop  />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -29,6 +26,9 @@ function App() {
         <Route path="/search" element={<SearchProduct />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/shipping-policy" element={<Shippingpolicy />} />
+        <Route path="/admin">
+          <Route index element={<AdminHome />} />
+        </Route>
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace={true} />} />
       </Routes>
