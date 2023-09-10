@@ -1,10 +1,10 @@
-import Slider from "../components/Slider";
+import Slider from "../components/slider";
 import CocoBg from "../assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
 import { CategoryLists } from "../utils/CategoryList";
 import Category from "../components/Category";
 import LatestProducts from "../components/LatestItems";
-import PopularProducts from "../components/popularItems";
+import PopularProducts from "../components/PopularItems";
 import Location from "../components/Location";
 import Info1 from "../assets/lighter.webp";
 import Info2 from "../assets/green.webp";
