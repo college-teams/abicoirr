@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "../store/configureStore";
 
