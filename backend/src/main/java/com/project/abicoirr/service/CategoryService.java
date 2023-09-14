@@ -4,7 +4,9 @@ import static com.project.abicoirr.codes.ErrorCodes.CATEGORY_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_CREATED;
+import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_UPDATED;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
 
@@ -53,6 +55,24 @@ public class CategoryService {
 
     CategoryResponse categoryResponse = CategoryResponse.from(category);
     return new ApiResponse<>(CATEGORY_CREATED, StatusType.SUCCESS, categoryResponse);
+  }
+
+  public ApiResponse<CategoryResponse> updateCategory(
+      Long cateoryId, UpdateCategoryRequest updateCategoryRequest) throws BaseException {
+
+    Category existingCategory = getCategoryById(cateoryId);
+    updateCategoryFields(existingCategory, UpdateCategoryRequest);
+    Category updatedCategory = cateogoryRepository.save(existingAdminOrder);
+
+    CategoryResponse categoryResponse = CategoryResponse.from(updatedCategory);
+    return new ApiResponse<>(CATEGORY_UPDATED, StatusType.SUCCESS, categoryResponse);
+  }
+
+  public ApiResponse deleteCategory(Long cateoryId) throws BaseException {
+    Category categoryData = getCategoryById(cateoryId);
+
+    categoryRepository.delete(categoryData);
+    return new ApiResponse<>(CATEGORY_DELETE_SUCCESS, StatusType.SUCCESS);
   }
 
   public Category getCategoryById(Long id) throws BaseException {
