@@ -14,6 +14,7 @@ import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Category.CategoryResponse;
 import com.project.abicoirr.models.Category.CreateCategoryRequest;
+import com.project.abicoirr.models.Category.UpdateCategoryRequest;
 import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.AbstractResponse.StatusType;
 import com.project.abicoirr.models.response.ApiResponse;
@@ -58,18 +59,18 @@ public class CategoryService {
   }
 
   public ApiResponse<CategoryResponse> updateCategory(
-      Long cateoryId, UpdateCategoryRequest updateCategoryRequest) throws BaseException {
+      Long categoryId, UpdateCategoryRequest updateCategoryRequest) throws BaseException {
 
-    Category existingCategory = getCategoryById(cateoryId);
-    updateCategoryFields(existingCategory, UpdateCategoryRequest);
-    Category updatedCategory = cateogoryRepository.save(existingAdminOrder);
+    Category existingCategory = getCategoryById(categoryId);
+    updateCategoryFields(existingCategory, updateCategoryRequest);
+    Category updatedCategory = categoryRepository.save(existingCategory);
 
     CategoryResponse categoryResponse = CategoryResponse.from(updatedCategory);
     return new ApiResponse<>(CATEGORY_UPDATED, StatusType.SUCCESS, categoryResponse);
   }
 
-  public ApiResponse deleteCategory(Long cateoryId) throws BaseException {
-    Category categoryData = getCategoryById(cateoryId);
+  public ApiResponse deleteCategory(Long categoryId) throws BaseException {
+    Category categoryData = getCategoryById(categoryId);
 
     categoryRepository.delete(categoryData);
     return new ApiResponse<>(CATEGORY_DELETE_SUCCESS, StatusType.SUCCESS);
@@ -119,5 +120,11 @@ public class CategoryService {
       throw new BaseException(IMAGE_DELETE_FAILED);
     }
     return new ApiResponse<>(IMAGE_DELETE_SUCCESS, AbstractResponse.StatusType.SUCCESS);
+  }
+
+  private void updateCategoryFields(
+      Category existingCategory, UpdateCategoryRequest updateCategoryRequest) {
+    existingCategory.setCategoryname(updateCategoryRequest.getCategoryname());
+    existingCategory.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
   }
 }

@@ -19,3 +19,4 @@ const UsersSlice = createSlice({
 });
 
 export const UserReducer = UsersSlice.reducer;
+export const {setAdminStatus} = UsersSlice.actions;

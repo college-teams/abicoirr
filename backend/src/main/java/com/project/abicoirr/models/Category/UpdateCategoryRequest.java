@@ -7,4 +7,4 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateCateoryRequest extends CreateCategoryRequest {}
+public class UpdateCategoryRequest extends CreateCategoryRequest {}

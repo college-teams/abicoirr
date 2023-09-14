@@ -11,6 +11,8 @@ import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
 import type { Location } from "react-router-dom";
 import Auth from "../Auth";
+import { useAppDispatch } from "../../store/configureStore";
+import { setAdminStatus } from "../../store/slices/user";
 
 const Navbar = () => {
   const { pathname }: Location = useLocation();
@@ -19,6 +21,7 @@ const Navbar = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
   const [isLoggedIn] = useState(true);
+  const dispatch = useAppDispatch();
 
   const handleScroll = useCallback(() => {
     if (window.scrollY >= 100 || pathname !== "/") {
@@ -95,11 +98,18 @@ const Navbar = () => {
               <div className="dropdown absolute  w-[200px] top-[5rem] bg-white shadow-xl border">
                 <ul className="relative text-[1.5rem] w-full">
                   <Link to={"/admin"}>
-                    <li className="relative text-center w-full py-5 hover:bg-slate-300 border-b text-black font-medium">
+                    <li
+                      onClick={() => dispatch(setAdminStatus())}
+                      className="relative text-center w-full py-5 hover:bg-slate-300 border-b text-black"
+                      style={{ fontWeight: 500 }}
+                    >
                       Admin
                     </li>
                   </Link>
-                  <li className="relative text-center w-full py-5 hover:bg-slate-300 text-black  font-medium">
+                  <li
+                    className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
+                    style={{ fontWeight: 500 }}
+                  >
                     Logout
                   </li>
                 </ul>
