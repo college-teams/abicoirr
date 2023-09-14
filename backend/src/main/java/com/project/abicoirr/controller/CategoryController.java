@@ -3,6 +3,7 @@ package com.project.abicoirr.controller;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Category.CategoryResponse;
 import com.project.abicoirr.models.Category.CreateCategoryRequest;
+import com.project.abicoirr.models.Category.UpdateCategoryRequest;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.CategoryService;
 import jakarta.validation.Valid;
@@ -26,10 +27,29 @@ public class CategoryController {
     return new ResponseEntity<>(categoryService.getCategoryList(), HttpStatus.OK);
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(@PathVariable Long id)
+      throws BaseException {
+    return new ResponseEntity<>(categoryService.getCategory(id), HttpStatus.OK);
+  }
+
   @PostMapping("/")
   public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(
       @RequestBody CreateCategoryRequest createCategoryRequest) {
     return new ResponseEntity<>(categoryService.addCategory(createCategoryRequest), HttpStatus.OK);
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
+      @PathVariable Long id, @Valid @RequestBody UpdateCategoryRequest updateCategoryRequest)
+      throws BaseException {
+    return new ResponseEntity<>(
+        categoryService.updateCategory(id, updateCategoryRequest), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) throws BaseException {
+    return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
   }
 
   @PostMapping("/{id}/upload")
