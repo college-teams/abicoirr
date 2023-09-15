@@ -95,20 +95,20 @@ const Navbar = () => {
             </Link>
             <Icon className="auth" icon="ph:user" onClick={handleDropdown} />
             {showDropDown && (
-              <div className="dropdown absolute  w-[200px] top-[5rem] bg-white shadow-xl border">
+              <div className="dropdown absolute  w-[200px] top-[4rem] bg-white shadow-xl border rounded-lg">
                 <ul className="relative text-[1.5rem] w-full">
                   <Link to={"/admin"}>
                     <li
                       onClick={() => dispatch(setAdminStatus())}
-                      className="relative text-center w-full py-5 hover:bg-slate-300 border-b text-black"
-                      style={{ fontWeight: 500 }}
+                      className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
+                      style={{ fontWeight: 600 }}
                     >
                       Admin
                     </li>
                   </Link>
                   <li
                     className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
-                    style={{ fontWeight: 500 }}
+                    style={{ fontWeight: 600 }}
                   >
                     Logout
                   </li>
