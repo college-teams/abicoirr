@@ -7,7 +7,7 @@
   --white-color: #fff;
   --black-color: #000000;
   --light-red-color: #d25246;
-  --admin-theme-color: #3068EC;
+  --admin-theme-color: #3068ec;
 }
 
 * {
@@ -28,7 +28,6 @@ html {
   }
 }
 
-
 @media screen and (min-width: 768px) {
   html {
     font-size: 8px;
@@ -42,7 +41,6 @@ html {
     font-family: "Montserrat", sans-serif;
   }
 }
-
 
 body {
   overflow-x: hidden;
@@ -76,11 +74,38 @@ body {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 1.5rem;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #3068ec;
+  color: white;
 }

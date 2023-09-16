@@ -46,7 +46,7 @@ const Sidebar = ({ handleTabSwitch }: SidebarProps) => {
             icon="streamline:interface-hierarchy-2-node-organization-links-structure-link-nodes-network-hierarchy"
           />
           <span className="relative font-semibold text-[1.4rem]">
-            Categries
+            Categories
           </span>
         </SidebarList>
         <SidebarList
