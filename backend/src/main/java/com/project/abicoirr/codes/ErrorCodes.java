@@ -14,6 +14,9 @@ public class ErrorCodes extends StatusCodes {
 
   public static final StatusCodes CATEGORY_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "CATEGORY_NOT_FOUND");
+
+  public static final StatusCodes CONTACT_DETAILS_NOT_FOUND =
+          new ErrorCodes(404, HttpStatus.NOT_FOUND, "CONTACT_DETAILS_NOT_FOUND");
   public static final StatusCodes IMAGE_UPLOAD_FAILED =
       new ErrorCodes(400, HttpStatus.BAD_REQUEST, "IMAGE_UPLOAD_FAILED");
 
