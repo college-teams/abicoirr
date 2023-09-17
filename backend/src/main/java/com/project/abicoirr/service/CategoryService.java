@@ -124,7 +124,7 @@ public class CategoryService {
 
   private void updateCategoryFields(
       Category existingCategory, UpdateCategoryRequest updateCategoryRequest) {
-    existingCategory.setCategoryname(updateCategoryRequest.getCategoryname());
+    existingCategory.setCategoryName(updateCategoryRequest.getCategoryname());
     existingCategory.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
   }
 }

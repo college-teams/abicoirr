@@ -17,7 +17,7 @@ public class CreateCategoryRequest {
 
   public static Category from(CreateCategoryRequest createCategoryRequest) {
     Category category = new Category();
-    category.setCategoryname(createCategoryRequest.getCategoryname());
+    category.setCategoryName(createCategoryRequest.getCategoryname());
     category.setCategoryDescription(createCategoryRequest.getCategoryDescription());
 
     return category;

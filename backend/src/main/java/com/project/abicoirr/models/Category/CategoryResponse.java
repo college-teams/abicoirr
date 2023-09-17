@@ -25,7 +25,7 @@ public class CategoryResponse {
 
   public static CategoryResponse from(Category category) {
     return CategoryResponse.builder()
-        .categoryname(category.getCategoryname())
+        .categoryname(category.getCategoryName())
         .categoryDescription(category.getCategoryDescription())
         .build();
   }

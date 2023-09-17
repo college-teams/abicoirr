@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Category extends CommonEntity {
 
   @Column(nullable = false)
-  private String categoryname;
+  private String categoryName;
 
   @Column(nullable = false)
   private String categoryDescription;
