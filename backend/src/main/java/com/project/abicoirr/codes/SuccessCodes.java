@@ -38,6 +38,11 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes CATEGORY_UPDATED =
       new SuccessCodes(200, HttpStatus.OK, "CATEGORY_UPDATED");
 
+  public static final StatusCodes CONTACT_DETAILS_LIST_FETCHED =
+          new SuccessCodes(200, HttpStatus.OK, "CONTACT_DETAILS_LIST_FETCHED");
+
+  public static final StatusCodes CONTACT_DETAILS_CREATED =
+          new SuccessCodes(200, HttpStatus.CREATED, "CONTACT_DETAILS_CREATED");
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }
