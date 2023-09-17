@@ -35,13 +35,13 @@ const handleError = (
       );
     }
 
-    showToast(errorMessage, "error");
+    showToast(errorMessage || "Something went wrong", "error");
   }
 
   return {
     status: false,
     statusCode: statusCode,
-    message: errorMessage || "Unknown error",
+    message: errorMessage || "Something went wrong",
   };
 };
 

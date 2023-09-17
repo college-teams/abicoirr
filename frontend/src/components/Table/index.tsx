@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import Loader from "../Loader";
 
 interface TableProps<T extends object> {
-  data: T;
+  data: T[];
   columns: Column<T>[];
   loading: boolean;
 }
@@ -108,21 +108,28 @@ const Table = <T extends object>({
         )}
 
         {/* TODO: Add data not found message */}
+        {!loading && data?.length == 0 && (
+          <div className="relative w-full py-4 flex items-center justify-center text-[1.6rem] font-medium border border-t-0 border-gray-600">
+            No data to show
+          </div>
+        )}
       </div>
 
       <div className="relative flex  items-center gap-7 justify-end py-7 px-7">
-        <div className="relative flex gap-4 items-center justify-between">
-          <button
-            className={`relative text-black bg-[#3068ec] text-white text-[3rem] ${
-              !canPreviousPage ? "opacity-60 pointer-events-none" : ""
-            }`}
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
-          >
-            <Icon icon="ri:arrow-left-double-line" />
-          </button>
+        {data.length > 0 && (
+          <>
+            <div className="relative flex gap-4 items-center justify-between">
+              <button
+                className={`relative text-black bg-[#3068ec] text-white text-[3rem] ${
+                  !canPreviousPage ? "opacity-60 pointer-events-none" : ""
+                }`}
+                onClick={() => gotoPage(0)}
+                disabled={!canPreviousPage}
+              >
+                <Icon icon="ri:arrow-left-double-line" />
+              </button>
 
-          {/* <button
+              {/* <button
             className="relative text-black bg-white text-[2.5rem]"
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
@@ -130,42 +137,42 @@ const Table = <T extends object>({
             <Icon icon="fluent:ios-arrow-left-24-filled" />
           </button> */}
 
-          <div className="relative flex gap-3 items-center">
-            {pageOptions.map((page, index) => {
-              if (
-                index === 0 ||
-                index === pageOptions.length - 1 ||
-                Math.abs(pageIndex - index) <= 2
-              ) {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => gotoPage(index)}
-                    className={`relative text-black text-[2rem] px-5 border ${
-                      pageIndex === index
-                        ? "bg-[#3068ec] text-white"
-                        : "bg-white"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
-                );
-              }
-              if (Math.abs(pageIndex - index) === 3) {
-                return (
-                  <span
-                    className="relative text-black text-[2rem] px-1 border"
-                    key="ellipsis"
-                  >
-                    .....
-                  </span>
-                );
-              }
-              return null;
-            })}
-          </div>
+              <div className="relative flex gap-3 items-center">
+                {pageOptions.map((page, index) => {
+                  if (
+                    index === 0 ||
+                    index === pageOptions.length - 1 ||
+                    Math.abs(pageIndex - index) <= 2
+                  ) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => gotoPage(index)}
+                        className={`relative text-black text-[2rem] px-5 border ${
+                          pageIndex === index
+                            ? "bg-[#3068ec] text-white"
+                            : "bg-white"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  }
+                  if (Math.abs(pageIndex - index) === 3) {
+                    return (
+                      <span
+                        className="relative text-black text-[2rem] px-1 border"
+                        key="ellipsis"
+                      >
+                        .....
+                      </span>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
 
-          {/* <button
+              {/* <button
             className="relative text-black bg-white text-[3.5rem]"
             onClick={() => nextPage()}
             disabled={!canNextPage}
@@ -173,17 +180,20 @@ const Table = <T extends object>({
             <Icon icon="solar:alt-arrow-right-outline" />
           </button> */}
 
-          <button
-            className={`relative text-black bg-[#3068ec] text-white text-[3rem] ${
-              !canNextPage ? "opacity-60 pointer-events-none" : ""
-            }`}
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            <Icon icon="ri:arrow-right-double-line" />
-          </button>
-        </div>
-        <span className="relative text-[2rem]">{"|"}</span>
+              <button
+                className={`relative text-black bg-[#3068ec] text-white text-[3rem] ${
+                  !canNextPage ? "opacity-60 pointer-events-none" : ""
+                }`}
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}
+              >
+                <Icon icon="ri:arrow-right-double-line" />
+              </button>
+            </div>
+            <span className="relative text-[2rem]">{"|"}</span>
+          </>
+        )}
+
         <div>
           <span className="relative mr-5 text-xl">Page</span>
           <strong className="relative text-xl">
