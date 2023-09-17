@@ -18,7 +18,7 @@ public class ContactDetailsResponse {
 
   private String name;
   private String email;
-  private String phone_number;
+  private String phoneNumber;
   private String message;
 
   public static List<ContactDetailsResponse> from(List<ContactDetails> contactDetailsBox) {
@@ -31,7 +31,7 @@ public class ContactDetailsResponse {
     return ContactDetailsResponse.builder()
         .name(contactDetails.getName())
         .email(contactDetails.getEmail())
-        .phone_number(contactDetails.getPhone_number())
+        .phoneNumber(contactDetails.getPhone_number())
         .message(contactDetails.getMessage())
         .build();
   }
