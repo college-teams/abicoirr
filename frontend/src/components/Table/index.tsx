@@ -196,7 +196,6 @@ const Table = <T extends object>({
             min={1}
             max={pageOptions.length}
             defaultValue={pageIndex + 1}
-            disabled={pageCount == 1}
             onBlur={onPageBlur}
             onChange={onPageChange}
             className="relative px-4 py-1 text-black text-2xl border"

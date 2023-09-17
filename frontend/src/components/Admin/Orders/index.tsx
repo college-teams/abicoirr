@@ -7,11 +7,13 @@ import { getAdminOrders } from "../../../api";
 import { useAPI } from "../../../hooks/useApi";
 import { isApiError } from "../../../types/Api";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
+import useToast from "../../../hooks/useToast";
 
 const Orders = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [data, setData] = useState<AdminOrderResponseData[]>([]);
   const api = useAPI();
+  const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
   const fetchAdminOrders = async () => {
@@ -22,6 +24,7 @@ const Orders = () => {
         setData(res);
       }
     } finally {
+      showToast("Admin order fetched successfully","success");
       endLoading("/getAdminOrders");
     }
   };

@@ -1,5 +1,3 @@
-import React from "react";
-
 const PrivacyPolicy = () => {
   return (
     <div className="relative mt-[14rem] mb-[6rem] flex flex-col items-center justify-center w-[85%] mx-auto ">

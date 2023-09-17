@@ -1,4 +1,3 @@
-import React from "react";
 import { SearchBoxWrapper } from "./styled";
 import NotfoundImg from "../assets/notfound.webp";
 import { useNavigate } from "react-router-dom";
