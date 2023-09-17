@@ -1,5 +1,7 @@
 import { AxiosInstance } from "axios";
-import { AdminOrderResponseData, ContactDetails } from "./Admin";
+import { AdminOrderResponseData, ContactDetails, MessageCount } from "./Admin";
+
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export type AbstractResponse<T> = {
   statusCode: number;
@@ -30,6 +32,9 @@ export type GetContactDetailList = (
 
 export type GetContactDetailsById = (
   api: AxiosInstance,
-  id:number
+  id: number
 ) => Promise<ContactDetails | ApiError>;
 
+export type GetUnReadMessageCount = (
+  api: AxiosInstance
+) => Promise<MessageCount | ApiError>;

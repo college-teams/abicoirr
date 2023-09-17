@@ -1,6 +1,12 @@
 import { Icon } from "@iconify/react";
+import { TabType } from "../../../types/Admin";
 
-const Navbar = () => {
+type NavbarProps = {
+  handleTabSwitch: (tabName: TabType) => void;
+  unReadMessageCount: number;
+};
+
+const Navbar = (props: NavbarProps) => {
   const isDark = false;
   return (
     <div className=" sticky top-0 bg-white h-[7rem] w-full shadow-xl flex justify-between items-center pr-16 z-50">
@@ -15,7 +21,18 @@ const Navbar = () => {
         ) : (
           <Icon icon="lucide:moon" className="relative cursor-pointer" />
         )}
-        <Icon icon="mdi:bell" className="relative cursor-pointer" />
+        <span
+          className="relative cursor-pointer"
+          onClick={() => props.handleTabSwitch("queries")}
+        >
+          {props.unReadMessageCount && (
+            <span className="absolute text-sm bg-red-600 text-white rounded-full h-[2rem] w-[2rem] z-50 flex items-center justify-center -top-3 -right-2 font-semibold">
+              {props.unReadMessageCount}
+            </span>
+          )}
+
+          <Icon icon="mdi:bell" />
+        </span>
         <Icon icon="line-md:account" className="relative cursor-pointer" />
       </div>
     </div>

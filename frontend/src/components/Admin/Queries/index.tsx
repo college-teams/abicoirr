@@ -9,7 +9,11 @@ import useToast from "../../../hooks/useToast";
 import { ContactDetails } from "../../../types/Admin";
 import { Column } from "react-table";
 
-const Queries = () => {
+interface QueriesProps {
+  updateUnReadMessageCount: () => Promise<void>;
+}
+
+const Queries = ({ updateUnReadMessageCount }: QueriesProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [data, setData] = useState<ContactDetails[]>([]);
   const [seletedDetails, setSelectedDetails] = useState<number>();
@@ -40,15 +44,13 @@ const Queries = () => {
       {
         Header: "Name",
         accessor: "name",
-        Cell: ({
-          cell,
-        }): JSX.Element => {
+        Cell: ({ cell }): JSX.Element => {
           return (
             <div
               className="relative cursor-pointer font-medium text-black hover:text-blue-500"
               onClick={() => {
-                setSelectedDetails(cell.row.original.id)
-                setOpenModal(true)
+                setSelectedDetails(cell.row.original.id);
+                setOpenModal(true);
               }}
             >
               {cell.row.original.name}
@@ -64,7 +66,12 @@ const Queries = () => {
 
   return (
     <React.Fragment>
-      <Details selectedId={seletedDetails} open={openModal} close={() => setOpenModal(false)} />
+      <Details
+        updateUnReadMessageCount={updateUnReadMessageCount}
+        selectedId={seletedDetails}
+        open={openModal}
+        close={() => setOpenModal(false)}
+      />
 
       <div className="relative">
         <div className="relative flex justify-between items-center mb-10">

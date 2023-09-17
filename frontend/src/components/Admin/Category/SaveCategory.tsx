@@ -13,15 +13,9 @@ interface DetailsProps {
   open: boolean;
   close: () => void;
   selectedId: number | undefined;
-  updateUnReadMessageCount: () => Promise<void>;
 }
 
-const Details = ({
-  open,
-  close,
-  selectedId,
-  updateUnReadMessageCount,
-}: DetailsProps) => {
+const Details = ({ open, close, selectedId }: DetailsProps) => {
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
@@ -38,8 +32,6 @@ const Details = ({
       }
     } finally {
       endLoading("/getContactDetailsById");
-      // Update UnreadMessagecount in UI
-      updateUnReadMessageCount();
     }
   };
 
@@ -48,10 +40,12 @@ const Details = ({
     close();
   };
   useEffect(() => {
-    if (selectedId && open) {
+    
+    if (selectedId) {
       fetchContactDetailsById(selectedId);
     }
-  }, [selectedId, open]);
+  }, [selectedId]);
+
 
   const modalContent = (
     <Wrapper>

@@ -21,7 +21,7 @@ public class CreateContactDetailsRequest {
     ContactDetails contactDetails = new ContactDetails();
     contactDetails.setName(createContactDetailsRequest.getName());
     contactDetails.setEmail(createContactDetailsRequest.getEmail());
-    contactDetails.setPhone_number(createContactDetailsRequest.getPhoneNumber());
+    contactDetails.setPhoneNumber(createContactDetailsRequest.getPhoneNumber());
     contactDetails.setMessage(createContactDetailsRequest.getMessage());
 
     return contactDetails;

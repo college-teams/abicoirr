@@ -34,7 +34,7 @@ public class ContactDetailsResponse {
         .id(contactDetails.getId() > 0 ? contactDetails.getId() : null)
         .name(contactDetails.getName())
         .email(contactDetails.getEmail())
-        .phoneNumber(contactDetails.getPhone_number())
+        .phoneNumber(contactDetails.getPhoneNumber())
         .message(contactDetails.getMessage())
         .build();
   }

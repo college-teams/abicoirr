@@ -21,8 +21,11 @@ public class ContactDetails extends CommonEntity {
   private String email;
 
   @Column(nullable = false)
-  private String phone_number;
+  private String phoneNumber;
 
   @Column(nullable = false)
   private String message;
+
+  @Column(nullable = false)
+  private boolean isRead = false;
 }

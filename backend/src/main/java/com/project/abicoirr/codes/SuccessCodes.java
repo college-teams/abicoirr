@@ -41,6 +41,9 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes CONTACT_DETAILS_LIST_FETCHED =
       new SuccessCodes(200, HttpStatus.OK, "CONTACT_DETAILS_LIST_FETCHED");
 
+  public static final StatusCodes UN_READ_MESSAGE_LIST_COUNT_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "UN_READ_MESSAGE_LIST_COUNT_FETCHED");
+
   public static final StatusCodes CONTACT_DETAILS_CREATED =
       new SuccessCodes(200, HttpStatus.CREATED, "CONTACT_DETAILS_CREATED");
 

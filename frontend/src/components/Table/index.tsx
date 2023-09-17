@@ -102,12 +102,11 @@ const Table = <T extends object>({
         </table>
 
         {loading && (
-          <div className="relative w-full pt-8 pb-4 flex items-center justify-center">
+          <div className="relative w-full pt-8 flex items-center justify-center">
             <Loader />
           </div>
         )}
 
-        {/* TODO: Add data not found message */}
         {!loading && data?.length == 0 && (
           <div className="relative w-full py-4 flex items-center justify-center text-[1.6rem] font-medium border border-t-0 border-gray-600">
             No data to show

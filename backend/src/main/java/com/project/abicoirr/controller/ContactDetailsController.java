@@ -3,6 +3,7 @@ package com.project.abicoirr.controller;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.ContactDetails.ContactDetailsResponse;
 import com.project.abicoirr.models.ContactDetails.CreateContactDetailsRequest;
+import com.project.abicoirr.models.ContactDetails.MessageCount;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.ContactDetailsService;
 import jakarta.validation.Valid;
@@ -34,6 +35,11 @@ public class ContactDetailsController {
   public ResponseEntity<ApiResponse<ContactDetailsResponse>> getContactDetails(
       @PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(contactDetailsService.getContactDetails(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/message-count")
+  public ResponseEntity<ApiResponse<MessageCount>> getUnreadMessageCount() throws BaseException {
+    return new ResponseEntity<>(contactDetailsService.getUnreadMessageCount(), HttpStatus.OK);
   }
 
   @PostMapping("/")
