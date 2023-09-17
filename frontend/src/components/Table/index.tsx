@@ -1,24 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import {
-  useTable,
-  usePagination,
-  useSortBy,
-  TableOptions,
-  Column,
-} from "react-table";
+import { useTable, usePagination, useSortBy, Column } from "react-table";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as Config from "../../types/react-table-config";
 import { Icon } from "@iconify/react";
+import Loader from "../Loader";
 
 interface TableProps<T> {
   data: T;
   columns: Column[];
+  loading: boolean;
 }
 
 const Table = <T extends object>({
   data,
   columns,
+  loading,
 }: TableProps<T>): JSX.Element => {
   const {
     getTableProps,
@@ -85,21 +82,29 @@ const Table = <T extends object>({
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
+          {!loading && (
+            <tbody {...getTableBodyProps()}>
+              {page.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          )}
         </table>
+
+        {loading && (
+          <div className="relative w-full pt-8 pb-4 flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
       </div>
 
       <div className="relative flex  items-center gap-7 justify-end py-7 px-7">
