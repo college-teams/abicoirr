@@ -22,9 +22,9 @@ const Orders = () => {
       const res = await getAdminOrders(api);
       if (!isApiError(res)) {
         setData(res);
+        showToast("Admin order fetched successfully", "success");
       }
     } finally {
-      showToast("Admin order fetched successfully","success");
       endLoading("/getAdminOrders");
     }
   };

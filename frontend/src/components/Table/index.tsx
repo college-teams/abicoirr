@@ -6,9 +6,9 @@ import * as Config from "../../types/react-table-config";
 import { Icon } from "@iconify/react";
 import Loader from "../Loader";
 
-interface TableProps<T> {
+interface TableProps<T extends object> {
   data: T;
-  columns: Column[];
+  columns: Column<T>[];
   loading: boolean;
 }
 
@@ -82,6 +82,7 @@ const Table = <T extends object>({
               </tr>
             ))}
           </thead>
+
           {!loading && (
             <tbody {...getTableBodyProps()}>
               {page.map((row) => {
@@ -105,6 +106,8 @@ const Table = <T extends object>({
             <Loader />
           </div>
         )}
+
+        {/* TODO: Add data not found message */}
       </div>
 
       <div className="relative flex  items-center gap-7 justify-end py-7 px-7">

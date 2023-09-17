@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import useToast from "../hooks/useToast";
 import axios from "axios";
-import { AbstractResponse, ApiError, GetAdminOrders } from "../types/Api";
-import { AdminOrderResponseData } from "../types/Admin";
+import {
+  AbstractResponse,
+  ApiError,
+  GetAdminOrders,
+  GetContactDetailList,
+  GetContactDetailsById,
+} from "../types/Api";
+import { AdminOrderResponseData, ContactDetails } from "../types/Admin";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const showToast = useToast();
@@ -39,6 +45,7 @@ const handleError = (
   };
 };
 
+// ADMIN ORDERS
 export const getAdminOrders: GetAdminOrders = async (api) => {
   try {
     const res = await api.get<AbstractResponse<AdminOrderResponseData[]>>(
@@ -57,13 +64,88 @@ export const getAdminOrders: GetAdminOrders = async (api) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
-    
-    return handleError(
-      error,
-      "getAdminOrders",
-      "Error occurred while fetching admin orders",
-      500
+    let errorMessage;
+    let statusCode;
+    if (axios.isAxiosError(error)) {
+      const responseStatusMessage = error.response?.data?.statusMessage;
+      const responseStatusCode = error.response?.data?.statusCode;
+      errorMessage = responseStatusMessage;
+      statusCode = responseStatusCode;
+    } else {
+      errorMessage = "Error occurred while fetching admin orders";
+      statusCode = 500;
+    }
+
+    return handleError(error, "getAdminOrders", errorMessage, statusCode);
+  }
+};
+
+// CONTACT DETAILS
+export const getContactDetailList: GetContactDetailList = async (api) => {
+  try {
+    const res = await api.get<AbstractResponse<ContactDetails[]>>(
+      "/contact-details/"
     );
+    const response = res.data;
+
+    if (response.statusType === "FAILURE") {
+      return handleError(
+        null,
+        "getContactDetailList",
+        response.statusMessage,
+        response.statusCode
+      );
+    }
+
+    return response.data;
+  } catch (error) {
+    let errorMessage;
+    let statusCode;
+    if (axios.isAxiosError(error)) {
+      const responseStatusMessage = error.response?.data?.statusMessage;
+      const responseStatusCode = error.response?.data?.statusCode;
+      errorMessage = responseStatusMessage;
+      statusCode = responseStatusCode;
+    } else {
+      errorMessage = "Error occurred while fetching contact details";
+      statusCode = 500;
+    }
+
+    return handleError(error, "getContactDetailList", errorMessage, statusCode);
+  }
+};
+
+// CONTACT DETAILS
+export const getContactDetailsById: GetContactDetailsById = async (api, id) => {
+  try {
+    const res = await api.get<AbstractResponse<ContactDetails>>(
+      `/contact-details/${id}`
+    );
+    const response = res.data;
+
+    if (response.statusType === "FAILURE") {
+      return handleError(
+        null,
+        "getContactDetailsById",
+        response.statusMessage,
+        response.statusCode
+      );
+    }
+
+    return response.data;
+  } catch (error) {
+    let errorMessage;
+    let statusCode;
+    if (axios.isAxiosError(error)) {
+      const responseStatusMessage = error.response?.data?.statusMessage;
+      const responseStatusCode = error.response?.data?.statusCode;
+      errorMessage = responseStatusMessage;
+      statusCode = responseStatusCode;
+    } else {
+      errorMessage = "Error occurred while fetching contact details by id";
+      statusCode = 500;
+    }
+
+    return handleError(error, "getContactDetailsById", errorMessage, statusCode);
   }
 };

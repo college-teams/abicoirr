@@ -68,7 +68,7 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
                   id="name"
                   type="text"
                   placeholder="Enter the name"
-                  className={`relative border-2 py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
                     errors?.name && " border-red-500"
                   } rounded-md`}
                   {...register("name", { required: "Name is required" })}
@@ -89,7 +89,7 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
                   id="email"
                   type="email"
                   placeholder="Enter the email"
-                  className={`relative border-2 py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
                     errors?.email && " border-red-500"
                   } rounded-md`}
                   {...register("email", {
@@ -116,7 +116,7 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
                   id="phone"
                   type="text"
                   placeholder="Enter the phone number"
-                  className={`relative border-2 py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
                     errors?.phone && " border-red-500"
                   } rounded-md`}
                   {...register("phone", {
@@ -139,7 +139,7 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
                   id="password"
                   type="text"
                   placeholder="Enter the password"
-                  className="relative border-2 py-2 w-[85%] px-4 outline-none text-[1.4rem]"
+                  className="relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]"
                   {...register("password")}
                 />
               </div>
@@ -147,11 +147,11 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
               <div className="relative flex gap-5 mt-12">
                 <button
                   onClick={handleClose}
-                  className="relative border-orange-400 border-2 text-[1.5rem] px-8 py-2 rounded-md text-orange-400 hover:text-white hover:bg-orange-400 transition-all duration-300"
+                  className="relative border-orange-400 border-2 text-[1.5rem] px-8 py-1 rounded-md text-orange-400 hover:text-white hover:bg-orange-400 transition-all duration-300"
                 >
                   Cancel
                 </button>
-                <button className="relative bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-12 py-2 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300">
+                <button className="relative bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-10 py-1 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300">
                   Save
                 </button>
               </div>

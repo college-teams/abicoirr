@@ -5,6 +5,7 @@ import com.project.abicoirr.models.ContactDetails.ContactDetailsResponse;
 import com.project.abicoirr.models.ContactDetails.CreateContactDetailsRequest;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.ContactDetailsService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ContactDetailsController {
 
   @PostMapping("/")
   public ResponseEntity<ApiResponse<ContactDetailsResponse>> addContactDetails(
-      @RequestBody CreateContactDetailsRequest createContactDetailsRequest) {
+      @Valid @RequestBody CreateContactDetailsRequest createContactDetailsRequest) {
     return new ResponseEntity<>(
         contactDetailsService.addContactDetails(createContactDetailsRequest), HttpStatus.OK);
   }

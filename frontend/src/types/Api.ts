@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { AdminOrderResponseData } from "./Admin";
+import { AdminOrderResponseData, ContactDetails } from "./Admin";
 
 export type AbstractResponse<T> = {
   statusCode: number;
@@ -23,3 +23,13 @@ export const isApiError = (data: unknown): data is ApiError => {
 export type GetAdminOrders = (
   api: AxiosInstance
 ) => Promise<AdminOrderResponseData[] | ApiError>;
+
+export type GetContactDetailList = (
+  api: AxiosInstance
+) => Promise<ContactDetails[] | ApiError>;
+
+export type GetContactDetailsById = (
+  api: AxiosInstance,
+  id:number
+) => Promise<ContactDetails | ApiError>;
+
