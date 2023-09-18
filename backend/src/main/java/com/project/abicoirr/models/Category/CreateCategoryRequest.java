@@ -12,12 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCategoryRequest {
-  @NotNull private String categoryname;
+  @NotNull private String categoryName;
   @NotNull private String categoryDescription;
 
   public static Category from(CreateCategoryRequest createCategoryRequest) {
     Category category = new Category();
-    category.setCategoryName(createCategoryRequest.getCategoryname());
+    category.setCategoryName(createCategoryRequest.getCategoryName());
     category.setCategoryDescription(createCategoryRequest.getCategoryDescription());
 
     return category;

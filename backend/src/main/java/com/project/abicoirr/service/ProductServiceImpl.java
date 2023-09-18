@@ -1,5 +1,6 @@
 package com.project.abicoirr.service;
 
+import static com.project.abicoirr.codes.ErrorCodes.EMPTY_FILE_REQUEST;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
@@ -190,6 +191,11 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ApiResponse<?> uploadImage(Long productId, List<MultipartFile> multipartFiles)
       throws BaseException {
+
+    if (multipartFiles.isEmpty()) {
+      throw new BaseException(EMPTY_FILE_REQUEST);
+    }
+
     try {
       Product product = getProductById(productId);
 
