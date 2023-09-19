@@ -146,5 +146,7 @@ public class CategoryService {
       Category existingCategory, UpdateCategoryRequest updateCategoryRequest) {
     existingCategory.setCategoryName(updateCategoryRequest.getCategoryName());
     existingCategory.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
+    existingCategory.setImageKey(updateCategoryRequest.getImageKey());
+    existingCategory.setImagePath(updateCategoryRequest.getImagePath());
   }
 }

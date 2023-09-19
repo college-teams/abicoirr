@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useMemo } from "react";
 import { useTable, usePagination, useSortBy, Column } from "react-table";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as Config from "../../types/react-table-config";
@@ -9,7 +9,7 @@ import Loader from "../Loader";
 interface TableProps<T extends object> {
   data: T[];
   columns: Column<T>[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const Table = <T extends object>({
@@ -17,6 +17,8 @@ const Table = <T extends object>({
   columns,
   loading,
 }: TableProps<T>): JSX.Element => {
+  const tableData = useMemo(() => data, [data]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -35,8 +37,9 @@ const Table = <T extends object>({
   } = useTable(
     {
       columns,
-      data,
+      data: tableData,
     },
+
     useSortBy,
     usePagination
   );
@@ -136,12 +139,14 @@ const Table = <T extends object>({
             <Icon icon="fluent:ios-arrow-left-24-filled" />
           </button> */}
 
-              <div className="relative flex gap-3 items-center">
+              {/* TODO: OLD WORKING CODE with .... */}
+
+              {/* <div className="relative flex gap-3 items-center">
                 {pageOptions.map((page, index) => {
                   if (
                     index === 0 ||
                     index === pageOptions.length - 1 ||
-                    Math.abs(pageIndex - index) <= 2
+                    Math.abs(pageIndex - index) <= 1
                   ) {
                     return (
                       <button
@@ -157,7 +162,44 @@ const Table = <T extends object>({
                       </button>
                     );
                   }
-                  if (Math.abs(pageIndex - index) === 3) {
+                  if (Math.abs(pageIndex - index) === 2) {
+                    return (
+                      <span
+                        className="relative text-black text-[2rem] px-1 border"
+                        key="ellipsis"
+                      >
+                        .....
+                      </span>
+                    );
+                  }
+                  return null;
+                })}
+              </div> */}
+
+              {/* NEW CODE but ... is not coming */}
+              <div className="relative flex gap-3 items-center">
+                {pageOptions.map((page, index) => {
+                  if (
+                    index === 0 ||
+                    index === pageOptions.length - 1 ||
+                    index === pageIndex ||
+                    Math.abs(pageIndex - index) <= 3
+                  ) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => gotoPage(index)}
+                        className={`relative text-black text-[2rem] px-5 border ${
+                          pageIndex === index
+                            ? "bg-[#3068ec] text-white"
+                            : "bg-white"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  }
+                  if (pageIndex - index === 3) {
                     return (
                       <span
                         className="relative text-black text-[2rem] px-1 border"

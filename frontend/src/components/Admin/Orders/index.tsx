@@ -8,6 +8,8 @@ import { useAPI } from "../../../hooks/useApi";
 import { isApiError } from "../../../types/Api";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
 import useToast from "../../../hooks/useToast";
+import { Column } from "react-table";
+import { format } from "date-fns";
 
 const Orders = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -33,13 +35,17 @@ const Orders = () => {
     fetchAdminOrders();
   }, []);
 
-  const columns = useMemo(
+  const columns = useMemo<Column<AdminOrderResponseData>[]>(
     () => [
       { Header: "Order_id", accessor: "id" },
       { Header: "OrderStatus", accessor: "orderStatus" },
       { Header: "Quantity", accessor: "quantity" },
       { Header: "Total", accessor: "totalAmount" },
-      { Header: "Delivery date", accessor: "deliveryDate" },
+      {
+        Header: "Delivery date",
+        accessor: "deliveryDate",
+        Cell: ({ value }):string => format(new Date(value), "yyyy-mm-dd"),
+      },
     ],
     []
   );

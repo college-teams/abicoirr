@@ -1,45 +1,81 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Table from "../../Table";
-import Details from "./SaveCategory";
-import { getContactDetailList } from "../../../api";
+import SaveCategory from "./SaveCategory";
+import { deleteCategory, getCategoryList } from "../../../api";
 import { useAPI } from "../../../hooks/useApi";
 import { isApiError } from "../../../types/Api";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
 import useToast from "../../../hooks/useToast";
-import { ContactDetails } from "../../../types/Admin";
 import { Column } from "react-table";
+import { Icon } from "@iconify/react";
+import { GetCategory } from "../../../types/Admin";
 
 const Category = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [data, setData] = useState<ContactDetails[]>([]);
-  const [seletedDetails, setSelectedDetails] = useState<number>();
+  const [data, setData] = useState<GetCategory[]>([]);
+  const [seletedDetails, setSelectedDetails] = useState<number | null>(null);
 
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
-  const fetchContactDetailList = async () => {
-    startLoading("/getContactDetailList");
+  const fetchCategoryList = async () => {
+    startLoading("/getCategoryList");
     try {
-      const res = await getContactDetailList(api);
+      const res = await getCategoryList(api);
       if (!isApiError(res)) {
         setData(res);
         showToast("Contact details list fetched successfully", "success");
       }
     } finally {
-      endLoading("/getContactDetailList");
+      endLoading("/getCategoryList");
+    }
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+    setSelectedDetails(null);
+  };
+
+  const deleteCategoryDetails = async (categoryId: number) => {
+    startLoading("/deleteCategory");
+    try {
+      const res = await deleteCategory(api, categoryId);
+
+      if (!res || !isApiError(res)) {
+        showToast("Contact details deleted successfully", "success");
+        fetchCategoryList();
+      }
+    } finally {
+      endLoading("/deleteCategory");
     }
   };
 
   useEffect(() => {
-    fetchContactDetailList();
+    fetchCategoryList();
   }, []);
 
-  const columns = useMemo<Column<ContactDetails>[]>(
+  const columns = useMemo<Column<GetCategory>[]>(
     () => [
       {
+        Header: "Image",
+        accessor: "imagePath",
+        Cell: ({ cell }): JSX.Element => {
+          return (
+            <div className="relative h-[40px] w-[40px] overflow-hidden">
+              <img
+                className="relative h-full w-full  object-cover"
+                src={cell.row.original.imagePath}
+                alt={cell.row.original.categoryName}
+              />
+            </div>
+          );
+        },
+        disableSortBy: true,
+      },
+      {
         Header: "Name",
-        accessor: "name",
+        accessor: "categoryName",
         Cell: ({ cell }): JSX.Element => {
           return (
             <div
@@ -49,29 +85,50 @@ const Category = () => {
                 setOpenModal(true);
               }}
             >
-              {cell.row.original.name}
+              {cell.row.original.categoryName}
             </div>
           );
         },
       },
-      { Header: "Email", accessor: "email" },
-      { Header: "PhoneNumber", accessor: "phoneNumber" },
+      { Header: "Description", accessor: "categoryDescription" },
+      {
+        Header: "Action",
+        Cell: ({ cell }): JSX.Element => {
+          return (
+            <Icon
+              onClick={() => {
+                deleteCategoryDetails(cell.row.original.id);
+              }}
+              icon="material-symbols:delete-outline"
+            />
+          );
+        },
+      },
     ],
     []
   );
-
   return (
     <React.Fragment>
-      <Details
+      <SaveCategory
         selectedId={seletedDetails}
         open={openModal}
-        close={() => setOpenModal(false)}
+        close={handleClose}
+        refreshList={fetchCategoryList}
       />
 
       <div className="relative">
         <div className="relative flex justify-between items-center mb-10">
           <div className="relative text-[2.4rem] font-semibold capitalize">
-            Contact Details ({data.length})
+            category list ({data.length})
+          </div>
+          <div>
+            <button
+              onClick={() => setOpenModal(true)}
+              className="relative flex gap-3 items-center bg-[#3068ec] text-white px-12 py-4 text-[1.4rem] rounded-md font-medium capitalize"
+            >
+              <Icon className="text-[1.8rem]" icon="ic:baseline-plus" />
+              <span>Create category</span>
+            </button>
           </div>
         </div>
 

@@ -2,6 +2,7 @@ package com.project.abicoirr.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ public class ContactDetails extends CommonEntity {
   @Column(nullable = false)
   private String phoneNumber;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "LONGTEXT")
+  @Lob
   private String message;
 
   @Column(nullable = false)

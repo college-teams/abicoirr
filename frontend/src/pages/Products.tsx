@@ -51,8 +51,8 @@ const Products = () => {
           <p className="relative text-[3rem] font-medium mb-[5rem]">
             Categories
           </p>
-          {CategoryLists.map((e) => (
-            <div className="flex justify-between cursor-pointer text-black/50 hover:text-black text-[1.5rem] font-medium mb-6">
+          {CategoryLists.map((e,index) => (
+            <div key={index} className="flex justify-between cursor-pointer text-black/50 hover:text-black text-[1.5rem] font-medium mb-6">
               <span>{e.name}</span>
               <span>{Math.round(Math.random() * 16 + 20)}</span>
             </div>

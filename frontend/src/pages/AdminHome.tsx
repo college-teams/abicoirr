@@ -24,8 +24,6 @@ const AdminHome = () => {
   };
 
   const fetchUnReadMessageCount = async () => {
-    console.log("CALLED");
-    
     const res = await getUnReadMessageCount(api);
     if (!isApiError(res)) {
       setUnReadQueriesCount(res.count);
