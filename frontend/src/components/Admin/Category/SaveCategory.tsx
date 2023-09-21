@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
+  deleteCategoryImage,
   getCategoryById,
   saveCategory,
   updateCategory,
@@ -13,8 +14,9 @@ import { isApiError } from "../../../types/Api";
 import Modal from "../../Modal";
 import { CloseIcon, DetailsContainer, Wrapper } from "./styled";
 import Loader from "../../Loader";
-import { Category, FileResponse } from "../../../types/Admin";
+import { Category, FileResponse, GetCategory } from "../../../types/Admin";
 import { useForm } from "react-hook-form";
+import { Icon } from "@iconify/react";
 
 interface DetailsProps {
   open: boolean;
@@ -33,8 +35,9 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     reset,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
-  } = useForm<Category>();
+  } = useForm<GetCategory>();
 
   const [fileResponse, setFileResponse] = useState<FileResponse | null>(null);
 
@@ -44,7 +47,6 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
       const res = await getCategoryById(api, id);
       if (!isApiError(res)) {
         setFormValues(res);
-        showToast("Category details fetched successfully", "success");
       }
     } finally {
       endLoading("/getCategoryById");
@@ -69,6 +71,19 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     }
   };
 
+  const deleteImage = async (imageKey: string): Promise<void> => {
+    try {
+      startLoading("/deleteCategoryImage");
+      const res = await deleteCategoryImage(api, getValues().id, imageKey);
+      if (!res || !isApiError(res)) {
+        setFileResponse(null);
+        showToast("Image deleted successfully", "success");
+      }
+    } finally {
+      endLoading("/deleteCategoryImage");
+    }
+  };
+
   const handleClose = () => {
     setFileResponse(null);
     reset();
@@ -84,12 +99,17 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     data.imageKey = fileResponse?.imageKey;
     data.imagePath = fileResponse?.imagePath;
 
+    startLoading("/saveCategory");
+
     let res;
     if (selectedId) {
       res = await updateCategory(api, selectedId, data);
     } else {
       res = await saveCategory(api, data);
     }
+
+    endLoading("/saveCategory");
+
     if (!isApiError(res)) {
       showToast(
         `Category details ${selectedId ? "updated" : "saved"} successfully`,
@@ -191,6 +211,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                       {...register("categoryDescription", {
                         required: "CategoryDescription is required",
                       })}
+                      rows={5}
                       className="relative border-2 border-gray-300 font-medium  py-2 w-[85%] px-4 outline-none text-[1.4rem]"
                     />
                     <span className="relative text-red-600 font-medium mt-2">
@@ -213,11 +234,20 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                       )}
                     </>
                   ) : (
-                    <div className="relative overflow-hidden h-[150px] w-[150px]">
-                      <img
-                        className="border h-full w-full object-cover"
-                        src={fileResponse?.imagePath}
-                        alt={fileResponse?.entityKey}
+                    <div className="relative flex gap-10 items-center">
+                      <div className="relative overflow-hidden h-[150px] w-[150px]">
+                        <img
+                          className="border h-full w-full object-cover"
+                          src={fileResponse?.imagePath}
+                          alt={fileResponse?.entityKey}
+                        />
+                      </div>
+                      <Icon
+                        onClick={() => {
+                          deleteImage(fileResponse.imageKey);
+                        }}
+                        className="relative h-[30px] w-[30px] cursor-pointer"
+                        icon="material-symbols:delete-outline"
                       />
                     </div>
                   )}
@@ -225,13 +255,28 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                   <div className="relative flex gap-5 mt-12">
                     <button
                       onClick={handleClose}
-                      className="relative border-orange-400 border-2 text-[1.5rem] px-8 py-1 rounded-md text-orange-400 hover:text-white hover:bg-orange-400 transition-all duration-300"
+                      className={`relative border-orange-400 border-2 text-[1.5rem] px-8 py-1 rounded-md text-orange-400 hover:text-white hover:bg-orange-400 transition-all duration-300 ${
+                        isLoading("/saveCategory") &&
+                        `border-gray-300 hover:border-gray-300 hover:bg-gray-300 border-2 pointer-events-none`
+                      }`}
                     >
                       Cancel
                     </button>
-                    <button className="relative bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-10 py-1 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300">
-                      Save
-                    </button>
+
+                    {isLoading("/saveCategory") ? (
+                      <button
+                        disabled
+                        className="relative disabled:bg-gray-300 disabled:border-gray-300 disabled:pointer-events-none  bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-10 py-1 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300"
+                      >
+                        Saving...
+                      </button>
+                    ) : (
+                      <button
+                        className={`relative bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-10 py-1 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300 `}
+                      >
+                        Save
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>

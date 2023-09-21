@@ -72,7 +72,7 @@ public class CategoryService {
 
   public ApiResponse deleteCategory(Long categoryId) throws BaseException {
     Category categoryData = getCategoryById(categoryId);
-
+    deleteImage(categoryData.getImageKey());
     categoryRepository.delete(categoryData);
     return new ApiResponse<>(CATEGORY_DELETE_SUCCESS, StatusType.SUCCESS);
   }

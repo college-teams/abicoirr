@@ -5,6 +5,8 @@ import {
   AbstractResponse,
   ApiError,
   DeleteCategory,
+  DeleteCategoryImage,
+  DeleteFile,
   GetAdminOrders,
   GetCategoryById,
   GetCategoryList,
@@ -208,7 +210,26 @@ export const deleteCategory: DeleteCategory = async (api, id) => {
     `/category/${id}`,
     "deleteCategory",
     "Error occurred while deleting category details",
+    "DELETE"
+  );
+};
+
+export const deleteCategoryImage: DeleteCategoryImage = async (
+  api,
+  categoryId,
+  imageKey
+) => {
+  const params = {
+    imageKey,
+  };
+  return makeRequest<void>(
+    api,
+    `/category/${categoryId}/image`,
+    "deleteFile",
+    "Error occurred while deleting category image",
     "DELETE",
+    null,
+    params
   );
 };
 
@@ -234,5 +255,20 @@ export const uploadFile: UploadFile = async (api, file, entityKey) => {
     formData,
     params,
     headers
+  );
+};
+
+export const deleteFile: DeleteFile = async (api, imageKey) => {
+  const params = {
+    imageKey,
+  };
+  return makeRequest<void>(
+    api,
+    `/file`,
+    "deleteFile",
+    "Error occurred while deleting file",
+    "DELETE",
+    null,
+    params
   );
 };

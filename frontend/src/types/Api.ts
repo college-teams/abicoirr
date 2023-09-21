@@ -54,6 +54,11 @@ export type UploadFile = (
   entityKey: string
 ) => Promise<FileResponse | ApiError>;
 
+export type DeleteFile = (
+  api: AxiosInstance,
+  imageKey:string,
+) => Promise<void | ApiError>;
+
 export type SaveCategory = (
   api: AxiosInstance,
   data: Category
@@ -68,4 +73,10 @@ export type UpdateCategory = (
 export type DeleteCategory = (
   api: AxiosInstance,
   id:number,
+) => Promise<void | ApiError>;
+
+export type DeleteCategoryImage = (
+  api: AxiosInstance,
+  id:number,
+  imageKey:string,
 ) => Promise<void | ApiError>;

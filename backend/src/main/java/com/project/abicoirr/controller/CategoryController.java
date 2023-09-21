@@ -60,6 +60,7 @@ public class CategoryController {
     return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
   }
 
+  @Deprecated
   @PostMapping("/{id}/image")
   public ResponseEntity<ApiResponse<?>> uploadImage(
       @PathVariable(name = "id") Long categoryId,

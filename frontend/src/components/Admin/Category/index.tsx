@@ -25,7 +25,6 @@ const Category = () => {
       const res = await getCategoryList(api);
       if (!isApiError(res)) {
         setData(res);
-        showToast("Contact details list fetched successfully", "success");
       }
     } finally {
       endLoading("/getCategoryList");
@@ -100,6 +99,7 @@ const Category = () => {
                 deleteCategoryDetails(cell.row.original.id);
               }}
               icon="material-symbols:delete-outline"
+              className="h-[20px] w-[20px]"
             />
           );
         },
@@ -136,7 +136,7 @@ const Category = () => {
           <Table
             data={data}
             columns={columns}
-            loading={isLoading("/getContactDetailList")}
+            loading={isLoading("/getCategoryList")}
           />
         </div>
       </div>
