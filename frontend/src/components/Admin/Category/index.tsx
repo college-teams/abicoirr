@@ -9,6 +9,8 @@ import useToast from "../../../hooks/useToast";
 import { Column } from "react-table";
 import { Icon } from "@iconify/react";
 import { GetCategory } from "../../../types/Admin";
+import { ConfirmationModal } from "../../ConfirmModal";
+import { useConfirmModal } from "../../../hooks/useConfirmModal";
 
 const Category = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -18,6 +20,7 @@ const Category = () => {
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
+  const [props, activateConfirmModal] = useConfirmModal();
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -37,6 +40,14 @@ const Category = () => {
   };
 
   const deleteCategoryDetails = async (categoryId: number) => {
+    if (
+      !(await activateConfirmModal(
+        "Do you want to delete this category ? This is irreversible action!!"
+      ))
+    ) {
+      return;
+    }
+
     startLoading("/deleteCategory");
     try {
       const res = await deleteCategory(api, categoryId);
@@ -99,7 +110,7 @@ const Category = () => {
                 deleteCategoryDetails(cell.row.original.id);
               }}
               icon="material-symbols:delete-outline"
-              className="h-[20px] w-[20px]"
+              className="h-[20px] w-[20px] cursor-pointer"
             />
           );
         },
@@ -109,6 +120,8 @@ const Category = () => {
   );
   return (
     <React.Fragment>
+      <ConfirmationModal {...props} />
+
       <SaveCategory
         selectedId={seletedDetails}
         open={openModal}
@@ -136,7 +149,9 @@ const Category = () => {
           <Table
             data={data}
             columns={columns}
-            loading={isLoading("/getCategoryList")}
+            loading={
+              isLoading("/getCategoryList") || isLoading("/deleteCategory")
+            }
           />
         </div>
       </div>

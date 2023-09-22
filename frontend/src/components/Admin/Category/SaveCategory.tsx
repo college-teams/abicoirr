@@ -17,6 +17,8 @@ import Loader from "../../Loader";
 import { Category, FileResponse, GetCategory } from "../../../types/Admin";
 import { useForm } from "react-hook-form";
 import { Icon } from "@iconify/react";
+import { ConfirmationModal } from "../../ConfirmModal";
+import { useConfirmModal } from "../../../hooks/useConfirmModal";
 
 interface DetailsProps {
   open: boolean;
@@ -29,14 +31,16 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
-
+  const [fileDirty, setFileDirty] = useState<boolean>(false);
+  const [props, activateConfirmModal] = useConfirmModal();
+  
   const {
     register,
     reset,
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<GetCategory>();
 
   const [fileResponse, setFileResponse] = useState<FileResponse | null>(null);
@@ -67,6 +71,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
         }
       } finally {
         endLoading("/uploadFile");
+        setFileDirty(true);
       }
     }
   };
@@ -81,13 +86,27 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
       }
     } finally {
       endLoading("/deleteCategoryImage");
+      setFileDirty(true);
     }
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
+    if (
+      (isDirty || fileDirty) &&
+      !(await activateConfirmModal(
+        "The form has unsaved changes, do you want to close ?"
+      ))
+    ) {
+      return;
+    }
+    resetForm();
+    close();
+  };
+
+  const resetForm = () => {
+    setFileDirty(false);
     setFileResponse(null);
     reset();
-    close();
   };
 
   const onSubmit = async (data: Category): Promise<void> => {
@@ -116,7 +135,8 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
         "success"
       );
       refreshList();
-      handleClose();
+      resetForm();
+      close();
     }
   };
 
@@ -224,15 +244,16 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                   <div className="relative font-medium text-[2rem] mb-[2rem]">
                     Image
                   </div>
-                  {!fileResponse ? (
-                    <>
+                  {!fileResponse || isLoading("/deleteCategoryImage") ? (
+                    <div>
                       <input type="file" name="file" onChange={uploadImage} />
-                      {isLoading("/uploadFile") && (
+                      {(isLoading("/uploadFile") ||
+                        isLoading("/deleteCategoryImage")) && (
                         <div className="relative my-10">
                           <Loader />
                         </div>
                       )}
-                    </>
+                    </div>
                   ) : (
                     <div className="relative flex gap-10 items-center">
                       <div className="relative overflow-hidden h-[150px] w-[150px]">
@@ -254,6 +275,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
 
                   <div className="relative flex gap-5 mt-12">
                     <button
+                      type="button"
                       onClick={handleClose}
                       className={`relative border-orange-400 border-2 text-[1.5rem] px-8 py-1 rounded-md text-orange-400 hover:text-white hover:bg-orange-400 transition-all duration-300 ${
                         isLoading("/saveCategory") &&
@@ -286,7 +308,12 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
       </DetailsContainer>
     </Wrapper>
   );
-  return <Modal open={open} content={modalContent} />;
+  return (
+    <>
+      <ConfirmationModal {...props} />
+      <Modal open={open} content={modalContent} />;
+    </>
+  );
 };
 
 export default Details;
