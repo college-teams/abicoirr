@@ -12,19 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateContactDetailsRequest {
-    @NotNull private String name;
-    @NotNull private String email;
-    @NotNull private String phone_number;
-    @NotNull private String message;
+  @NotNull private String name;
+  @NotNull private String email;
+  @NotNull private String phone_number;
+  @NotNull private String message;
 
-    public static ContactDetails from(CreateContactDetailsRequest createContactDetailsRequest) {
-        ContactDetails contactDetails = new ContactDetails();
-        contactDetails.setName(createContactDetailsRequest.getName());
-        contactDetails.setEmail(createContactDetailsRequest.getEmail());
-        contactDetails.setPhone_number(createContactDetailsRequest.getPhone_number());
-        contactDetails.setMessage(createContactDetailsRequest.getMessage());
+  public static ContactDetails from(CreateContactDetailsRequest createContactDetailsRequest) {
+    ContactDetails contactDetails = new ContactDetails();
+    contactDetails.setName(createContactDetailsRequest.getName());
+    contactDetails.setEmail(createContactDetailsRequest.getEmail());
+    contactDetails.setPhone_number(createContactDetailsRequest.getPhone_number());
+    contactDetails.setMessage(createContactDetailsRequest.getMessage());
 
-        return contactDetails;
-    }
-
+    return contactDetails;
+  }
 }

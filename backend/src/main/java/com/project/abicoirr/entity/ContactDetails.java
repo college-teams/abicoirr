@@ -12,19 +12,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+public class ContactDetails extends CommonEntity {
 
-public class ContactDetails extends CommonEntity{
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String email;
 
-    @Column(nullable = false)
-    private String email;
+  @Column(nullable = false)
+  private String phone_number;
 
-    @Column(nullable = false)
-    private String phone_number;
-
-    @Column(nullable = false)
-    private String message;
-
+  @Column(nullable = false)
+  private String message;
 }

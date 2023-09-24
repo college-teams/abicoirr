@@ -16,21 +16,23 @@ import lombok.Setter;
 @Builder
 public class ContactDetailsResponse {
 
-    private String name;
-    private String email;
-    private String phone_number;
-    private String message;
+  private String name;
+  private String email;
+  private String phone_number;
+  private String message;
 
-    public static List<ContactDetailsResponse> from(List<ContactDetails> contactDetailsBox) {
-        return contactDetailsBox.stream().map(ContactDetailsResponse::from).collect(Collectors.toList());
-    }
+  public static List<ContactDetailsResponse> from(List<ContactDetails> contactDetailsBox) {
+    return contactDetailsBox.stream()
+        .map(ContactDetailsResponse::from)
+        .collect(Collectors.toList());
+  }
 
-    public static ContactDetailsResponse from(ContactDetails contactDetails) {
-        return ContactDetailsResponse.builder()
-                .name(contactDetails.getName())
-                .email(contactDetails.getEmail())
-                .phone_number(contactDetails.getPhone_number())
-                .message(contactDetails.getMessage())
-                .build();
-    }
+  public static ContactDetailsResponse from(ContactDetails contactDetails) {
+    return ContactDetailsResponse.builder()
+        .name(contactDetails.getName())
+        .email(contactDetails.getEmail())
+        .phone_number(contactDetails.getPhone_number())
+        .message(contactDetails.getMessage())
+        .build();
+  }
 }
