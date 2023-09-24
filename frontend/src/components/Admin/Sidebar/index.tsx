@@ -12,7 +12,7 @@ const Sidebar = ({ handleTabSwitch }: SidebarProps) => {
   };
 
   return (
-    <SidebarWrapper className=" sticky top-[7rem] bg-white shadow-xl h-screen w-[220px] border">
+    <SidebarWrapper className=" sticky top-[7rem] bg-white shadow-xl w-[220px] border">
       <ul className="relative w-[inherit] my-6">
         <SidebarList
           onClick={() => changeTab("dashboard")}

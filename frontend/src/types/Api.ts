@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { AdminOrderResponseData, ContactDetails, MessageCount } from "./Admin";
+import { AdminOrderResponseData, Category, ContactDetails, FileResponse, GetCategory, MessageCount } from "./Admin";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -38,3 +38,45 @@ export type GetContactDetailsById = (
 export type GetUnReadMessageCount = (
   api: AxiosInstance
 ) => Promise<MessageCount | ApiError>;
+
+export type GetCategoryList = (
+  api: AxiosInstance
+) => Promise<GetCategory[] | ApiError>;
+
+export type GetCategoryById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<GetCategory | ApiError>;
+
+export type UploadFile = (
+  api: AxiosInstance,
+  file: File,
+  entityKey: string
+) => Promise<FileResponse | ApiError>;
+
+export type DeleteFile = (
+  api: AxiosInstance,
+  imageKey:string,
+) => Promise<void | ApiError>;
+
+export type SaveCategory = (
+  api: AxiosInstance,
+  data: Category
+) => Promise<Category | ApiError>;
+
+export type UpdateCategory = (
+  api: AxiosInstance,
+  id:number,
+  data: Category
+) => Promise<Category | ApiError>;
+
+export type DeleteCategory = (
+  api: AxiosInstance,
+  id:number,
+) => Promise<void | ApiError>;
+
+export type DeleteCategoryImage = (
+  api: AxiosInstance,
+  id:number,
+  imageKey:string,
+) => Promise<void | ApiError>;

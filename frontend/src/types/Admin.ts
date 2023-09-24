@@ -56,7 +56,7 @@ export interface Product {
   version: number;
   createAt: string;
   updatedAt: string;
-  category: Category;
+  category: GetCategory;
   productName: string;
   productDescription: string;
   price: number;
@@ -69,12 +69,14 @@ export interface Product {
   links: Link[];
 }
 
-export interface Category {
+export interface GetCategory extends Category {
   id: number;
-  version: number;
-  createAt: string;
-  updatedAt: string;
-  categoryname: string;
+  version?: number;
+  createAt?: string;
+  updatedAt?: string;
+}
+export interface Category {
+  categoryName: string;
   categoryDescription: string;
   imagePath: string;
   imageKey: string;
@@ -99,4 +101,10 @@ export interface ContactDetails {
 
 export interface MessageCount {
   count: number;
+}
+
+export interface FileResponse {
+  entityKey: string;
+  imagePath: string;
+  imageKey: string;
 }
