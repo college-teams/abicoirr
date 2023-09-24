@@ -3,11 +3,13 @@ package com.project.abicoirr.service;
 import static com.project.abicoirr.codes.ErrorCodes.CONTACT_DETAILS_NOT_FOUND;
 import static com.project.abicoirr.codes.SuccessCodes.CONTACT_DETAILS_CREATED;
 import static com.project.abicoirr.codes.SuccessCodes.CONTACT_DETAILS_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.UN_READ_MESSAGE_LIST_COUNT_FETCHED;
 
 import com.project.abicoirr.entity.ContactDetails;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.ContactDetails.ContactDetailsResponse;
 import com.project.abicoirr.models.ContactDetails.CreateContactDetailsRequest;
+import com.project.abicoirr.models.ContactDetails.MessageCount;
 import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.ContactDetailsRepository;
@@ -37,6 +39,8 @@ public class ContactDetailsService {
       throws BaseException {
     ContactDetails contactDetailsData = getContactDetailsById(contactDetailsId);
 
+    updateReadDetails(contactDetailsData);
+
     ContactDetailsResponse contactDetails = ContactDetailsResponse.from(contactDetailsData);
     return new ApiResponse<>(
         CONTACT_DETAILS_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, contactDetails);
@@ -61,5 +65,17 @@ public class ContactDetailsService {
     }
 
     return contactDetails.get();
+  }
+
+  public ApiResponse<MessageCount> getUnreadMessageCount() {
+    Long count = contactDetailsRepository.countFindByIsReadIsFalse();
+    MessageCount messageCount = MessageCount.from(count);
+    return new ApiResponse<>(
+        UN_READ_MESSAGE_LIST_COUNT_FETCHED, AbstractResponse.StatusType.SUCCESS, messageCount);
+  }
+
+  private void updateReadDetails(ContactDetails contactDetails) {
+    contactDetails.setRead(true);
+    contactDetailsRepository.save(contactDetails);
   }
 }

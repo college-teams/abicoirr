@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends AbstractRepository<Category> {
-  List<Category> findByCategorynameContainingIgnoreCase(String categoryName);
+  List<Category> findByCategoryNameContainingIgnoreCase(String categoryName);
 
   Optional<Category> findByImageKey(String key);
 }

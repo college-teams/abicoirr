@@ -12,7 +12,7 @@ const Sidebar = ({ handleTabSwitch }: SidebarProps) => {
   };
 
   return (
-    <SidebarWrapper className=" sticky top-[7rem] bg-white shadow-xl h-screen w-[220px] border">
+    <SidebarWrapper className=" sticky top-[7rem] bg-white shadow-xl w-[220px] border">
       <ul className="relative w-[inherit] my-6">
         <SidebarList
           onClick={() => changeTab("dashboard")}
@@ -46,7 +46,7 @@ const Sidebar = ({ handleTabSwitch }: SidebarProps) => {
             icon="streamline:interface-hierarchy-2-node-organization-links-structure-link-nodes-network-hierarchy"
           />
           <span className="relative font-semibold text-[1.4rem]">
-            Categries
+            Categories
           </span>
         </SidebarList>
         <SidebarList

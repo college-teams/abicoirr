@@ -1,5 +1,6 @@
 package com.project.abicoirr.models.ContactDetails;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.abicoirr.entity.ContactDetails;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,11 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ContactDetailsResponse {
-
+  private Long id;
   private String name;
   private String email;
-  private String phone_number;
+  private String phoneNumber;
   private String message;
 
   public static List<ContactDetailsResponse> from(List<ContactDetails> contactDetailsBox) {
@@ -29,9 +31,10 @@ public class ContactDetailsResponse {
 
   public static ContactDetailsResponse from(ContactDetails contactDetails) {
     return ContactDetailsResponse.builder()
+        .id(contactDetails.getId() > 0 ? contactDetails.getId() : null)
         .name(contactDetails.getName())
         .email(contactDetails.getEmail())
-        .phone_number(contactDetails.getPhone_number())
+        .phoneNumber(contactDetails.getPhoneNumber())
         .message(contactDetails.getMessage())
         .build();
   }

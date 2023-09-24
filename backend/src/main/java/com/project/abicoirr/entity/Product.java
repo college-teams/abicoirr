@@ -1,5 +1,6 @@
 package com.project.abicoirr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -39,6 +40,7 @@ public class Product extends CommonEntity {
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ExternalLinks> links = new ArrayList<>();
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
   private Set<AdminOrder> adminOrders = new HashSet<>();
 }

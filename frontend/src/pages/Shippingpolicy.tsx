@@ -1,5 +1,3 @@
-import React from "react";
-
 const Shippingpolicy = () => {
   return (
     <div className="relative mt-[14rem] mb-[12em] flex flex-col items-center justify-center w-[85%] mx-auto ">

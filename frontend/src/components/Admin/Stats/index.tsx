@@ -1,8 +1,9 @@
-import React from 'react'
 
 const Stats = () => {
   return (
-    <div>Stats</div>
+    <div className="relative flex items justify-center mt-[7rem] w-full">
+      <h1 className="relative text-[3rem] font-semibold capitalize">coming soon...</h1>
+    </div>
   )
 }
 

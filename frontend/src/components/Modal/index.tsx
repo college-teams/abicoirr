@@ -1,4 +1,3 @@
-import React from "react";
 import { Backdrop, ModalWrapper } from "./styled";
 import ReactDOM from "react-dom";
 

@@ -21,8 +21,8 @@ export default function Slider(props: SliderProps) {
         modules={[Autoplay, Pagination]}
         className="mySwiper"
       >
-        {props.content.map((e) => (
-          <SwiperSlider>
+        {props.content.map((e,index) => (
+          <SwiperSlider key={index}>
             <img src={e.imagePath} alt={e.name} />
           </SwiperSlider>
         ))}

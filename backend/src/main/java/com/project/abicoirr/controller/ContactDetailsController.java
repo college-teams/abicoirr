@@ -3,14 +3,21 @@ package com.project.abicoirr.controller;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.ContactDetails.ContactDetailsResponse;
 import com.project.abicoirr.models.ContactDetails.CreateContactDetailsRequest;
+import com.project.abicoirr.models.ContactDetails.MessageCount;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.ContactDetailsService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/contact-details")
@@ -30,9 +37,14 @@ public class ContactDetailsController {
     return new ResponseEntity<>(contactDetailsService.getContactDetails(id), HttpStatus.OK);
   }
 
+  @GetMapping("/message-count")
+  public ResponseEntity<ApiResponse<MessageCount>> getUnreadMessageCount() throws BaseException {
+    return new ResponseEntity<>(contactDetailsService.getUnreadMessageCount(), HttpStatus.OK);
+  }
+
   @PostMapping("/")
   public ResponseEntity<ApiResponse<ContactDetailsResponse>> addContactDetails(
-      @RequestBody CreateContactDetailsRequest createContactDetailsRequest) {
+      @Valid @RequestBody CreateContactDetailsRequest createContactDetailsRequest) {
     return new ResponseEntity<>(
         contactDetailsService.addContactDetails(createContactDetailsRequest), HttpStatus.OK);
   }

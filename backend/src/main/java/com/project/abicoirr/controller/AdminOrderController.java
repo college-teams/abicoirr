@@ -47,7 +47,7 @@ public class AdminOrderController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ApiResponse<AdminOrderResponse>> addAdminOrder(
+  public ResponseEntity<ApiResponse<AdminOrderResponse>> UpdateAdminOrder(
       @PathVariable Long id, @Valid @RequestBody UpdateAdminOrderRequest updateAdminOrderRequest)
       throws BaseException {
     return new ResponseEntity<>(

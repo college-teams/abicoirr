@@ -1,6 +1,7 @@
 package com.project.abicoirr.service;
 
 import static com.project.abicoirr.codes.ErrorCodes.CATEGORY_NOT_FOUND;
+import static com.project.abicoirr.codes.ErrorCodes.EMPTY_FILE_REQUEST;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_CREATED;
@@ -71,7 +72,7 @@ public class CategoryService {
 
   public ApiResponse deleteCategory(Long categoryId) throws BaseException {
     Category categoryData = getCategoryById(categoryId);
-
+    deleteImage(categoryData.getImageKey());
     categoryRepository.delete(categoryData);
     return new ApiResponse<>(CATEGORY_DELETE_SUCCESS, StatusType.SUCCESS);
   }
@@ -88,6 +89,10 @@ public class CategoryService {
 
   public ApiResponse<?> uploadImage(Long categoryId, MultipartFile multipartFile)
       throws BaseException {
+
+    if (multipartFile.isEmpty()) {
+      throw new BaseException(EMPTY_FILE_REQUEST);
+    }
 
     String uniqueKey = Util.generateUniqueImageKey("category", multipartFile.getOriginalFilename());
 
@@ -112,9 +117,15 @@ public class CategoryService {
     }
   }
 
-  public ApiResponse<?> deleteImage(String key) throws BaseException {
+  public ApiResponse<?> deleteImage(Long categoryId, String key) throws BaseException {
     try {
-      awsService.deleteFile(key);
+      Category category = getCategoryById(categoryId);
+
+      deleteImage(key);
+
+      category.setImageKey(null);
+      category.setImagePath(null);
+      categoryRepository.save(category);
     } catch (Exception ex) {
       log.error("Error ", ex);
       throw new BaseException(IMAGE_DELETE_FAILED);
@@ -122,9 +133,20 @@ public class CategoryService {
     return new ApiResponse<>(IMAGE_DELETE_SUCCESS, AbstractResponse.StatusType.SUCCESS);
   }
 
+  public void deleteImage(String key) throws BaseException {
+    try {
+      awsService.deleteFile(key);
+    } catch (Exception ex) {
+      log.error("Error ", ex);
+      throw new BaseException(IMAGE_DELETE_FAILED);
+    }
+  }
+
   private void updateCategoryFields(
       Category existingCategory, UpdateCategoryRequest updateCategoryRequest) {
-    existingCategory.setCategoryname(updateCategoryRequest.getCategoryname());
+    existingCategory.setCategoryName(updateCategoryRequest.getCategoryName());
     existingCategory.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
+    existingCategory.setImageKey(updateCategoryRequest.getImageKey());
+    existingCategory.setImagePath(updateCategoryRequest.getImagePath());
   }
 }

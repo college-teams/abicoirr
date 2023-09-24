@@ -43,7 +43,7 @@ public class CategoryController {
 
   @PostMapping("/")
   public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(
-      @RequestBody CreateCategoryRequest createCategoryRequest) {
+      @Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
     return new ResponseEntity<>(categoryService.addCategory(createCategoryRequest), HttpStatus.OK);
   }
 
@@ -60,12 +60,20 @@ public class CategoryController {
     return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
   }
 
-  @PostMapping("/{id}/upload")
-  public ResponseEntity<ApiResponse<?>> uploadImages(
-      @PathVariable(name = "id") Long productId,
+  @Deprecated
+  @PostMapping("/{id}/image")
+  public ResponseEntity<ApiResponse<?>> uploadImage(
+      @PathVariable(name = "id") Long categoryId,
       @Valid @RequestParam("file") MultipartFile multipartFile)
       throws BaseException {
     return new ResponseEntity<>(
-        categoryService.uploadImage(productId, multipartFile), HttpStatus.OK);
+        categoryService.uploadImage(categoryId, multipartFile), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}/image")
+  public ResponseEntity<ApiResponse<?>> deleteImage(
+      @PathVariable(name = "id") Long categoryId, @Valid @RequestParam("imageKey") String key)
+      throws BaseException {
+    return new ResponseEntity<>(categoryService.deleteImage(categoryId, key), HttpStatus.OK);
   }
 }

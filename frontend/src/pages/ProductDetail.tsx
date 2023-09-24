@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Carousel from "react-multi-carousel";
 import { CardProps } from "../types/Card";
 import Product1 from "../assets/card3.jpg";

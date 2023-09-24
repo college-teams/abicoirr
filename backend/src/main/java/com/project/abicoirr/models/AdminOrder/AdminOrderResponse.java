@@ -20,6 +20,7 @@ import lombok.Setter;
 @Builder
 public class AdminOrderResponse {
 
+  private Long id;
   private Long userId;
 
   private AdminOrder.OrderStatus orderStatus;
@@ -60,6 +61,7 @@ public class AdminOrderResponse {
 
   public static AdminOrderResponse from(AdminOrder adminOrder) {
     return AdminOrderResponse.builder()
+        .id(adminOrder.getId())
         .billingAddress(adminOrder.getBillingAddress())
         .orderNotes(adminOrder.getOrderNotes())
         .products(adminOrder.getProducts())

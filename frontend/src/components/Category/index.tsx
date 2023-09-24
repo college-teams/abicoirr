@@ -4,9 +4,9 @@ import { CategoryListContainer, CategoryImageContainer, CategoryWrapper, Categor
 const Category = (props: CategoryProps) => {
   return (
     <CategoryWrapper>
-      {props.content.map((e) => {
+      {props.content.map((e,index) => {
         return (
-          <CategoryListContainer>
+          <CategoryListContainer key={index}>
             <CategoryImageContainer>
               <img src={e.imagePath} alt={e.name} />
             </CategoryImageContainer>
