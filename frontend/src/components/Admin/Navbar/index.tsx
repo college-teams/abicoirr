@@ -25,9 +25,11 @@ const Navbar = (props: NavbarProps) => {
           className="relative cursor-pointer"
           onClick={() => props.handleTabSwitch("queries")}
         >
-          {props.unReadMessageCount && (
+          {props.unReadMessageCount !== 0 && (
             <span className="absolute text-sm bg-red-600 text-white rounded-full h-[2rem] w-[2rem] z-50 flex items-center justify-center -top-3 -right-2 font-semibold">
-              {props.unReadMessageCount}
+              <span className="relative leading-[0px]">
+                {props.unReadMessageCount}
+              </span>
             </span>
           )}
 
