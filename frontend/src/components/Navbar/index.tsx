@@ -90,9 +90,6 @@ const Navbar = () => {
             </li>
           </NavLinks>
           <Icons>
-            <Link to="/search">
-              <Icon icon="fluent:search-32-regular" />
-            </Link>
             <Icon className="auth" icon="ph:user" onClick={handleDropdown} />
             {showDropDown && (
               <div className="dropdown absolute  w-[200px] top-[4rem] bg-white shadow-xl border rounded-lg">

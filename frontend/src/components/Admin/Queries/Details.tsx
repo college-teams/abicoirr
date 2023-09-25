@@ -38,7 +38,7 @@ const Details = ({
       }
     } finally {
       endLoading("/getContactDetailsById");
-      // Update UnreadMessagecount in UI
+      // Update UnreadMessagecount in frontend
       updateUnReadMessageCount();
     }
   };

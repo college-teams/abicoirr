@@ -15,15 +15,17 @@ import {
   GetUnReadMessageCount,
   HttpMethod,
   SaveCategory,
+  SaveContactDetails,
   UpdateCategory,
   UploadFile,
 } from "../types/Api";
 import {
   AdminOrderResponseData,
   Category,
+  CategoryList,
   ContactDetails,
+  ContactDetailsList,
   FileResponse,
-  GetCategory,
   MessageCount,
 } from "../types/Admin";
 
@@ -131,7 +133,7 @@ export const getAdminOrders: GetAdminOrders = async (api) => {
 
 // CONTACT DETAILS
 export const getContactDetailList: GetContactDetailList = async (api) => {
-  return makeRequest<ContactDetails[]>(
+  return makeRequest<ContactDetailsList[]>(
     api,
     "/contact-details/",
     "getContactDetailList",
@@ -150,6 +152,18 @@ export const getContactDetailsById: GetContactDetailsById = async (api, id) => {
   );
 };
 
+export const saveContactDetails: SaveContactDetails = async (api, data) => {
+  return makeRequest<ContactDetails>(
+    api,
+    `/contact-details/`,
+    "saveContactDetails",
+    "Error occurred while saving contact details",
+    "POST",
+    data
+  );
+};
+
+
 export const getUnReadMessageCount: GetUnReadMessageCount = async (api) => {
   return makeRequest<MessageCount>(
     api,
@@ -162,7 +176,7 @@ export const getUnReadMessageCount: GetUnReadMessageCount = async (api) => {
 
 // Category
 export const getCategoryList: GetCategoryList = async (api) => {
-  return makeRequest<GetCategory[]>(
+  return makeRequest<CategoryList[]>(
     api,
     "/category/",
     "getCategoryList",
@@ -171,9 +185,8 @@ export const getCategoryList: GetCategoryList = async (api) => {
   );
 };
 
-// Category
 export const getCategoryById: GetCategoryById = async (api, id) => {
-  return makeRequest<GetCategory>(
+  return makeRequest<CategoryList>(
     api,
     `/category/${id}`,
     "getCategoryById",

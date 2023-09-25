@@ -14,7 +14,7 @@ import { isApiError } from "../../../types/Api";
 import Modal from "../../Modal";
 import { CloseIcon, DetailsContainer, Wrapper } from "./styled";
 import Loader from "../../Loader";
-import { Category, FileResponse, GetCategory } from "../../../types/Admin";
+import { Category, CategoryList, FileResponse } from "../../../types/Admin";
 import { useForm } from "react-hook-form";
 import { Icon } from "@iconify/react";
 import { ConfirmationModal } from "../../ConfirmModal";
@@ -41,7 +41,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     setValue,
     getValues,
     formState: { errors, isDirty },
-  } = useForm<GetCategory>();
+  } = useForm<CategoryList>();
 
   const [fileResponse, setFileResponse] = useState<FileResponse | null>(null);
 

@@ -1,5 +1,9 @@
-import { CategoryProps } from "../../types/Category";
+import { CategoryList } from "../../types/Admin";
 import { CategoryListContainer, CategoryImageContainer, CategoryWrapper, CategoryName } from "./styled";
+
+ interface CategoryProps {
+  content: CategoryList[];
+}
 
 const Category = (props: CategoryProps) => {
   return (
@@ -8,9 +12,9 @@ const Category = (props: CategoryProps) => {
         return (
           <CategoryListContainer key={index}>
             <CategoryImageContainer>
-              <img src={e.imagePath} alt={e.name} />
+              <img src={e.imagePath} alt={e.categoryName} />
             </CategoryImageContainer>
-            <CategoryName>{e.name}</CategoryName>
+            <CategoryName>{e.categoryName}</CategoryName>
           </CategoryListContainer>
         );
       })}

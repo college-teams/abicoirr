@@ -56,7 +56,7 @@ export interface Product {
   version: number;
   createAt: string;
   updatedAt: string;
-  category: GetCategory;
+  category: CategoryList;
   productName: string;
   productDescription: string;
   price: number;
@@ -69,7 +69,7 @@ export interface Product {
   links: Link[];
 }
 
-export interface GetCategory extends Category {
+export interface CategoryList extends Category {
   id: number;
   version?: number;
   createAt?: string;
@@ -91,8 +91,13 @@ export interface Link {
   platformName: string;
 }
 
-export interface ContactDetails {
+export interface ContactDetailsList extends ContactDetails {
   id: number;
+}
+
+export interface CreateContactDetails extends ContactDetails {}
+
+export interface ContactDetails {
   name: string;
   email: string;
   phoneNumber: string;

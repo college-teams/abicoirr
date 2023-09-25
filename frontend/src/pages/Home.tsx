@@ -1,7 +1,6 @@
 import Slider from "../components/Slider";
 import CocoBg from "../assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
-import { CategoryLists } from "../utils/CategoryList";
 import Category from "../components/Category";
 import LatestProducts from "../components/LatestItems";
 import PopularProducts from "../components/PopularItems";
@@ -10,12 +9,43 @@ import Info1 from "../assets/lighter.webp";
 import Info2 from "../assets/green.webp";
 import Info3 from "../assets/smatter.webp";
 import { InfoStepsContainer } from "./styled";
+import { useAPI } from "../hooks/useApi";
+import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
+import { useEffect, useState } from "react";
+import { isApiError } from "../types/Api";
+import { getCategoryList } from "../api";
+import GifLoader from "../components/Loader/GifLoader";
+import { CategoryList } from "../types/Admin";
 
 const Home = () => {
+  const api = useAPI();
+  const [loading, startLoading, endLoading] = useLoadingIndicator();
+
+  // States
+  const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
+
+  const fetchCategoryList = async () => {
+    startLoading("/getCategoryList");
+    try {
+      const res = await getCategoryList(api);
+      if (!isApiError(res)) {
+        setCategoryLists(res);
+      }
+    } finally {
+      endLoading("/getCategoryList");
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoryList();
+  }, []);
+
   return (
-    <div>
+    <div className="relative">
+      {loading && <GifLoader />}
+
       <Slider content={HomeSlideContents} />
-      <Category content={CategoryLists} />
+      <Category content={categoryLists} />
       <LatestProducts />
       <Location />
       <PopularProducts />

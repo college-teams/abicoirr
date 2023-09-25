@@ -90,9 +90,9 @@ export const Icons = styled.div`
       top: -21px;
       display: block;
       height: 20px;
-      left: 115px;
+      left: 45%;
       position: absolute;
-      border-color:transparent transparent  #fff   transparent;
+      border-color: transparent transparent #fff transparent;
       border-style: solid;
       border-width: 11px;
     }
