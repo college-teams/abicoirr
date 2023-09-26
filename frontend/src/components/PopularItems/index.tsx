@@ -6,7 +6,7 @@ import {
   ViewButton,
 } from "./styled";
 import { Icon } from "@iconify/react";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { CardProps } from "../../types/Card";
 import Product1 from "../../assets/card3.jpg";
@@ -61,7 +61,7 @@ const PopularProducts = () => {
         View more <Icon icon="bi:arrow-right" />
       </ViewButton>
       <div className=" mt-20">
-        <Carousel
+        {/* <Carousel
           additionalTransfrom={0}
           arrows
           autoPlay
@@ -118,7 +118,13 @@ const PopularProducts = () => {
           {tempPopularProducts.map((e, i) => (
             <Card key={i} {...e} />
           ))}
-        </Carousel>
+        </Carousel> */}
+
+        <div className="relative flex flex-wrap gap-[3rem] justify-center">
+          {tempPopularProducts.slice(0, 4).map((e, i) => (
+            <Card key={i} {...e} />
+          ))}
+        </div>
       </div>
     </PopularProductsContainer>
   );

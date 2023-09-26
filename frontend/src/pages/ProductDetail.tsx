@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
 import { CardProps } from "../types/Card";
 import Product1 from "../assets/card3.jpg";
 import Product2 from "../assets/card4.jpg";
@@ -98,7 +98,10 @@ const ProductDetail = () => {
             <span className="ml-5 font-normal text-[1.6rem]">10% off</span>
           </p>
           <div className="mb-10 mlg:mb-8 w-[50%] sm:w-[30%] lg:w-[60%] xl:w-[40%] mx-auto mlg:ml-0">
-            <button className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]" onClick={()=>setRedirect(true)}>
+            <button
+              className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]"
+              onClick={() => setRedirect(true)}
+            >
               Shop now
             </button>
           </div>
@@ -136,7 +139,8 @@ const ProductDetail = () => {
           </p>
         </div>
         <div className="w-[70%] mx-auto">
-          <Carousel
+          {/* <Carousel
+
             additionalTransfrom={0}
             arrows
             autoPlay
@@ -193,7 +197,13 @@ const ProductDetail = () => {
             {tempPopularProducts.map((e, i) => (
               <Card key={i} {...e} />
             ))}
-          </Carousel>
+          </Carousel> */}
+
+          <div className="relative flex flex-wrap gap-[3rem] justify-center">
+            {tempPopularProducts.slice(0, 4).map((e, i) => (
+              <Card key={i} {...e} />
+            ))}
+          </div>
         </div>
       </div>
 
