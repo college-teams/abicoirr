@@ -11,10 +11,10 @@ const Chat: FunctionComponent = () => {
   };
 
   return (
-    <ChatBotContainer className="fixed h-screen top-[90%] left-[95%]">
+    <ChatBotContainer className="fixed">
       <WhatsAppIcon
         onClick={onClickHandler}
-        className="relative h-[5.5rem] w-[5.5rem] cursor-pointer"
+        className="relative cursor-pointer"
         icon="logos:whatsapp-icon"
       />
     </ChatBotContainer>

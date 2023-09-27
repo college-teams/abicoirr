@@ -5,17 +5,25 @@ import { Icon } from "@iconify/react";
 const Footer = () => {
   return (
     <div className="bg-[#f3f3f3] h-full w-full">
-      <div className="footer relative flex flex-wrap lg:flex-nowrap items-center justify-center gap-[12rem] py-[8rem] w-[90%] mx-auto">
+      <div className="footer relative flex flex-wrap lg:flex-nowrap items-center justify-center gap-[8rem] lg:gap-[12rem] py-[6rem] lg:py-[8rem] w-[90%] mx-auto">
         <div className="relative mt-[-1rem] w-[200px] md:w-[230px] lg:w-[260px] xl:[300px] ">
-          <img src={Logo} alt="logo" />
+          <Link to={"/"}>
+            <img src={Logo} alt="logo" />
+          </Link>
         </div>
 
-        <div className="relative flex justify-center gap-[7rem] font-medium">
+        <div className="relative flex flex-wrap justify-center gap-[7rem] font-medium">
           <div className="relative text-[1.4rem] text-black/60">
             <h2 className="text-[2rem] font-medium mb-5 text-black">General</h2>
-            <p className="mb-2 cursor-pointer">Home</p>
-            <p className="mb-2 cursor-pointer">About Us</p>
-            <p className="cursor-pointer">Contact us</p>
+            <p className="mb-2 cursor-pointer">
+              <Link to={"/"}>Home</Link>
+            </p>
+            <p className="mb-2 cursor-pointer">
+              <Link to={"/about"}> About Us</Link>
+            </p>
+            <p className="cursor-pointer">
+              <Link to={"/contact"}>Contact us</Link>
+            </p>
           </div>
           <div className="relative text-[1.4rem] text-black/60 font-medium">
             <h2 className="text-[2rem] font-medium mb-5 text-black">
@@ -39,7 +47,7 @@ const Footer = () => {
           </h2>
           <p className="flex items-center gap-3 mb-3 ext-[1.5rem]">
             <Icon className="text-[2rem]" icon="solar:phone-bold" />
-            <span>+91-9940465655</span>
+            <span>+91-7502919281</span>
           </p>
           <p className="flex items-center gap-3  mb-4 ext-[1.5rem]">
             <Icon className="text-[2rem]" icon="fluent:mail-16-filled" />

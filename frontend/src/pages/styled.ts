@@ -109,3 +109,7 @@ export const ProductListContainer = styled.div`
 
 }
 `;
+
+export const CategoryContainer = styled.div`
+  
+`;

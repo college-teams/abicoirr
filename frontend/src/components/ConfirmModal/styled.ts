@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-
 export const Wrapper = styled.div`
   position: fixed;
   left: 0%;
@@ -20,14 +19,13 @@ const OpacityAnimation = keyframes`
   }
 `;
 
-
 export const ConfirmationContainer = styled.div`
   position: relative;
   background: var(--white-color);
-  width: auto;
+  max-width: 500px;
   height: auto;
   max-height: 650px;
-  overflow-y:overlay;
+  overflow-y: overlay;
   overflow-x: hidden;
   border-radius: 4px;
   padding: 2rem 3rem;
@@ -48,5 +46,4 @@ export const Backdrop = styled.div`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 2000;
-
 `;

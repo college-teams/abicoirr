@@ -45,6 +45,10 @@ export const RedirectCard = styled.div`
   @media (max-width: 1024px) {
     width: 80%;
   }
+
+  @media (max-width: 500px) {
+    width: 95%;
+  }
 `;
 
 export const RedirectLink = styled.div`
@@ -75,8 +79,12 @@ export const RedirectLink = styled.div`
     }
 
     @media (max-width: 500px) {
-      height: 80%;
+      height: 95%;
     }
+  }
+
+  @media (max-width: 500px) {
+    height: 50px;
   }
 `;
 

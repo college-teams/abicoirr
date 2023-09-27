@@ -15,9 +15,18 @@ export const CardContainer = styled.div`
     height: 250px;
   }
 
-  @media screen and (max-width: 450px) {
-    width: 100%;
+  @media screen and (max-width: 500px) {
+    width: 160px;
     height: 180px;
+  }
+
+  @media screen and (max-width: 390px) {
+    width: 135px;
+    height: 180px;
+  }
+
+  @media screen and (max-width: 330px) {
+    width: 60%;
   }
 `;
 

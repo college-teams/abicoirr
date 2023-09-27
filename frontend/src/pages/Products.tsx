@@ -71,15 +71,40 @@ const Products = () => {
       {loading && <GifLoader />}
 
       <div className="relative mt-[8rem]">
-        <div className="relative w-[95%] m-auto">
+        <div className="relative w-full lg:w-[95%] m-auto">
           <img
             className="relative w-full h-full object-cover"
             src={PageImg}
             alt="productPageImg"
           />
         </div>
-        <div className="flex gap-20 w-[90%] mt-[6rem] mb-[6rem] mx-auto">
 
+        <div className="relative flex flex-col flex-wrap gap-10  mt-[4rem] px-14 lg:hidden">
+          <div className="relative flex gap-x-12 gap-y-8 flex-wrap justify-center items-center">
+            {categoryLists &&
+              categoryLists.map((e, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="relative flex items-center justify-center flex-col"
+                  >
+                    <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
+                      <img
+                        className="relative h-full w-full object-cover"
+                        src={e.imagePath}
+                        alt={e.categoryName}
+                      />
+                    </div>
+                    <div className="relative break-words font-semibold text-2xl text-center w-[100px]">
+                      {e.categoryName}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+
+        <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto">
           <div className="w-[20%] sticky top-[8rem]  h-screen  hidden lg:block ">
             <p className="relative text-[2.6rem] font-semibold mb-[4rem]">
               Categories
@@ -91,7 +116,7 @@ const Products = () => {
                     key={index}
                     className="flex justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6"
                   >
-                    <span>{e.categoryName}</span>
+                    <span className="relative w-[80%]">{e.categoryName}</span>
                     <span>{Math.round(Math.random() * 16 + 20)}</span>
                   </div>
                 ))}
@@ -105,10 +130,7 @@ const Products = () => {
             <ProductListContainer className="">
               {Array.from({ length: 3 }).map((_, repetitionIndex) =>
                 tempPopularProducts.map((e, i) => (
-                  <Card
-                    key={repetitionIndex + "" + i}
-                    {...e}
-                  />
+                  <Card key={repetitionIndex + "" + i} {...e} />
                 ))
               )}
             </ProductListContainer>

@@ -4,11 +4,16 @@ export const LatestProductsContainer = styled.div`
   position: relative;
   width: 75%;
   margin: 0 auto;
-  padding: 1rem 2rem 5rem 2rem;
+  padding: 0rem 2rem 12rem 2rem;
   height: auto;
 
   @media screen and (max-width: 1280px) {
     width: 85%;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0rem 2rem 8rem 2rem;
   }
 `;
 

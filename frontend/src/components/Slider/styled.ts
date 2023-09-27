@@ -12,21 +12,21 @@ const imageScale = keyframes`
 
 export const SwiperSlider = styled(SwiperSlide)`
   position: relative;
-  display: flex;
+  /* display: flex; */
   width: 100%;
-  /* height: 85vh; */
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+  /* align-items: center;
+  justify-content: center; */
   background-color: #000000;
 
   img {
     position: relative;
     width: 100%;
     height: 100%;
-    background-position: center;
-    background-size: contain;
+    background-position: center center;
+    background-size:contain;
     background-repeat: no-repeat;
-    object-fit: cover;
+    /* object-fit: contain; */
   }
 `;
 

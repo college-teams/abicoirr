@@ -87,14 +87,14 @@ export const Icons = styled.div`
   .dropdown {
     &:before {
       content: " ";
-      top: -21px;
+      top: -23px;
       display: block;
       height: 20px;
-      left: 45%;
+      right: 0px;
       position: absolute;
       border-color: transparent transparent #fff transparent;
       border-style: solid;
-      border-width: 11px;
+      border-width: 12px;
     }
   }
 `;

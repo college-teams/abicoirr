@@ -78,8 +78,8 @@ export interface CategoryList extends Category {
 export interface Category {
   categoryName: string;
   categoryDescription: string;
-  imagePath: string;
-  imageKey: string;
+  imagePath?: string;
+  imageKey?: string;
 }
 
 export interface Link {

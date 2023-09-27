@@ -34,8 +34,8 @@ const Contacts = () => {
 
   return (
     <React.Fragment>
-      <div className="mt-[14rem] mb-[5rem] flex flex-col items-center justify-center">
-        <div className="relative mb-8">
+      <div className="mt-[14rem] mb-[5rem] flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="relative mb-8 px-10 sm:px-0">
           <p className="relative text-black text-[1.8rem] text-center font-normal mb-2">
             Let us know how we can help and we’ll get right back to you.
           </p>

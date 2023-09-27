@@ -138,7 +138,7 @@ const ProductDetail = () => {
             </span>
           </p>
         </div>
-        <div className="w-[70%] mx-auto">
+        <div className="w-[90%] mx-auto">
           {/* <Carousel
 
             additionalTransfrom={0}

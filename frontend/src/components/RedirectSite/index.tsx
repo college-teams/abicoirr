@@ -1,4 +1,3 @@
-import React from "react";
 import { CloseIcon, RedirectCard, RedirectCardWrapper, RedirectLink } from "./styled";
 import Amazon from "../../assets/amazon.png";
 import Flipkart from "../../assets/flipkart.png";

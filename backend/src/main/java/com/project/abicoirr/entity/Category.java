@@ -27,10 +27,10 @@ public class Category extends CommonEntity {
   @Lob
   private String categoryDescription;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String imagePath;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String imageKey;
 
   @JsonIgnore

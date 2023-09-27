@@ -4,10 +4,14 @@ export const CategoryWrapper = styled.div`
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 4rem;
+  column-gap: 5rem;
+  row-gap: 4rem;
   padding: 8rem 5rem;
-  align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    padding: 6rem 2.5rem;
+  }
 `;
 
 export const CategoryListContainer = styled.div`
@@ -59,8 +63,15 @@ export const CategoryName = styled.p`
   font-size: 1.8rem;
   cursor: pointer;
   transition: all 0.2s;
+  text-align: center;
+  width: 150px;
+  margin-top: 1rem;
 
   &:hover {
     color: var(--light-green);
+  }
+
+  @media screen and (max-width:768px){
+  width: 100px;
   }
 `;

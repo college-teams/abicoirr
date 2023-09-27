@@ -92,7 +92,7 @@ const Navbar = () => {
           <Icons>
             <Icon className="auth" icon="ph:user" onClick={handleDropdown} />
             {showDropDown && (
-              <div className="dropdown absolute  w-[200px] top-[4rem] bg-white shadow-xl border rounded-lg">
+              <div className="dropdown absolute right-0  w-[180px] top-[4rem] bg-white shadow-xl border rounded-lg">
                 <ul className="relative text-[1.5rem] w-full">
                   <Link to={"/admin"}>
                     <li
