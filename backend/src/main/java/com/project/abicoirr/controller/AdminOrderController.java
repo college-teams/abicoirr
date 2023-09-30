@@ -41,7 +41,7 @@ public class AdminOrderController {
 
   @PostMapping("/")
   public ResponseEntity<ApiResponse<AdminOrderResponse>> addAdminOrder(
-      @Valid @RequestBody CreateAdminOrderRequest createAdminOrderRequest) {
+      @Valid @RequestBody CreateAdminOrderRequest createAdminOrderRequest) throws BaseException {
     return new ResponseEntity<>(
         adminOrderService.addAdminOrder(createAdminOrderRequest), HttpStatus.OK);
   }
