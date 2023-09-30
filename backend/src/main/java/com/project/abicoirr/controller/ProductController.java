@@ -31,9 +31,10 @@ public class ProductController {
 
   @PostMapping("/")
   public ResponseEntity<ApiResponse<ProductResponse>> addProduct(
-          @Valid @RequestBody CreateProductRequest createProductRequest) throws BaseException {
+      @Valid @RequestBody CreateProductRequest createProductRequest) throws BaseException {
     return new ResponseEntity<>(productService.addProduct(createProductRequest), HttpStatus.OK);
   }
+
   @DeleteMapping("/delete-product/{id}")
   public String deleteProductById(@PathVariable("id") Long productId) {
     productServiceImpl.deleteProductById(productId);

@@ -28,7 +28,11 @@ public class CreateProductRequest {
   @NotNull private List<ProductImage> images = new ArrayList<>();
   @NotNull private List<ExternalLinks> links = new ArrayList<>();
 
-  public static Product from(CreateProductRequest createProductRequest, Category category,List<ProductImage> images,List<ExternalLinks> links) {
+  public static Product from(
+      CreateProductRequest createProductRequest,
+      Category category,
+      List<ProductImage> images,
+      List<ExternalLinks> links) {
     Product product = new Product();
     product.setCategory(category);
     product.setProductName(createProductRequest.getProductName());

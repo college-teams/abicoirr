@@ -45,16 +45,16 @@ public class ProductService {
   public ApiResponse<ProductResponse> addProduct(CreateProductRequest createProductRequest)
       throws BaseException {
 
-
     Category category = categoryService.getCategoryById(createProductRequest.getCategoryId());
     List<ProductImage> images = createProductRequest.getImages();
     List<ExternalLinks> links = createProductRequest.getLinks();
-    Product product = CreateProductRequest.from(createProductRequest, category,images,links);
+    Product product = CreateProductRequest.from(createProductRequest, category, images, links);
     productRepository.save(product);
 
     ProductResponse productResponse = ProductResponse.from(product);
     return new ApiResponse<>(PRODUCT_CREATED, AbstractResponse.StatusType.SUCCESS, productResponse);
   }
+
   public Product getProductById(Long id) throws BaseException {
     Optional<Product> product = productRepository.findById(id);
 
