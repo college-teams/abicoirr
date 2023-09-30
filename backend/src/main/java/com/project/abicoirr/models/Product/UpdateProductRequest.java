@@ -7,4 +7,4 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateProductRequest {}
+public class UpdateProductRequest extends CreateProductRequest {}

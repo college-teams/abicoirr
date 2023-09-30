@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   deleteCategoryImage,
+  deleteFile,
   getCategoryById,
   saveCategory,
   updateCategory,
@@ -87,7 +88,13 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
 
     try {
       startLoading("/deleteCategoryImage");
-      const res = await deleteCategoryImage(api, getValues().id, imageKey);
+      let res;
+      if(getValues().id) {
+         res = await deleteCategoryImage(api, getValues().id, imageKey);
+      } else {
+         res = await deleteFile(api, imageKey);
+      }
+     
       if (!res || !isApiError(res)) {
         setFileResponse(null);
         showToast("Image successfully removed from the database", "success");
@@ -233,13 +240,13 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
 
                   <div className="relative flex flex-col mb-6">
                     <label
-                      htmlFor="password"
+                      htmlFor="Description"
                       className="relative text-[1.5rem] font-semibold mb-2"
                     >
                       Description*
                     </label>
                     <textarea
-                      id="password"
+                      id="Description"
                       placeholder="Description.."
                       {...register("categoryDescription", {
                         required: "CategoryDescription is required",

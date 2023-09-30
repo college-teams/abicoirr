@@ -5,8 +5,11 @@ import {
   CategoryList,
   ContactDetails,
   ContactDetailsList,
+  CreateProductRequest,
   FileResponse,
   MessageCount,
+  Product,
+  UpdateProductRequest,
 } from "./Admin";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -67,6 +70,12 @@ export type UploadFile = (
   entityKey: string
 ) => Promise<FileResponse | ApiError>;
 
+export type UploadFiles = (
+  api: AxiosInstance,
+  file: File[],
+  entityKey: string
+) => Promise<FileResponse[] | ApiError>;
+
 export type DeleteFile = (
   api: AxiosInstance,
   imageKey: string
@@ -91,5 +100,36 @@ export type DeleteCategory = (
 export type DeleteCategoryImage = (
   api: AxiosInstance,
   id: number,
+  imageKey: string
+) => Promise<void | ApiError>;
+
+export type GetProductList = (
+  api: AxiosInstance
+) => Promise<Product[] | ApiError>;
+
+export type GetProductById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<Product | ApiError>;
+
+export type DeleteProduct = (
+  api: AxiosInstance,
+  id: number
+) => Promise<void | ApiError>;
+
+export type SaveProduct = (
+  api: AxiosInstance,
+  data: CreateProductRequest
+) => Promise<Product | ApiError>;
+
+export type UpdateProduct = (
+  api: AxiosInstance,
+  id: number,
+  data: UpdateProductRequest
+) => Promise<Product | ApiError>;
+
+export type DeleteProductImage = (
+  api: AxiosInstance,
+  productId:number,
   imageKey: string
 ) => Promise<void | ApiError>;

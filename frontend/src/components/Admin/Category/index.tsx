@@ -53,7 +53,7 @@ const Category = () => {
       const res = await deleteCategory(api, categoryId);
 
       if (!res || !isApiError(res)) {
-        showToast("Contact details deleted successfully", "success");
+        showToast("Category deleted successfully", "success");
         fetchCategoryList();
       }
     } finally {

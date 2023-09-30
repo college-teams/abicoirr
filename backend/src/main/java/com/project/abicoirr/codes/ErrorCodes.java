@@ -32,6 +32,9 @@ public class ErrorCodes extends StatusCodes {
   public static final StatusCodes PRODUCT_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "PRODUCT_NOT_FOUND");
 
+  public static final StatusCodes PRODUCT_IMAGE_NOT_FOUND =
+      new ErrorCodes(404, HttpStatus.NOT_FOUND, "PRODUCT_IMAGE_NOT_FOUND");
+
   public ErrorCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }

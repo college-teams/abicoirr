@@ -129,12 +129,14 @@ export const MobileDeviceNavContainer = styled.div`
 `;
 
 export const MenuBarLayout = styled.div<{ isOpen: boolean }>`
+  display: none;
+
   animation: ${({ isOpen }) => (isOpen ? scrollDown : scrollUp)} 0.4s
     ease-in-out forwards;
 
-  display: none;
   @media screen and (max-width: 500px) {
     display: flex;
+  transform: translateY(-100%);
   }
 `;
 
@@ -147,7 +149,6 @@ export const Backdrop = styled.div`
   background: rgba(0, 0, 0, 0.5);
   z-index: 100;
   overflow: hidden;
-
 
   &::-webkit-scrollbar {
     display: none;

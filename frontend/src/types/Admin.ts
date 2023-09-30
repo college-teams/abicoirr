@@ -65,8 +65,36 @@ export interface Product {
   minOrder: number;
   maxOrder: number;
   avgRating: number;
-  images: string[];
-  links: Link[];
+  images: ProductImages[];
+  links: ExternalLinks[];
+}
+
+export interface ProductImages {
+  imagePath: string;
+  isPrimary: boolean;
+  imageKey: string;
+}
+
+export type ECommercePlatformName = "AMAZON" | "FLIPKART" | "MEESHO"|"Other";
+
+export interface ExternalLinks {
+  link: string;
+  platformName: ECommercePlatformName;
+}
+
+export interface CreateProductRequest {
+  categoryId: number;
+  productName: string;
+  productDescription: string;
+  price: number;
+  discountPercent: number;
+  stockQuantity: number;
+  images: ProductImages[];
+  links: ExternalLinks[];
+}
+
+export interface UpdateProductRequest extends CreateProductRequest {
+  id?: number;
 }
 
 export interface CategoryList extends Category {

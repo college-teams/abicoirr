@@ -2,6 +2,7 @@ package com.project.abicoirr.models.Product;
 
 import com.project.abicoirr.entity.*;
 import com.project.abicoirr.entity.Product;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,13 @@ public class CreateProductRequest {
   @NotNull private float price;
   private float discountPercent;
   @NotNull private int stockQuantity;
-  @NotNull private int minOrder;
-  @NotNull private int maxOrder;
-  @NotNull private float avgRating;
-  @NotNull private List<ProductImage> images = new ArrayList<>();
-  @NotNull private List<ExternalLinks> links = new ArrayList<>();
+  private int minOrder;
+  private int maxOrder;
+  private float avgRating;
+  @NotEmpty private List<ProductImage> images = new ArrayList<>();
+  @NotEmpty private List<ExternalLinks> links = new ArrayList<>();
 
-  public static Product from(
-      CreateProductRequest createProductRequest,
-      Category category,
-      List<ProductImage> images,
-      List<ExternalLinks> links) {
+  public static Product from(CreateProductRequest createProductRequest, Category category) {
     Product product = new Product();
     product.setCategory(category);
     product.setProductName(createProductRequest.getProductName());
@@ -43,8 +40,6 @@ public class CreateProductRequest {
     product.setMaxOrder(createProductRequest.getMaxOrder());
     product.setMinOrder(createProductRequest.getMinOrder());
     product.setAvgRating(createProductRequest.getAvgRating());
-    product.setImages(createProductRequest.getImages());
-    product.setLinks(createProductRequest.getLinks());
 
     return product;
   }

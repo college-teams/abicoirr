@@ -7,17 +7,24 @@ import {
   DeleteCategory,
   DeleteCategoryImage,
   DeleteFile,
+  DeleteProduct,
+  DeleteProductImage,
   GetAdminOrders,
   GetCategoryById,
   GetCategoryList,
   GetContactDetailList,
   GetContactDetailsById,
+  GetProductById,
+  GetProductList,
   GetUnReadMessageCount,
   HttpMethod,
   SaveCategory,
   SaveContactDetails,
+  SaveProduct,
   UpdateCategory,
+  UpdateProduct,
   UploadFile,
+  UploadFiles,
 } from "../types/Api";
 import {
   AdminOrderResponseData,
@@ -27,6 +34,7 @@ import {
   ContactDetailsList,
   FileResponse,
   MessageCount,
+  Product,
 } from "../types/Admin";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -163,7 +171,6 @@ export const saveContactDetails: SaveContactDetails = async (api, data) => {
   );
 };
 
-
 export const getUnReadMessageCount: GetUnReadMessageCount = async (api) => {
   return makeRequest<MessageCount>(
     api,
@@ -238,7 +245,7 @@ export const deleteCategoryImage: DeleteCategoryImage = async (
   return makeRequest<void>(
     api,
     `/category/${categoryId}/image`,
-    "deleteFile",
+    "deleteCategoryImage",
     "Error occurred while deleting category image",
     "DELETE",
     null,
@@ -271,6 +278,34 @@ export const uploadFile: UploadFile = async (api, file, entityKey) => {
   );
 };
 
+export const uploadFiles: UploadFiles = async (api, files, entityKey) => {
+  const formData = new FormData();
+
+  // Append each file to the FormData object
+  files.forEach((file) => {
+    formData.append(`files`, file);
+  });
+
+  const headers: HeadersInit = {
+    "content-type": "multipart/form-data",
+  };
+
+  const params = {
+    entityKey: entityKey,
+  };
+
+  return makeRequest<FileResponse[]>(
+    api,
+    `/file/bulk-upload`,
+    "uploadFiles",
+    "Error occurred while uploading files to the server",
+    "POST",
+    formData,
+    params,
+    headers
+  );
+};
+
 export const deleteFile: DeleteFile = async (api, imageKey) => {
   const params = {
     imageKey,
@@ -280,6 +315,79 @@ export const deleteFile: DeleteFile = async (api, imageKey) => {
     `/file`,
     "deleteFile",
     "Error occurred while deleting file",
+    "DELETE",
+    null,
+    params
+  );
+};
+
+// Products
+export const getProductList: GetProductList = async (api) => {
+  return makeRequest<Product[]>(
+    api,
+    "/products/",
+    "getProductList",
+    "Error occurred while fetching product list",
+    "GET"
+  );
+};
+
+export const getProductById: GetProductById = async (api, id) => {
+  return makeRequest<Product>(
+    api,
+    `/products/${id}`,
+    "getProductById",
+    "Error occurred while fetching product details",
+    "GET"
+  );
+};
+
+export const saveProduct: SaveProduct = async (api, data) => {
+  return makeRequest<Product>(
+    api,
+    `/products/`,
+    "saveProduct",
+    "Error occurred while adding product details",
+    "POST",
+    data
+  );
+};
+
+export const updateProduct: UpdateProduct = async (api, id, data) => {
+  return makeRequest<Product>(
+    api,
+    `/products/${id}`,
+    "updateProduct",
+    "Error occurred while updating product details",
+    "PUT",
+    data
+  );
+};
+
+export const deleteProduct: DeleteProduct = async (api, id) => {
+  return makeRequest<void>(
+    api,
+    `/products/${id}`,
+    "deleteProduct",
+    "Error occurred while deleting product details",
+    "DELETE"
+  );
+};
+
+
+export const deleteProductImage: DeleteProductImage = async (
+  api,
+  productId,
+  imageKey
+) => {
+  const params = {
+    imageKey,
+  };
+  return makeRequest<void>(
+    api,
+    `/products/${productId}}/image`,
+    "deleteProductImage",
+    "Error occurred while deleting product image",
     "DELETE",
     null,
     params

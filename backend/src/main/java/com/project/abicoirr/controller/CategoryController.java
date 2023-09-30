@@ -44,7 +44,8 @@ public class CategoryController {
   @PostMapping("/")
   public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(
       @Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
-    return new ResponseEntity<>(categoryService.addCategory(createCategoryRequest), HttpStatus.OK);
+    return new ResponseEntity<>(
+        categoryService.addCategory(createCategoryRequest), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

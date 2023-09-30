@@ -24,6 +24,7 @@ const Navbar = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
   const [menubarOpen, setMenubarOpen] = useState(false);
+
   const [isLoggedIn] = useState(true);
   const dispatch = useAppDispatch();
 
@@ -141,7 +142,9 @@ const Navbar = () => {
 
         <MobileDeviceNavContainer className="relative flex items-center justify-between w-full px-[5rem]">
           <Icon
-            onClick={() => setMenubarOpen(true)}
+            onClick={() => {
+              setMenubarOpen(true)
+            }}
             icon="material-symbols:menu"
             className="relative h-[30px] w-[30px] cursor-pointer"
           />

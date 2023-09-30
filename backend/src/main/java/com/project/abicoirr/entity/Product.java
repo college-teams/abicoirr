@@ -1,7 +1,14 @@
 package com.project.abicoirr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,13 +43,13 @@ public class Product extends CommonEntity {
   @Column(nullable = false)
   private int stockQuantity;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private int minOrder;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private int maxOrder;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private float avgRating;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
