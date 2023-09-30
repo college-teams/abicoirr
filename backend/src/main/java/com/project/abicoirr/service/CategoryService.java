@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,7 +73,10 @@ public class CategoryService {
 
   public ApiResponse deleteCategory(Long categoryId) throws BaseException {
     Category categoryData = getCategoryById(categoryId);
-    deleteImage(categoryData.getImageKey());
+    if (StringUtils.isNotBlank(categoryData.getImageKey())) {
+      deleteImage(categoryData.getImageKey());
+    }
+
     categoryRepository.delete(categoryData);
     return new ApiResponse<>(CATEGORY_DELETE_SUCCESS, StatusType.SUCCESS);
   }
@@ -121,7 +125,9 @@ public class CategoryService {
     try {
       Category category = getCategoryById(categoryId);
 
-      deleteImage(key);
+      if (StringUtils.isNotBlank(key)) {
+        deleteImage(key);
+      }
 
       category.setImageKey(null);
       category.setImagePath(null);

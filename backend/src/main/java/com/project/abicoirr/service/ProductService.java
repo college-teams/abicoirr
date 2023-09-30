@@ -113,7 +113,9 @@ public class ProductService {
     Product product = getProductById(productId);
 
     for (ProductImage e : product.getImages()) {
-      deleteImage(e.getImageKey());
+      if (!Util.isEmpty(e.getImageKey())) {
+        deleteImage(e.getImageKey());
+      }
     }
 
     productRepository.delete(product);
@@ -128,7 +130,11 @@ public class ProductService {
       if (productImage.isEmpty()) {
         throw new BaseException(PRODUCT_IMAGE_NOT_FOUND);
       }
-      deleteImage(key);
+
+      if (!Util.isEmpty(key)) {
+        deleteImage(key);
+      }
+
       productImageRepository.delete(productImage.get());
     } catch (Exception ex) {
       log.error("Error ", ex);

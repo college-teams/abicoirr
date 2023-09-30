@@ -26,7 +26,7 @@ public class CreateProductRequest {
   private int minOrder;
   private int maxOrder;
   private float avgRating;
-  @NotEmpty private List<ProductImage> images = new ArrayList<>();
+  private List<ProductImage> images = new ArrayList<>();
   @NotEmpty private List<ExternalLinks> links = new ArrayList<>();
 
   public static Product from(CreateProductRequest createProductRequest, Category category) {

@@ -55,7 +55,7 @@ const SaveProductDetails = ({
     null
   );
   const [seletedCategoryName, setSeletedCategoryName] = useState<string>("");
-  const [fileResponse, setFileResponse] = useState<FileResponse[]>([]);
+  const [fileResponses, setFileResponses] = useState<FileResponse[]>([]);
 
   const {
     register,
@@ -98,7 +98,7 @@ const SaveProductDetails = ({
 
         const res = await uploadFiles(api, files, "product");
         if (!isApiError(res)) {
-          setFileResponse((pre) => [...pre, ...res]);
+          setFileResponses((pre) => [...pre, ...res]);
           showToast("Images uploaded successfully", "success");
         }
       } finally {
@@ -128,11 +128,12 @@ const SaveProductDetails = ({
       }
 
       if (!res || !isApiError(res)) {
-        setFileResponse(fileResponse.filter((e) => e.imageKey !== imageKey));
+        const images = fileResponses.filter((e) => e.imageKey !== imageKey);
+        setFileResponses(images);
         showToast("Image successfully removed from the database", "success");
+        setFileDirty(images.length > 0);
       }
     } finally {
-      setFileDirty(false);
       endLoading("/deleteProductImage");
     }
   };
@@ -154,7 +155,7 @@ const SaveProductDetails = ({
 
   const resetForm = () => {
     setFileDirty(false);
-    setFileResponse([]);
+    setFileResponses([]);
     setValue("links", []);
     reset();
     setSeletedCategoryId(null);
@@ -168,7 +169,7 @@ const SaveProductDetails = ({
   ): Promise<void> => {
     if (!data.links || data.links.length <= 0) {
       setError("links", {
-        message: "Shop links is requires",
+        message: "Shop links is required",
       });
       return;
     } else {
@@ -188,7 +189,7 @@ const SaveProductDetails = ({
 
     data.categoryId = seletedCategoryId;
     const images: ProductImages[] =
-      fileResponse?.map(
+      fileResponses?.map(
         (e) =>
           ({ imageKey: e.imageKey, imagePath: e.imagePath } as ProductImages)
       ) || [];
@@ -232,10 +233,10 @@ const SaveProductDetails = ({
                   imageKey: images[i]["imageKey"],
                 });
               }
-              setFileResponse(imageResponse);
+              setFileResponses(imageResponse);
               setValue("images", images);
             } else {
-              setFileResponse([]);
+              setFileResponses([]);
             }
             break;
           }
@@ -244,6 +245,7 @@ const SaveProductDetails = ({
             const category = categoryList.filter(
               (e) => e.id == data["category"].id
             );
+
             if (category && category.length > 0) {
               setSeletedCategoryId(category[0].id);
               setSeletedCategoryName(category[0].categoryName);
@@ -258,7 +260,7 @@ const SaveProductDetails = ({
         }
       });
     },
-    [setValue]
+    [setValue, categoryList]
   );
 
   const fetchCategoryList = async () => {
@@ -313,9 +315,10 @@ const SaveProductDetails = ({
     if (selectedId) {
       fetchProductDetailsById(selectedId);
     }
-  }, [selectedId]);
+  }, [selectedId, open]);
 
-  console.log(watch(), seletedCategoryName);
+  // console.log(watch(), seletedCategoryName, categoryList);
+  watch();
 
   const modalContent = (
     <Wrapper>
@@ -465,6 +468,7 @@ const SaveProductDetails = ({
                       <input
                         id="stockQuantity"
                         type="number"
+                        min={0}
                         placeholder="Stock Quantity"
                         {...register("stockQuantity", {
                           required: "StockQuantity is required",
@@ -493,6 +497,8 @@ const SaveProductDetails = ({
                     <input
                       id="discountPercent"
                       type="number"
+                      min={0}
+                      max={100}
                       placeholder="Discount Percent"
                       {...register("discountPercent")}
                       className={`relative border-2 border-gray-300 font-medium  py-2 w-[85%] px-4 outline-none text-[1.4rem] rounded-md`}
@@ -504,7 +510,6 @@ const SaveProductDetails = ({
                     </span>
                   </div>
 
-                  {/* START */}
                   <div className="relative flex flex-col mb-6">
                     <label
                       className="relative text-[1.5rem] font-semibold mb-2"
@@ -531,7 +536,18 @@ const SaveProductDetails = ({
                                 value: true,
                                 message: "Link is required field",
                               },
+                              pattern: {
+                                value:
+                                  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+                                message: "Please enter a valid URL",
+                              },
                             })}
+                            onChange={(e) => {
+                              trigger("links");
+                              const newValue = e.target.value;
+                              setValue(`links.${index}.link`, newValue);
+                              clearErrors(`links`);
+                            }}
                             placeholder="Enter the shop link"
                             className={`relative border-2 border-gray-300 font-medium w-full  py-3 px-4 outline-none text-[1.2rem] rounded-md`}
                           />
@@ -598,15 +614,13 @@ const SaveProductDetails = ({
                     )}
                   </div>
 
-                  {/* END */}
-
                   <div className="relative font-medium text-[2rem] mb-[2rem]">
                     Images
                   </div>
 
                   <div className="relative flex gap-8 flex-wrap">
-                    {fileResponse &&
-                      fileResponse.map((fileResponse, i) => (
+                    {fileResponses &&
+                      fileResponses.map((fileResponse, i) => (
                         <div
                           key={i}
                           className="relative flex  gap-2 items-center"
