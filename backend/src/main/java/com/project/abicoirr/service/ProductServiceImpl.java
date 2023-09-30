@@ -28,13 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl {
 
   @Autowired private ProductRepository productRepo;
   @Autowired private CategoryService categoryService;
   @Autowired private AwsService awsService;
 
-  @Override
   @Transactional
   public Product saveProduct(Product product) throws BaseException {
     List<ProductImage> images = product.getImages();
@@ -63,8 +62,6 @@ public class ProductServiceImpl implements ProductService {
     return savedProduct;
   }
 
-  @Override
-  @Transactional
   public void deleteProductById(Long productId) {
     Product product = getProductById(productId);
 
@@ -85,7 +82,6 @@ public class ProductServiceImpl implements ProductService {
     productRepo.delete(product);
   }
 
-  @Override
   public Product getProductById(Long productId) {
     Optional<Product> product = productRepo.findById(productId);
 
@@ -94,7 +90,6 @@ public class ProductServiceImpl implements ProductService {
     return product.get();
   }
 
-  @Override
   @Transactional
   public Product updateProductById(Long productId, Product product) {
     Product existingProduct = getProductById(productId);
@@ -165,17 +160,14 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
-  @Override
   public List<Product> getAllProducts() {
     return productRepo.findAll();
   }
 
-  @Override
   public List<Product> searchProduct(String keyword) {
     return productRepo.findByProductNameContainingIgnoreCase(keyword);
   }
 
-  @Override
   public List<Product> getProductsFromSameCategory(Long productId) {
     Product product = getProductById(productId);
 
@@ -188,7 +180,6 @@ public class ProductServiceImpl implements ProductService {
     return productRepo.findByCategory(category);
   }
 
-  @Override
   public ApiResponse<?> uploadImage(Long productId, List<MultipartFile> multipartFiles)
       throws BaseException {
 
@@ -255,7 +246,6 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
-  @Override
   public ApiResponse<?> deleteImage(String key) throws BaseException {
     try {
       awsService.deleteFile(key);

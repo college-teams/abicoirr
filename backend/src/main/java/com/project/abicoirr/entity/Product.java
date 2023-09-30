@@ -1,12 +1,7 @@
 package com.project.abicoirr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,13 +20,29 @@ public class Product extends CommonEntity {
   @JoinColumn(name = "categoryId")
   private Category category;
 
+  @Column(nullable = false)
   private String productName;
+
+  @Column(nullable = false, columnDefinition = "LONGTEXT")
+  @Lob
   private String productDescription;
+
+  @Column(nullable = false)
   private float price;
+
+  @Column(nullable = true)
   private float discountPercent;
+
+  @Column(nullable = false)
   private int stockQuantity;
+
+  @Column(nullable = false)
   private int minOrder;
+
+  @Column(nullable = false)
   private int maxOrder;
+
+  @Column(nullable = false)
   private float avgRating;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
