@@ -102,15 +102,15 @@ const Navbar = () => {
             </NavLogoWrapper>
           </Link>
           <NavLinks>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/products">Products</Link>
-            </li>
-            <li>
-              <Link to="/contact">Contact us</Link>
-            </li>
+            <Link to="/">
+              <li>Home</li>
+            </Link>
+            <Link to="/products">
+              <li>Products</li>
+            </Link>
+            <Link to="/contact">
+              <li>Contact us</li>
+            </Link>
           </NavLinks>
           <Icons>
             <Icon className="auth" icon="ph:user" onClick={handleDropdown} />
@@ -143,7 +143,7 @@ const Navbar = () => {
         <MobileDeviceNavContainer className="relative flex items-center justify-between w-full px-[5rem]">
           <Icon
             onClick={() => {
-              setMenubarOpen(true)
+              setMenubarOpen(true);
             }}
             icon="material-symbols:menu"
             className="relative h-[30px] w-[30px] cursor-pointer"

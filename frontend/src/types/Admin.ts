@@ -71,7 +71,7 @@ export interface Product {
 
 export interface ProductImages {
   imagePath: string;
-  isPrimary: boolean;
+  isPrimary?: boolean;
   imageKey: string;
 }
 

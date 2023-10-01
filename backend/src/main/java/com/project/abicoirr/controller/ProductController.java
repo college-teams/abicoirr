@@ -79,12 +79,6 @@ public class ProductController {
         productService.uploadImage(productId, multipartFiles), HttpStatus.OK);
   }
 
-  @GetMapping("/getProduct-byCategory/{id}")
-  public List<Product> getProductsFromSameCategory(@PathVariable("id") Long productId)
-      throws BaseException {
-    return productService.getProductsFromSameCategory(productId);
-  }
-
   @GetMapping("/search-product")
   public List<Product> searchProduct(@RequestParam String keyword) {
     return productService.searchProduct(keyword);

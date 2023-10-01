@@ -222,18 +222,6 @@ public class ProductService {
     return productRepository.findByProductNameContainingIgnoreCase(keyword);
   }
 
-  public List<Product> getProductsFromSameCategory(Long productId) throws BaseException {
-    Product product = getProductById(productId);
-
-    if (product == null) throw new RuntimeException("Product not found");
-
-    Category category = product.getCategory();
-
-    if (category == null) throw new RuntimeException("Product does not have a Category");
-
-    return productRepository.findByCategory(category);
-  }
-
   public Product getProductById(Long id) throws BaseException {
     Optional<Product> product = productRepository.findById(id);
 

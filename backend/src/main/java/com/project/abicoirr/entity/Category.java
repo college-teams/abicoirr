@@ -30,10 +30,10 @@ public class Category extends CommonEntity {
   @Column(nullable = true)
   private String imagePath;
 
-  @Column(nullable = true)
+  @Column(nullable = true, unique = true)
   private String imageKey;
 
   @JsonIgnore
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Product> images = new ArrayList<>();
+  private List<Product> products = new ArrayList<>();
 }

@@ -12,6 +12,7 @@ import {
   GetAdminOrders,
   GetCategoryById,
   GetCategoryList,
+  GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
   GetProductById,
@@ -253,6 +254,27 @@ export const deleteCategoryImage: DeleteCategoryImage = async (
   );
 };
 
+export const getCategoryProducts: GetCategoryProducts = async (
+  api,
+  categoryId,
+  limit,
+  excludedProductIds = []
+) => {
+  const params = {
+    limit,
+    excludedProductIds: excludedProductIds.join(","),
+  };
+  return makeRequest<Product[]>(
+    api,
+    `/category/${categoryId}/products`,
+    "getCategoryList",
+    "Error occurred while fetching category list",
+    "GET",
+    null,
+    params
+  );
+};
+
 // File
 export const uploadFile: UploadFile = async (api, file, entityKey) => {
   const formData = new FormData();
@@ -373,7 +395,6 @@ export const deleteProduct: DeleteProduct = async (api, id) => {
     "DELETE"
   );
 };
-
 
 export const deleteProductImage: DeleteProductImage = async (
   api,

@@ -4,18 +4,15 @@ import static com.project.abicoirr.codes.ErrorCodes.CATEGORY_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.EMPTY_FILE_REQUEST;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
-import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_CREATED;
-import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_DELETE_SUCCESS;
-import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_LIST_FETCHED;
-import static com.project.abicoirr.codes.SuccessCodes.CATEGORY_UPDATED;
-import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
-import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.*;
 
 import com.project.abicoirr.entity.Category;
+import com.project.abicoirr.entity.Product;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Category.CategoryResponse;
 import com.project.abicoirr.models.Category.CreateCategoryRequest;
 import com.project.abicoirr.models.Category.UpdateCategoryRequest;
+import com.project.abicoirr.models.Product.ProductResponse;
 import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.AbstractResponse.StatusType;
 import com.project.abicoirr.models.response.ApiResponse;
@@ -23,6 +20,7 @@ import com.project.abicoirr.repository.CategoryRepository;
 import com.project.abicoirr.util.Util;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +87,30 @@ public class CategoryService {
     }
 
     return category.get();
+  }
+
+  public ApiResponse<List<ProductResponse>> getProductsByCategory(
+      Long categoryId, int limit, List<Long> excludedProductIds) throws BaseException {
+    Category category = getCategoryById(categoryId);
+
+    List<Product> products = category.getProducts();
+
+    // Apply exclusion logic
+    if (!excludedProductIds.isEmpty()) {
+      products =
+          products.parallelStream()
+              .filter(product -> !excludedProductIds.contains(product.getId()))
+              .collect(Collectors.toList());
+    }
+
+    if (limit > 0) {
+      limit = products.size() > limit ? limit : products.size();
+      products = products.subList(0, limit);
+    }
+
+    List<ProductResponse> productResponses = ProductResponse.from(products);
+    return new ApiResponse<>(
+        PRODUCT_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, productResponses);
   }
 
   public ApiResponse<?> uploadImage(Long categoryId, MultipartFile multipartFile)

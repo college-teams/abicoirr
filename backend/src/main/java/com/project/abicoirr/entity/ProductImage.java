@@ -22,7 +22,7 @@ public class ProductImage extends CommonEntity {
 
   private Boolean isPrimary;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String imageKey;
 
   @ManyToOne

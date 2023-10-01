@@ -11,7 +11,7 @@ import {
 } from "./styled";
 import RedirectSite from "../RedirectSite";
 
-const Card = ({ name, price, image, buttonText, classNames }: CardProps) => {
+const Card = ({ id,name, externalSites,price, image, buttonText, classNames }: CardProps) => {
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
 
@@ -20,7 +20,7 @@ const Card = ({ name, price, image, buttonText, classNames }: CardProps) => {
       <CardContainer
         className={classNames}
         onClick={() => {
-          navigate("/products/1");
+          navigate(`/products/${id}`);
         }}
       >
         <CardImageContainer>
@@ -44,7 +44,7 @@ const Card = ({ name, price, image, buttonText, classNames }: CardProps) => {
         </CardDetailsContainer>
       </CardContainer>
 
-      <RedirectSite open={redirect} close={() => setRedirect(false)} />
+      <RedirectSite externalSites={externalSites} open={redirect} close={() => setRedirect(false)} />
     </React.Fragment>
   );
 };

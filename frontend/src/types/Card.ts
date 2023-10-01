@@ -1,8 +1,11 @@
+import { ExternalLinks } from "./Admin";
+
 export interface CardProps{
+    id:number
     name:string;
     image: string;
-    price: string;
+    price: number;
     buttonText: string;
-    buttonRedirectLink?: string;
     classNames?: string;
+    externalSites: ExternalLinks[];
 }

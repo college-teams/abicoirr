@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { CategoryList } from "../../types/Admin";
 import {
   CategoryListContainer,
@@ -11,11 +12,19 @@ interface CategoryProps {
 }
 
 const Category = (props: CategoryProps) => {
+  const navigate = useNavigate();
+  const navigationHandler = (categoryId: number): void => {
+    navigate(`/products?categoryId=${categoryId}`);
+  };
+
   return (
     <CategoryWrapper>
       {props.content.map((e, index) => {
         return (
-          <CategoryListContainer key={index}>
+          <CategoryListContainer
+            onClick={() => navigationHandler(e.id)}
+            key={index}
+          >
             <CategoryImageContainer>
               <img
                 className="relative h-full w-full object-cover"
@@ -23,7 +32,9 @@ const Category = (props: CategoryProps) => {
                 alt={e.categoryName}
               />
             </CategoryImageContainer>
-            <CategoryName className="font-semibold">{e.categoryName}</CategoryName>
+            <CategoryName className="font-semibold">
+              {e.categoryName}
+            </CategoryName>
           </CategoryListContainer>
         );
       })}

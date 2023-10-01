@@ -133,3 +133,10 @@ export type DeleteProductImage = (
   productId:number,
   imageKey: string
 ) => Promise<void | ApiError>;
+
+export type GetCategoryProducts = (
+  api: AxiosInstance,
+  categoryId:number,
+  limit?:number,
+  excludedProductIds?:number[]
+) => Promise<Product[] | ApiError>;

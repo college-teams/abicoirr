@@ -4,9 +4,11 @@ import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Category.CategoryResponse;
 import com.project.abicoirr.models.Category.CreateCategoryRequest;
 import com.project.abicoirr.models.Category.UpdateCategoryRequest;
+import com.project.abicoirr.models.Product.ProductResponse;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.CategoryService;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,22 @@ public class CategoryController {
   @DeleteMapping("/{id}")
   public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}/products")
+  public ResponseEntity<ApiResponse<List<ProductResponse>>> getProductsByCategory(
+      @PathVariable("id") Long categoryId,
+      @RequestParam(defaultValue = "0", required = false) int limit,
+      @RequestParam(required = false) List<Long> excludedProductIds)
+      throws BaseException {
+
+    // Check if excludedProductIds is null, if so, initialize an empty list
+    if (excludedProductIds == null) {
+      excludedProductIds = Collections.emptyList();
+    }
+    return new ResponseEntity<>(
+        categoryService.getProductsByCategory(categoryId, limit, excludedProductIds),
+        HttpStatus.OK);
   }
 
   @Deprecated

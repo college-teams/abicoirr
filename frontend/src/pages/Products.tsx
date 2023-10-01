@@ -1,54 +1,28 @@
-import Product1 from "../assets/card3.jpg";
-import Product2 from "../assets/card4.jpg";
-import Product3 from "../assets/card5.jpg";
-import Product4 from "../assets/card6.jpg";
-import Product5 from "../assets/card7.jpeg";
-import { CardProps } from "../types/Card";
+import NoImage from "../assets/noImage.png";
 import PageImg from "../assets/productsPageImg.jpeg";
+import AllCategory from "../assets/card3.jpg";
 import Card from "../components/Card";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
-import { getCategoryList } from "../api";
+import { getCategoryList, getCategoryProducts, getProductList } from "../api";
 import { isApiError } from "../types/Api";
 import { useEffect, useState } from "react";
 import GifLoader from "../components/Loader/GifLoader";
-import { CategoryList } from "../types/Admin";
+import { CategoryList, Product } from "../types/Admin";
 import { CategoryListContainer, ProductListContainer } from "./styled";
-
-const tempPopularProducts: CardProps[] = [
-  {
-    name: "Coco peat",
-    image: Product1,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "Wet coco peat",
-    image: Product2,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "dry coco peat",
-    image: Product3,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "wet with dry peat",
-    image: Product4,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  { name: "product5", image: Product5, price: "20.00", buttonText: "Shop now" },
-];
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Products = () => {
   const api = useAPI();
   const [loading, startLoading, endLoading] = useLoadingIndicator();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const categoryId = searchParams.get("categoryId");
 
   // States
   const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
+  const [productList, setProductList] = useState<Product[]>([]);
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -62,9 +36,49 @@ const Products = () => {
     }
   };
 
+  const fetchProductList = async () => {
+    startLoading("/getProductList");
+    try {
+      const res = await getProductList(api);
+      if (!isApiError(res)) {
+        setProductList(res);
+      }
+    } finally {
+      endLoading("/getProductList");
+    }
+  };
+
+  const fetchCategoryProductList = async () => {
+    startLoading("/getCategoryProducts");
+    try {
+      const res = await getCategoryProducts(api, Number(categoryId), 0, []);
+      if (!isApiError(res)) {
+        setProductList(res);
+      }
+    } finally {
+      endLoading("/getCategoryProducts");
+    }
+  };
+
+  const handleCategorySelection = (categoryId: number | null = null) => {
+    if (categoryId) {
+      navigate(`/products?categoryId=${categoryId}`);
+    } else {
+      navigate(`/products`);
+    }
+  };
+
   useEffect(() => {
     fetchCategoryList();
   }, []);
+
+  useEffect(() => {
+    if (categoryId) {
+      fetchCategoryProductList();
+    } else {
+      fetchProductList();
+    }
+  }, [categoryId]);
 
   return (
     <div>
@@ -81,12 +95,28 @@ const Products = () => {
 
         <div className="relative flex flex-col flex-wrap gap-10  mt-[4rem] px-14 lg:hidden">
           <div className="relative flex gap-x-12 gap-y-8 flex-wrap justify-center items-center">
+            <div
+              onClick={() => handleCategorySelection()}
+              className="relative flex items-center justify-center flex-col cursor-pointer"
+            >
+              <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
+                <img
+                  className="relative h-full w-full object-cover"
+                  src={AllCategory}
+                  alt={"All categories"}
+                />
+              </div>
+              <div className="relative break-words font-semibold text-2xl text-center w-[100px]">
+                {"All categories"}
+              </div>
+            </div>
             {categoryLists &&
               categoryLists.map((e, index) => {
                 return (
                   <div
                     key={index}
-                    className="relative flex items-center justify-center flex-col"
+                    onClick={() => handleCategorySelection(e.id)}
+                    className="relative flex items-center justify-center flex-col cursor-pointer"
                   >
                     <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
                       <img
@@ -105,16 +135,31 @@ const Products = () => {
         </div>
 
         <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto">
-          <div className="w-[20%] sticky top-[8rem]  h-screen  hidden lg:block ">
+          <div className="w-[20%] sticky top-[8rem] max-h-screen  hidden lg:block ">
             <p className="relative text-[2.6rem] font-semibold mb-[4rem]">
               Categories
             </p>
             <CategoryListContainer className="border-r-2 pr-12">
+              <div
+                onClick={() => handleCategorySelection()}
+                className={`flex ${
+                  !Number(categoryId || 0) ? "font-semibold text-black/100" : ""
+                } justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6`}
+              >
+                <span className="relative w-[80%]">{"All categories"}</span>
+                <span>{productList.length}</span>
+              </div>
+
               {categoryLists &&
                 categoryLists.map((e, index) => (
                   <div
+                    onClick={() => handleCategorySelection(e.id)}
                     key={index}
-                    className="flex justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6"
+                    className={`flex ${
+                      e.id == Number(categoryId || 0)
+                        ? "font-semibold text-black/100"
+                        : ""
+                    } justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6`}
                   >
                     <span className="relative w-[80%]">{e.categoryName}</span>
                     <span>{Math.round(Math.random() * 16 + 20)}</span>
@@ -125,14 +170,25 @@ const Products = () => {
 
           <div className="relative flex-1">
             <p className="relative text-[1.4rem] mb-8 font-medium text-black/60 mt-[5rem]">
-              Showing all 52 result(s)
+              Showing all {productList.length} result(s)
             </p>
             <ProductListContainer className="">
-              {Array.from({ length: 3 }).map((_, repetitionIndex) =>
-                tempPopularProducts.map((e, i) => (
-                  <Card key={repetitionIndex + "" + i} {...e} />
-                ))
-              )}
+              {productList.map((e, i) => {
+                const image =
+                  e.images.length > 0 ? e.images[0].imagePath : NoImage;
+                return (
+                  <Card
+                    key={i}
+                    id={e.id}
+                    name={e.productName}
+                    price={e.price}
+                    image={image}
+                    externalSites={e.links}
+                    buttonText={"Shop now"}
+                    
+                  />
+                );
+              })}
             </ProductListContainer>
           </div>
         </div>

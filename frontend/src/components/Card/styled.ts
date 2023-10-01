@@ -2,9 +2,14 @@ import styled from "styled-components";
 
 export const CardContainer = styled.div`
   position: relative;
-  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 325px;
+  /* height: 250px; */
   width: 250px;
   cursor: pointer;
+  border: 2px dotted #cbc911;
 
   @media screen and (max-width: 1300px) {
     width: 240px;
@@ -12,6 +17,10 @@ export const CardContainer = styled.div`
 
   @media screen and (max-width: 1200px) {
     width: 200px;
+    height: 325px;
+  }
+
+  @media screen and (max-width: 1000px) {
     height: 250px;
   }
 
@@ -45,18 +54,15 @@ export const CardImageContainer = styled.div`
     background-repeat: no-repeat;
     object-fit: cover;
   }
-
-  @media screen and (max-width: 450px) {
-    /* height: 120px; */
-  }
 `;
 
 export const CardDetailsContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border-right: 2px dotted #cbc911;
-  border-left: 2px dotted #cbc911;
+  justify-content: space-between;
+  /* border-right: 2px dotted #cbc911;
+  border-left: 2px dotted #cbc911; */
 `;
 
 export const CardName = styled.p`
