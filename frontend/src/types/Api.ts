@@ -107,6 +107,18 @@ export type GetProductList = (
   api: AxiosInstance
 ) => Promise<Product[] | ApiError>;
 
+export type GetLatestProductList = (
+  api: AxiosInstance,
+  limit?:number,
+) => Promise<Product[] | ApiError>;
+
+
+export type GetPopularProductList = (
+  api: AxiosInstance,
+  limit?:number,
+) => Promise<Product[] | ApiError>;
+
+
 export type GetProductById = (
   api: AxiosInstance,
   id: number

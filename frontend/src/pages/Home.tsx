@@ -13,9 +13,13 @@ import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
 import { useEffect, useState } from "react";
 import { isApiError } from "../types/Api";
-import { getCategoryList } from "../api";
+import {
+  getCategoryList,
+  getLatestProductList,
+  getPopularProductList,
+} from "../api";
 import GifLoader from "../components/Loader/GifLoader";
-import { CategoryList } from "../types/Admin";
+import { CategoryList, Product } from "../types/Admin";
 
 const Home = () => {
   const api = useAPI();
@@ -23,6 +27,8 @@ const Home = () => {
 
   // States
   const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
+  const [latestProductList, setLatestProductList] = useState<Product[]>([]);
+  const [popularProductList, setPopularProductList] = useState<Product[]>([]);
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -36,8 +42,34 @@ const Home = () => {
     }
   };
 
+  const fetchPopularProductList = async () => {
+    startLoading("/getPopularProductList");
+    try {
+      const res = await getPopularProductList(api);
+      if (!isApiError(res)) {
+        setPopularProductList(res);
+      }
+    } finally {
+      endLoading("/getPopularProductList");
+    }
+  };
+
+  const fetchLatestProductList = async () => {
+    startLoading("/getLatestProductList");
+    try {
+      const res = await getLatestProductList(api);
+      if (!isApiError(res)) {
+        setLatestProductList(res);
+      }
+    } finally {
+      endLoading("/getLatestProductList");
+    }
+  };
+
   useEffect(() => {
     fetchCategoryList();
+    fetchLatestProductList();
+    fetchPopularProductList();
   }, []);
 
   return (
@@ -46,9 +78,9 @@ const Home = () => {
 
       <Slider content={HomeSlideContents} />
       <Category content={categoryLists} />
-      <LatestProducts />
+      <LatestProducts latestProductList={latestProductList} />
       <Location />
-      <PopularProducts />
+      <PopularProducts PopularProductList={popularProductList} />
       <div className="relative flex flex-col items-center justify-center">
         {/* <img className="object-contain  bg-fixed" src={CocoBg} alt="CocoBg" /> */}
         <div

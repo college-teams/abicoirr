@@ -50,6 +50,12 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes PRODUCT_LIST_FETCHED =
       new SuccessCodes(200, HttpStatus.OK, "PRODUCT_LIST_FETCHED");
 
+  public static final StatusCodes LATEST_PRODUCT_LIST_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "LATEST_PRODUCT_LIST_FETCHED");
+
+  public static final StatusCodes POPULAR_PRODUCT_LIST_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "POPULAR_PRODUCT_LIST_FETCHED");
+
   public static final StatusCodes PRODUCT_CREATED =
       new SuccessCodes(200, HttpStatus.CREATED, "PRODUCT_CREATED");
 

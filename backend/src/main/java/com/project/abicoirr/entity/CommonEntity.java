@@ -32,7 +32,7 @@ public abstract class CommonEntity {
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
-  protected LocalDateTime createAt;
+  protected LocalDateTime createdAt;
 
   @UpdateTimestamp
   @Column(name = "updated_at", updatable = true, nullable = false)

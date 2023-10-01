@@ -14,13 +14,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Product extends CommonEntity {
 
   @ManyToOne
@@ -51,6 +53,9 @@ public class Product extends CommonEntity {
 
   @Column(nullable = true)
   private float avgRating;
+
+  @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+  private long viewCount = 0;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ProductImage> images = new ArrayList<>();

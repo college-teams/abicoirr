@@ -5,12 +5,7 @@ import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_IMAGE_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_NOT_FOUND;
-import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
-import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
-import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_CREATED;
-import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_DELETE_SUCCESS;
-import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_LIST_FETCHED;
-import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_UPDATED;
+import static com.project.abicoirr.codes.SuccessCodes.*;
 
 import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.entity.ExternalLinks;
@@ -34,6 +29,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,7 +46,7 @@ public class ProductService {
 
   public ApiResponse<ProductResponse> getProduct(Long productId) throws BaseException {
     Product productData = getProductById(productId);
-
+    updateViewCount(productData);
     ProductResponse product = ProductResponse.from(productData);
     return new ApiResponse<>(PRODUCT_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, product);
   }
@@ -59,6 +56,24 @@ public class ProductService {
     List<ProductResponse> productList = ProductResponse.from(products);
     return new ApiResponse<>(
         PRODUCT_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, productList);
+  }
+
+  public ApiResponse<List<ProductResponse>> getLatestProductList(int limit) {
+    PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+    List<Product> products = productRepository.findAll(pageRequest).getContent();
+
+    List<ProductResponse> productList = ProductResponse.from(products);
+    return new ApiResponse<>(
+        LATEST_PRODUCT_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, productList);
+  }
+
+  public ApiResponse<List<ProductResponse>> getMostPopularProductList(int limit) {
+    PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "viewCount"));
+    List<Product> products = productRepository.findAll(pageRequest).getContent();
+
+    List<ProductResponse> productList = ProductResponse.from(products);
+    return new ApiResponse<>(
+        POPULAR_PRODUCT_LIST_FETCHED, AbstractResponse.StatusType.SUCCESS, productList);
   }
 
   @Transactional
@@ -277,5 +292,10 @@ public class ProductService {
         existingProduct.getLinks().add(updatedLink);
       }
     }
+  }
+
+  private void updateViewCount(Product product) {
+    product.setViewCount(product.getViewCount() + 1);
+    productRepository.save(product);
   }
 }

@@ -474,7 +474,7 @@ const SaveProductDetails = ({
                           required: "StockQuantity is required",
                           pattern: {
                             value: /^\d+$/,
-                            message: "Please enter a valid price",
+                            message: "Please enter a valid stock quantity",
                           },
                         })}
                         className={`relative border-2 border-gray-300 font-medium  py-2 px-4 outline-none text-[1.4rem] rounded-md`}
@@ -500,7 +500,12 @@ const SaveProductDetails = ({
                       min={0}
                       max={100}
                       placeholder="Discount Percent"
-                      {...register("discountPercent")}
+                      {...register("discountPercent", {
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "Please enter a valid discount price",
+                        },
+                      })}
                       className={`relative border-2 border-gray-300 font-medium  py-2 w-[85%] px-4 outline-none text-[1.4rem] rounded-md`}
                     />
                     <span className="relative text-red-600 font-medium mt-2">
