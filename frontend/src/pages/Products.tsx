@@ -121,7 +121,7 @@ const Products = () => {
                     <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
                       <img
                         className="relative h-full w-full object-cover"
-                        src={e.imagePath}
+                        src={e.imagePath || NoImage}
                         alt={e.categoryName}
                       />
                     </div>
@@ -185,7 +185,6 @@ const Products = () => {
                     image={image}
                     externalSites={e.links}
                     buttonText={"Shop now"}
-                    
                   />
                 );
               })}

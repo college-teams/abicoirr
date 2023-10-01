@@ -6,6 +6,7 @@ import {
   CategoryWrapper,
   CategoryName,
 } from "./styled";
+import NoImage from "../../assets/noImage.png";
 
 interface CategoryProps {
   content: CategoryList[];
@@ -28,7 +29,7 @@ const Category = (props: CategoryProps) => {
             <CategoryImageContainer>
               <img
                 className="relative h-full w-full object-cover"
-                src={e.imagePath}
+                src={e.imagePath || NoImage}
                 alt={e.categoryName}
               />
             </CategoryImageContainer>
