@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.abicoirr.entity.Category;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.project.abicoirr.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +24,7 @@ public class CategoryResponse {
   private String categoryDescription;
   private String imagePath;
   private String imageKey;
+  private long count;
 
   public static List<CategoryResponse> from(List<Category> categories) {
     return categories.stream().map(CategoryResponse::from).collect(Collectors.toList());
@@ -34,6 +37,7 @@ public class CategoryResponse {
         .categoryDescription(category.getCategoryDescription())
         .imagePath(category.getImagePath())
         .imageKey(category.getImageKey())
+        .count(category.getProducts().size())
         .build();
   }
 }
