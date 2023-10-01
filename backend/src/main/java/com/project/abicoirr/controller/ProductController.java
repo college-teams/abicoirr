@@ -42,6 +42,18 @@ public class ProductController {
     return new ResponseEntity<>(productService.getProductList(), HttpStatus.OK);
   }
 
+  @GetMapping("/latest-products")
+  public ResponseEntity<ApiResponse<List<ProductResponse>>> getLatestProductList(
+      @RequestParam(defaultValue = "100") int limit) {
+    return new ResponseEntity<>(productService.getLatestProductList(limit), HttpStatus.OK);
+  }
+
+  @GetMapping("/popular-products")
+  public ResponseEntity<ApiResponse<List<ProductResponse>>> getPopularProductList(
+      @RequestParam(defaultValue = "100") int limit) {
+    return new ResponseEntity<>(productService.getMostPopularProductList(limit), HttpStatus.OK);
+  }
+
   @PostMapping("/")
   public ResponseEntity<ApiResponse<ProductResponse>> addProduct(
       @Valid @RequestBody CreateProductRequest createProductRequest) throws BaseException {

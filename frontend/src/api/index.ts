@@ -15,6 +15,8 @@ import {
   GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
+  GetLatestProductList,
+  GetPopularProductList,
   GetProductById,
   GetProductList,
   GetUnReadMessageCount,
@@ -410,6 +412,42 @@ export const deleteProductImage: DeleteProductImage = async (
     "deleteProductImage",
     "Error occurred while deleting product image",
     "DELETE",
+    null,
+    params
+  );
+};
+
+export const getLatestProductList: GetLatestProductList = async (
+  api,
+  limit = 4
+) => {
+  const params = {
+    limit,
+  };
+  return makeRequest<Product[]>(
+    api,
+    "/products/latest-products",
+    "getLatestProductList",
+    "Error occurred while fetching latest product list",
+    "GET",
+    null,
+    params
+  );
+};
+
+export const getPopularProductList: GetPopularProductList = async (
+  api,
+  limit = 4
+) => {
+  const params = {
+    limit,
+  };
+  return makeRequest<Product[]>(
+    api,
+    "/products/popular-products",
+    "getPopularProductList",
+    "Error occurred while fetching most popular product list",
+    "GET",
     null,
     params
   );

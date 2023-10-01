@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +32,7 @@ public abstract class CommonEntity {
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
-  protected LocalDateTime createAt;
+  protected LocalDateTime createdAt;
 
   @UpdateTimestamp
   @Column(name = "updated_at", updatable = true, nullable = false)
