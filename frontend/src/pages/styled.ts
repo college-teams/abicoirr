@@ -104,12 +104,29 @@ export const ProductListContainer = styled.div`
   }
 
   @media screen and (max-width: 450px) {
-    margin: 0 auto;;
+    margin: 0 auto;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-
-}
+  }
 `;
 
-export const CategoryContainer = styled.div`
-  
+export const CategoryContainer = styled.div``;
+
+export const SubImagesContainer = styled.div`
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px rgb(94, 94, 94);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--light-green);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #086108;
+  }
 `;

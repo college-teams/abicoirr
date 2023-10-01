@@ -40,8 +40,8 @@ const RedirectSite = ({ open, close, externalSites }: PropType) => {
             contact if incase any queries?
           </p>
         ) : (
-          externalSites?.map((e) => (
-            <RedirectLink onClick={() => redirectHandler(e.link)}>
+          externalSites?.map((e,i) => (
+            <RedirectLink key={i} onClick={() => redirectHandler(e.link)}>
               {getEcommerceShopImage(e.platformName)}
             </RedirectLink>
           ))

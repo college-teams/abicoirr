@@ -9,18 +9,18 @@ import { getCategoryProducts, getProductById } from "../api";
 import { useAPI } from "../hooks/useApi";
 import { isApiError } from "../types/Api";
 import { Product, ProductImages } from "../types/Admin";
+import { SubImagesContainer } from "./styled";
 
 const ProductDetail = () => {
   const api = useAPI();
   const { productId } = useParams();
 
-  console.log(productId);
   const [loading, startLoading, endLoading] = useLoadingIndicator();
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
   const [product, setProduct] = useState<Product>();
   const [relatedProductList, setRelatedProductList] = useState<Product[]>([]);
-  const [primaryImage, setPrimaryImage] = useState<ProductImages>();
+  const [primaryImage, setPrimaryImage] = useState<ProductImages | null>();
 
   const fetchProductDetails = async () => {
     startLoading("/getProductById");
@@ -28,8 +28,11 @@ const ProductDetail = () => {
       const res = await getProductById(api, Number(productId));
       if (!isApiError(res)) {
         setProduct(res);
-        const { imageKey, imagePath } = res.images[0];
-        handleImageChangehandler(imageKey, imagePath);
+        if (res.images.length > 0) {
+          const { imageKey, imagePath } = res.images[0];
+          handleImageChangehandler(imageKey, imagePath);
+        }
+
         fetchCategoryProductList(res.category.id);
       } else {
         navigate(`/products`);
@@ -59,6 +62,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (productId) {
+      setPrimaryImage(null);
       fetchProductDetails();
     }
   }, [productId]);
@@ -69,7 +73,7 @@ const ProductDetail = () => {
       <div className="relative mt-[14rem]">
         <div className="relative flex w-[90%] mx-auto  mlg:gap-[5rem] gap-[7rem] mb-20 flex-col mlg:flex-row ">
           <div className="relative flex-1 ">
-            <div className="h-[200px] w-full sm:h-[250px]  lg:w-[600px] lg:h-[300px] xl:h-[400px]  mb-8">
+            <div className="h-[200px] w-full sm:h-[250px]  lg:w-[600px] lg:h-[300px] xl:h-[400px]  mb-8 border">
               <img
                 src={primaryImage?.imagePath || NoImage}
                 alt={product?.productName}
@@ -77,26 +81,29 @@ const ProductDetail = () => {
               />
             </div>
 
-            <div className="relative flex gap-5 justify-center  mlg:w-[500px] w-full overflow-x-auto no-scrollbar">
-              {product?.images.map((e) => {
-                if (e.imageKey !== primaryImage?.imageKey) {
-                  return (
-                    <div
-                      className="relative h-[7rem] w-[8rem] cursor-pointer"
-                      onClick={() =>
-                        handleImageChangehandler(e.imageKey, e.imagePath)
-                      }
-                    >
-                      <img
-                        src={e.imagePath}
-                        alt={e.imageKey}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
+            <SubImagesContainer className="relative flex justify-center mx-auto max-w-[500px] w-full">
+              <div className="flex gap-5 justify-center">
+                {product?.images.map((e, i) => {
+                  if (e.imageKey !== primaryImage?.imageKey) {
+                    return (
+                      <div
+                        key={i}
+                        className="relative h-[7rem] w-[8rem] cursor-pointer"
+                        onClick={() =>
+                          handleImageChangehandler(e.imageKey, e.imagePath)
+                        }
+                      >
+                        <img
+                          src={e.imagePath}
+                          alt={e.imageKey}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </SubImagesContainer>
           </div>
           <div className="flex-1">
             <p className="relative text-center mlg:text-left text-[1.4rem] xl:text-[1.6rem] mb-6 ">
