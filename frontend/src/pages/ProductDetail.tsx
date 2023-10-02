@@ -81,26 +81,28 @@ const ProductDetail = () => {
               />
             </div>
 
-            <SubImagesContainer className="relative flex justify-center mx-auto max-w-[500px] w-full">
+            <SubImagesContainer className="relative flex  mx-auto max-w-[500px] w-full">
               <div className="flex gap-5 justify-center">
                 {product?.images.map((e, i) => {
-                  if (e.imageKey !== primaryImage?.imageKey) {
-                    return (
-                      <div
-                        key={i}
-                        className="relative h-[7rem] w-[8rem] cursor-pointer"
-                        onClick={() =>
-                          handleImageChangehandler(e.imageKey, e.imagePath)
-                        }
-                      >
-                        <img
-                          src={e.imagePath}
-                          alt={e.imageKey}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                    );
-                  }
+                  return (
+                    <div
+                      key={i}
+                      className={`relative h-[7rem] w-[8rem] cursor-pointer ${
+                        e.imageKey === primaryImage?.imageKey
+                          ? "border-[3px] border-yellow-600 "
+                          : ""
+                      }`}
+                      onClick={() =>
+                        handleImageChangehandler(e.imageKey, e.imagePath)
+                      }
+                    >
+                      <img
+                        src={e.imagePath}
+                        alt={e.imageKey}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  );
                 })}
               </div>
             </SubImagesContainer>
@@ -108,11 +110,15 @@ const ProductDetail = () => {
           <div className="flex-1">
             <p className="relative text-center mlg:text-left text-[1.4rem] xl:text-[1.6rem] mb-6 ">
               Avaliability :{" "}
-              <span>
-                {product?.stockQuantity || 0 > 0 ? "In stock" : "Out Of Stock"}
+              <span className="relative font-semibold">
+                {product?.stockQuantity || 0 > 0 ? (
+                  <span className="relative text-green-600">In stock</span>
+                ) : (
+                  <span className="relative text-red-600">Out Of Stock 😔</span>
+                )}
               </span>
             </p>
-            <p className="relative uppercase text-[2rem] xl:text-[2.5rem] mb-6 font-medium  text-center mlg:text-left">
+            <p className="relative uppercase text-[2rem] xl:text-[3rem] mb-6 font-medium  text-center mlg:text-left">
               {product?.productName}
             </p>
             <p className="relative mb-6 text-[1.6rem]  xl:text-[1.8rem] text-center mlg:text-left">
@@ -128,7 +134,11 @@ const ProductDetail = () => {
             </p>
             <div className="mb-10 mlg:mb-8 w-[50%] sm:w-[30%] lg:w-[60%] xl:w-[40%] mx-auto mlg:ml-0">
               <button
-                className="relative bg-[#008000] w-full py-4 text-white text-[1.6rem]"
+                className={`relative bg-[#008000] w-full py-4 text-white text-[1.6rem] ${
+                  (product?.stockQuantity || 0) <= 0
+                    ? "pointer-events-none bg-gray-400"
+                    : ""
+                }`}
                 onClick={() => setRedirect(true)}
               >
                 Shop now
@@ -234,6 +244,7 @@ const ProductDetail = () => {
                       name={e.productName}
                       price={e.price}
                       image={image}
+                      stockQuantity={e.stockQuantity}
                       externalSites={e.links}
                       buttonText="Shop now"
                     />

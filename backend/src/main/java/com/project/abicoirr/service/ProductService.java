@@ -5,7 +5,14 @@ import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_IMAGE_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_NOT_FOUND;
-import static com.project.abicoirr.codes.SuccessCodes.*;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.LATEST_PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.POPULAR_PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_CREATED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_DELETE_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_UPDATED;
 
 import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.entity.ExternalLinks;

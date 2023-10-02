@@ -26,7 +26,7 @@ export const CardContainer = styled.div`
 
   @media screen and (max-width: 500px) {
     width: 160px;
-    height: 180px;
+    height: 200px;
   }
 
   @media screen and (max-width: 390px) {
@@ -53,6 +53,10 @@ export const CardImageContainer = styled.div`
     background-size: contain;
     background-repeat: no-repeat;
     object-fit: cover;
+  }
+
+  @media screen and (max-width: 390px) {
+    height: 55%;
   }
 `;
 
@@ -93,4 +97,10 @@ export const CardButton = styled.button`
   font-size: 1.4rem;
   font-weight: 400;
   padding: 1rem;
+
+  &:disabled {
+    background-color: rgba(203,201,17,0.5);
+    pointer-events: none;
+    cursor: not-allowed;
+  }
 `;

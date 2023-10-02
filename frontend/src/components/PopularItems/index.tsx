@@ -104,6 +104,7 @@ const PopularProducts = ({PopularProductList}:PopularProductsProps) => {
                 price={e.price}
                 image={image}
                 externalSites={e.links}
+                stockQuantity={e.stockQuantity}
                 buttonText="Shop now"
               />
             );

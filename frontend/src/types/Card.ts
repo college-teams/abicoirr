@@ -7,5 +7,6 @@ export interface CardProps{
     price: number;
     buttonText: string;
     classNames?: string;
+    stockQuantity?:number;
     externalSites: ExternalLinks[];
 }

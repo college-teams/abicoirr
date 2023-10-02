@@ -99,6 +99,7 @@ export interface UpdateProductRequest extends CreateProductRequest {
 
 export interface CategoryList extends Category {
   id: number;
+  count:number;
   version?: number;
   createAt?: string;
   updatedAt?: string;

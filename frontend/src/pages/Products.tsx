@@ -23,6 +23,7 @@ const Products = () => {
   // States
   const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
+  const [totalCategoryProducts, setTotalCategoryProducts] = useState<number>(0);
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -30,6 +31,11 @@ const Products = () => {
       const res = await getCategoryList(api);
       if (!isApiError(res)) {
         setCategoryLists(res);
+        setTotalCategoryProducts(
+          res.reduce((acc, val) => {
+            return acc + val.count;
+          }, 0)
+        );
       }
     } finally {
       endLoading("/getCategoryList");
@@ -143,11 +149,13 @@ const Products = () => {
               <div
                 onClick={() => handleCategorySelection()}
                 className={`flex ${
-                  !Number(categoryId || 0) ? "font-semibold text-black/100" : ""
+                  !Number(categoryId || 0)
+                    ? "font-semibold !text-black/100"
+                    : ""
                 } justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6`}
               >
                 <span className="relative w-[80%]">{"All categories"}</span>
-                <span>{productList.length}</span>
+                <span>{totalCategoryProducts}</span>
               </div>
 
               {categoryLists &&
@@ -155,14 +163,14 @@ const Products = () => {
                   <div
                     onClick={() => handleCategorySelection(e.id)}
                     key={index}
-                    className={`flex ${
+                    className={`flex text-black/60  ${
                       e.id == Number(categoryId || 0)
-                        ? "font-semibold text-black/100"
+                        ? "font-semibold !text-black/100"
                         : ""
-                    } justify-between cursor-pointer text-black/60 hover:text-black text-[1.5rem] font-medium mb-6`}
+                    } justify-between cursor-pointer  hover:text-black text-[1.5rem] font-medium mb-6`}
                   >
                     <span className="relative w-[80%]">{e.categoryName}</span>
-                    <span>{Math.round(Math.random() * 16 + 20)}</span>
+                    <span>{e.count}</span>
                   </div>
                 ))}
             </CategoryListContainer>
@@ -183,6 +191,7 @@ const Products = () => {
                     name={e.productName}
                     price={e.price}
                     image={image}
+                    stockQuantity={e.stockQuantity}
                     externalSites={e.links}
                     buttonText={"Shop now"}
                   />

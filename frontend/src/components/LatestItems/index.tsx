@@ -111,6 +111,7 @@ const LatestProducts = ({ latestProductList }: LatestProductsProps) => {
                 name={e.productName}
                 price={e.price}
                 image={image}
+                stockQuantity={e.stockQuantity}
                 externalSites={e.links}
                 buttonText="Shop now"
               />
