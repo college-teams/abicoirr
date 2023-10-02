@@ -45,7 +45,7 @@ public class AdminOrderService {
   }
 
   public ApiResponse<AdminOrderResponse> addAdminOrder(
-      CreateAdminOrderRequest createAdminOrderRequest) {
+      CreateAdminOrderRequest createAdminOrderRequest) throws BaseException {
 
     List<Product> products = new ArrayList<>();
     for (Long productId : createAdminOrderRequest.getProductIds()) {
@@ -92,7 +92,7 @@ public class AdminOrderService {
     return adminOrder.get();
   }
 
-  private Set<Product> getUpdatedProductSet(List<Long> productIds) {
+  private Set<Product> getUpdatedProductSet(List<Long> productIds) throws BaseException {
     List<Product> products = new ArrayList<>();
     for (Long productId : productIds) {
       Product product = productService.getProductById(productId);
@@ -102,7 +102,8 @@ public class AdminOrderService {
   }
 
   private void updateAdminOrderFields(
-      AdminOrder existingAdminOrder, UpdateAdminOrderRequest updateAdminOrderRequest) {
+      AdminOrder existingAdminOrder, UpdateAdminOrderRequest updateAdminOrderRequest)
+      throws BaseException {
     existingAdminOrder.setUserId(updateAdminOrderRequest.getUserId());
     existingAdminOrder.setOrderStatus(updateAdminOrderRequest.getOrderStatus());
 

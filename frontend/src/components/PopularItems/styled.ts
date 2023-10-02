@@ -4,8 +4,16 @@ export const PopularProductsContainer = styled.div`
   position: relative;
   width: 75%;
   margin: 0 auto;
-  padding: 10rem 2rem;
+  padding: 6rem 2rem;
   height: auto;
+
+  @media screen and (max-width: 1280px) {
+    width: 85%;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const Header = styled.p`

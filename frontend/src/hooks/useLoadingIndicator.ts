@@ -11,7 +11,7 @@ export const useLoadingIndicator = (): [
 
   useEffect(() => {
     setLoading(loaders.size > 0);
-  }, []);
+  }, [loaders]);
 
   const startLoading = (endpoint: string) => {
     setLoaders((pre) => new Set([...pre, endpoint]));

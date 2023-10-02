@@ -73,17 +73,60 @@ export const InfoStepsContainer = styled.div`
 
     margin: 6rem auto;
   }
-
 `;
 
 export const ProductContainer = styled.div`
   position: relative;
 `;
 
-export const SearchBoxWrapper = styled.div`
-  background: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
-  /* background: radial-gradient(circle at 10% 20%, rgb(0, 93, 133) 0%, rgb(0, 181, 149) 90%); */
-  /* background: linear-gradient(107deg, rgb(13, 198, 180) 8.1%, rgb(33, 198, 138) 79.5%); */
-  border: 1px solid #777;
-  opacity: 0.9;
+export const CategoryListContainer = styled.div`
+  position: relative;
+  max-height: 500px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none; /* For Webkit (Chrome, Safari, Edge) */
+  }
+`;
+
+export const ProductListContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  column-gap: 4rem;
+  row-gap: 7rem;
+
+  @media screen and (max-width: 1130px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  @media screen and (max-width: 992px) {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  @media screen and (max-width: 450px) {
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+`;
+
+export const CategoryContainer = styled.div``;
+
+export const SubImagesContainer = styled.div`
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px rgb(94, 94, 94);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--light-green);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #086108;
+  }
 `;

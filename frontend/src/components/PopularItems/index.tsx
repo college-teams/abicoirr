@@ -6,46 +6,19 @@ import {
   ViewButton,
 } from "./styled";
 import { Icon } from "@iconify/react";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { CardProps } from "../../types/Card";
-import Product1 from "../../assets/card3.jpg";
-import Product2 from "../../assets/card4.jpg";
-import Product3 from "../../assets/card5.jpg";
-import Product4 from "../../assets/card6.jpg";
-import Product5 from "../../assets/card7.jpeg";
+import NoImage from "../../assets/noImage.png";
 import Card from "../Card";
 import { useNavigate } from "react-router-dom";
+import { Product } from "../../types/Admin";
 
-const tempPopularProducts: CardProps[] = [
-  {
-    name: "Coco peat",
-    image: Product1,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "Wet coco peat",
-    image: Product2,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "dry coco peat",
-    image: Product3,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "wet with dry peat",
-    image: Product4,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  { name: "product5", image: Product5, price: "20.00", buttonText: "Shop now" },
-];
+type PopularProductsProps = {
+  PopularProductList: Product[];
+};
 
-const PopularProducts = () => {
+
+const PopularProducts = ({PopularProductList}:PopularProductsProps) => {
   const navigate = useNavigate();
 
   const clickHandler = () => {
@@ -61,7 +34,7 @@ const PopularProducts = () => {
         View more <Icon icon="bi:arrow-right" />
       </ViewButton>
       <div className=" mt-20">
-        <Carousel
+        {/* <Carousel
           additionalTransfrom={0}
           arrows
           autoPlay
@@ -118,7 +91,25 @@ const PopularProducts = () => {
           {tempPopularProducts.map((e, i) => (
             <Card key={i} {...e} />
           ))}
-        </Carousel>
+        </Carousel> */}
+
+        <div className="relative flex flex-wrap gap-[3rem] justify-center">
+          {PopularProductList &&  PopularProductList.map((e, i) =>  {
+            const image = e.images.length > 0 ? e.images[0].imagePath : NoImage;
+            return (
+              <Card
+                key={i}
+                id={e.id}
+                name={e.productName}
+                price={e.price}
+                image={image}
+                externalSites={e.links}
+                stockQuantity={e.stockQuantity}
+                buttonText="Shop now"
+              />
+            );
+          })}
+        </div>
       </div>
     </PopularProductsContainer>
   );

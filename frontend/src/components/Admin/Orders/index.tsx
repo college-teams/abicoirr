@@ -7,7 +7,6 @@ import { getAdminOrders } from "../../../api";
 import { useAPI } from "../../../hooks/useApi";
 import { isApiError } from "../../../types/Api";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
-import useToast from "../../../hooks/useToast";
 import { Column } from "react-table";
 import { format } from "date-fns";
 
@@ -15,7 +14,6 @@ const Orders = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [data, setData] = useState<AdminOrderResponseData[]>([]);
   const api = useAPI();
-  const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
   const fetchAdminOrders = async () => {
@@ -24,7 +22,6 @@ const Orders = () => {
       const res = await getAdminOrders(api);
       if (!isApiError(res)) {
         setData(res);
-        showToast("Admin order fetched successfully", "success");
       }
     } finally {
       endLoading("/getAdminOrders");

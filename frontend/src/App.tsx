@@ -9,10 +9,10 @@ import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
-import SearchProduct from "./pages/SearchProduct";
 import { Toaster } from "react-hot-toast";
 import AdminHome from "./pages/AdminHome";
 import { useAppSelector } from "./store/configureStore";
+import About from "./pages/About";
 
 function App() {
   const { isAdmin } = useAppSelector((state) => state.user);
@@ -29,8 +29,8 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="products/:productId" element={<ProductDetail />} />
           <Route path="contact" element={<Contacts />} />
+          <Route path="about" element={<About />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="search" element={<SearchProduct />} />
           <Route path="terms-conditions" element={<TermsConditions />} />
           <Route path="shipping-policy" element={<Shippingpolicy />} />
         </Route>

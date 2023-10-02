@@ -56,7 +56,7 @@ export interface Product {
   version: number;
   createAt: string;
   updatedAt: string;
-  category: GetCategory;
+  category: CategoryList;
   productName: string;
   productDescription: string;
   price: number;
@@ -65,12 +65,41 @@ export interface Product {
   minOrder: number;
   maxOrder: number;
   avgRating: number;
-  images: string[];
-  links: Link[];
+  images: ProductImages[];
+  links: ExternalLinks[];
 }
 
-export interface GetCategory extends Category {
+export interface ProductImages {
+  imagePath: string;
+  isPrimary?: boolean;
+  imageKey: string;
+}
+
+export type ECommercePlatformName = "AMAZON" | "FLIPKART" | "MEESHO"|"Other";
+
+export interface ExternalLinks {
+  link: string;
+  platformName: ECommercePlatformName;
+}
+
+export interface CreateProductRequest {
+  categoryId: number;
+  productName: string;
+  productDescription: string;
+  price: number;
+  discountPercent: number;
+  stockQuantity: number;
+  images: ProductImages[];
+  links: ExternalLinks[];
+}
+
+export interface UpdateProductRequest extends CreateProductRequest {
+  id?: number;
+}
+
+export interface CategoryList extends Category {
   id: number;
+  count:number;
   version?: number;
   createAt?: string;
   updatedAt?: string;
@@ -78,8 +107,8 @@ export interface GetCategory extends Category {
 export interface Category {
   categoryName: string;
   categoryDescription: string;
-  imagePath: string;
-  imageKey: string;
+  imagePath?: string;
+  imageKey?: string;
 }
 
 export interface Link {
@@ -91,8 +120,13 @@ export interface Link {
   platformName: string;
 }
 
-export interface ContactDetails {
+export interface ContactDetailsList extends ContactDetails {
   id: number;
+}
+
+export interface CreateContactDetails extends ContactDetails {}
+
+export interface ContactDetails {
   name: string;
   email: string;
   phoneNumber: string;

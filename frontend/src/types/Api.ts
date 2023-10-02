@@ -1,5 +1,16 @@
 import { AxiosInstance } from "axios";
-import { AdminOrderResponseData, Category, ContactDetails, FileResponse, GetCategory, MessageCount } from "./Admin";
+import {
+  AdminOrderResponseData,
+  Category,
+  CategoryList,
+  ContactDetails,
+  ContactDetailsList,
+  CreateProductRequest,
+  FileResponse,
+  MessageCount,
+  Product,
+  UpdateProductRequest,
+} from "./Admin";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -28,11 +39,16 @@ export type GetAdminOrders = (
 
 export type GetContactDetailList = (
   api: AxiosInstance
-) => Promise<ContactDetails[] | ApiError>;
+) => Promise<ContactDetailsList[] | ApiError>;
 
 export type GetContactDetailsById = (
   api: AxiosInstance,
   id: number
+) => Promise<ContactDetails | ApiError>;
+
+export type SaveContactDetails = (
+  api: AxiosInstance,
+  data: ContactDetails
 ) => Promise<ContactDetails | ApiError>;
 
 export type GetUnReadMessageCount = (
@@ -41,12 +57,12 @@ export type GetUnReadMessageCount = (
 
 export type GetCategoryList = (
   api: AxiosInstance
-) => Promise<GetCategory[] | ApiError>;
+) => Promise<CategoryList[] | ApiError>;
 
 export type GetCategoryById = (
   api: AxiosInstance,
   id: number
-) => Promise<GetCategory | ApiError>;
+) => Promise<CategoryList | ApiError>;
 
 export type UploadFile = (
   api: AxiosInstance,
@@ -54,9 +70,15 @@ export type UploadFile = (
   entityKey: string
 ) => Promise<FileResponse | ApiError>;
 
+export type UploadFiles = (
+  api: AxiosInstance,
+  file: File[],
+  entityKey: string
+) => Promise<FileResponse[] | ApiError>;
+
 export type DeleteFile = (
   api: AxiosInstance,
-  imageKey:string,
+  imageKey: string
 ) => Promise<void | ApiError>;
 
 export type SaveCategory = (
@@ -66,17 +88,67 @@ export type SaveCategory = (
 
 export type UpdateCategory = (
   api: AxiosInstance,
-  id:number,
+  id: number,
   data: Category
 ) => Promise<Category | ApiError>;
 
 export type DeleteCategory = (
   api: AxiosInstance,
-  id:number,
+  id: number
 ) => Promise<void | ApiError>;
 
 export type DeleteCategoryImage = (
   api: AxiosInstance,
-  id:number,
-  imageKey:string,
+  id: number,
+  imageKey: string
 ) => Promise<void | ApiError>;
+
+export type GetProductList = (
+  api: AxiosInstance
+) => Promise<Product[] | ApiError>;
+
+export type GetLatestProductList = (
+  api: AxiosInstance,
+  limit?:number,
+) => Promise<Product[] | ApiError>;
+
+
+export type GetPopularProductList = (
+  api: AxiosInstance,
+  limit?:number,
+) => Promise<Product[] | ApiError>;
+
+
+export type GetProductById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<Product | ApiError>;
+
+export type DeleteProduct = (
+  api: AxiosInstance,
+  id: number
+) => Promise<void | ApiError>;
+
+export type SaveProduct = (
+  api: AxiosInstance,
+  data: CreateProductRequest
+) => Promise<Product | ApiError>;
+
+export type UpdateProduct = (
+  api: AxiosInstance,
+  id: number,
+  data: UpdateProductRequest
+) => Promise<Product | ApiError>;
+
+export type DeleteProductImage = (
+  api: AxiosInstance,
+  productId:number,
+  imageKey: string
+) => Promise<void | ApiError>;
+
+export type GetCategoryProducts = (
+  api: AxiosInstance,
+  categoryId:number,
+  limit?:number,
+  excludedProductIds?:number[]
+) => Promise<Product[] | ApiError>;

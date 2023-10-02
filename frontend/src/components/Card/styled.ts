@@ -2,16 +2,47 @@ import styled from "styled-components";
 
 export const CardContainer = styled.div`
   position: relative;
-  /* height: 400px; */
-  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 325px;
+  /* height: 250px; */
   width: 250px;
   cursor: pointer;
+  border: 2px dotted #cbc911;
+
+  @media screen and (max-width: 1300px) {
+    width: 240px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 200px;
+    height: 325px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    height: 250px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 160px;
+    height: 200px;
+  }
+
+  @media screen and (max-width: 390px) {
+    width: 135px;
+    height: 180px;
+  }
+
+  @media screen and (max-width: 330px) {
+    width: 60%;
+  }
 `;
 
 export const CardImageContainer = styled.div`
   position: relative;
-  /* height: 65%; */
-  height: 250px;
+  height: 150px;
+  height: 60%;
   width: 100%;
 
   img {
@@ -24,12 +55,8 @@ export const CardImageContainer = styled.div`
     object-fit: cover;
   }
 
-  @media screen and (max-width: 1280px) {
-    height: 220px;
-  }
-
-  @media screen and (max-width: 768px) {
-    height: 200px;
+  @media screen and (max-width: 390px) {
+    height: 55%;
   }
 `;
 
@@ -37,8 +64,9 @@ export const CardDetailsContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  border: 2px dashed #cbc911;
+  justify-content: space-between;
+  /* border-right: 2px dotted #cbc911;
+  border-left: 2px dotted #cbc911; */
 `;
 
 export const CardName = styled.p`
@@ -69,4 +97,10 @@ export const CardButton = styled.button`
   font-size: 1.4rem;
   font-weight: 400;
   padding: 1rem;
+
+  &:disabled {
+    background-color: rgba(203,201,17,0.5);
+    pointer-events: none;
+    cursor: not-allowed;
+  }
 `;

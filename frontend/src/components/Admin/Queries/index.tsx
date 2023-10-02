@@ -5,9 +5,8 @@ import { getContactDetailList } from "../../../api";
 import { useAPI } from "../../../hooks/useApi";
 import { isApiError } from "../../../types/Api";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
-import useToast from "../../../hooks/useToast";
-import { ContactDetails } from "../../../types/Admin";
 import { Column } from "react-table";
+import { ContactDetailsList } from "../../../types/Admin";
 
 interface QueriesProps {
   updateUnReadMessageCount: () => Promise<void>;
@@ -15,11 +14,10 @@ interface QueriesProps {
 
 const Queries = ({ updateUnReadMessageCount }: QueriesProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [data, setData] = useState<ContactDetails[]>([]);
+  const [data, setData] = useState<ContactDetailsList[]>([]);
   const [seletedDetails, setSelectedDetails] = useState<number>();
 
   const api = useAPI();
-  const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
   const fetchContactDetailList = async () => {
@@ -28,7 +26,6 @@ const Queries = ({ updateUnReadMessageCount }: QueriesProps) => {
       const res = await getContactDetailList(api);
       if (!isApiError(res)) {
         setData(res);
-        showToast("Contact details list fetched successfully", "success");
       }
     } finally {
       endLoading("/getContactDetailList");
@@ -39,7 +36,7 @@ const Queries = ({ updateUnReadMessageCount }: QueriesProps) => {
     fetchContactDetailList();
   }, []);
 
-  const columns = useMemo<Column<ContactDetails>[]>(
+  const columns = useMemo<Column<ContactDetailsList>[]>(
     () => [
       {
         Header: "Name",

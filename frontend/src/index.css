@@ -69,10 +69,6 @@ body {
   background: #086108;
 }
 
-.mid-size-card {
-  width: 300px !important;
-}
-
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */

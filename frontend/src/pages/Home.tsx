@@ -1,7 +1,6 @@
 import Slider from "../components/Slider";
 import CocoBg from "../assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
-import { CategoryLists } from "../utils/CategoryList";
 import Category from "../components/Category";
 import LatestProducts from "../components/LatestItems";
 import PopularProducts from "../components/PopularItems";
@@ -10,15 +9,78 @@ import Info1 from "../assets/lighter.webp";
 import Info2 from "../assets/green.webp";
 import Info3 from "../assets/smatter.webp";
 import { InfoStepsContainer } from "./styled";
+import { useAPI } from "../hooks/useApi";
+import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
+import { useEffect, useState } from "react";
+import { isApiError } from "../types/Api";
+import {
+  getCategoryList,
+  getLatestProductList,
+  getPopularProductList,
+} from "../api";
+import GifLoader from "../components/Loader/GifLoader";
+import { CategoryList, Product } from "../types/Admin";
 
 const Home = () => {
+  const api = useAPI();
+  const [loading, startLoading, endLoading] = useLoadingIndicator();
+
+  // States
+  const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
+  const [latestProductList, setLatestProductList] = useState<Product[]>([]);
+  const [popularProductList, setPopularProductList] = useState<Product[]>([]);
+
+  const fetchCategoryList = async () => {
+    startLoading("/getCategoryList");
+    try {
+      const res = await getCategoryList(api);
+      if (!isApiError(res)) {
+        setCategoryLists(res);
+      }
+    } finally {
+      endLoading("/getCategoryList");
+    }
+  };
+
+  const fetchPopularProductList = async () => {
+    startLoading("/getPopularProductList");
+    try {
+      const res = await getPopularProductList(api);
+      if (!isApiError(res)) {
+        setPopularProductList(res);
+      }
+    } finally {
+      endLoading("/getPopularProductList");
+    }
+  };
+
+  const fetchLatestProductList = async () => {
+    startLoading("/getLatestProductList");
+    try {
+      const res = await getLatestProductList(api);
+      if (!isApiError(res)) {
+        setLatestProductList(res);
+      }
+    } finally {
+      endLoading("/getLatestProductList");
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoryList();
+    fetchLatestProductList();
+    fetchPopularProductList();
+  }, []);
+
   return (
-    <div>
+    <div className="relative">
+      {loading && <GifLoader />}
+
       <Slider content={HomeSlideContents} />
-      <Category content={CategoryLists} />
-      <LatestProducts />
+      <Category content={categoryLists} />
+      <LatestProducts latestProductList={latestProductList} />
       <Location />
-      <PopularProducts />
+      <PopularProducts PopularProductList={popularProductList} />
       <div className="relative flex flex-col items-center justify-center">
         {/* <img className="object-contain  bg-fixed" src={CocoBg} alt="CocoBg" /> */}
         <div

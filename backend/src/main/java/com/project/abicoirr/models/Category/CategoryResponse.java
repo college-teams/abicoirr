@@ -22,6 +22,7 @@ public class CategoryResponse {
   private String categoryDescription;
   private String imagePath;
   private String imageKey;
+  private long count;
 
   public static List<CategoryResponse> from(List<Category> categories) {
     return categories.stream().map(CategoryResponse::from).collect(Collectors.toList());
@@ -34,6 +35,7 @@ public class CategoryResponse {
         .categoryDescription(category.getCategoryDescription())
         .imagePath(category.getImagePath())
         .imageKey(category.getImageKey())
+        .count(category.getProducts().size())
         .build();
   }
 }

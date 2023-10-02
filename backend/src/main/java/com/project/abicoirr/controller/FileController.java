@@ -4,6 +4,7 @@ import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.FileService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,14 @@ public class FileController {
       @RequestParam("file") MultipartFile multipartFile)
       throws BaseException {
     return new ResponseEntity<>(fileService.uploadImage(entityKey, multipartFile), HttpStatus.OK);
+  }
+
+  @PostMapping("bulk-upload")
+  public ResponseEntity<ApiResponse<?>> uploadImages(
+      @RequestParam(name = "entityKey") String entityKey,
+      @RequestParam("files") List<MultipartFile> multipartFiles)
+      throws BaseException {
+    return new ResponseEntity<>(fileService.uploadImages(entityKey, multipartFiles), HttpStatus.OK);
   }
 
   @DeleteMapping

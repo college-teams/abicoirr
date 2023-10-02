@@ -1,10 +1,11 @@
 import styled, { keyframes } from "styled-components";
+import { Icon } from "@iconify/react";
 
 export const Wrapper = styled.div`
   position: fixed;
   left: 0%;
-  top: 5%;
-  z-index: 10000;
+  top: 10%;
+  z-index: 1000;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -19,16 +20,15 @@ const OpacityAnimation = keyframes`
   }
 `;
 
-export const ConfirmationContainer = styled.div`
+export const DetailsContainer = styled.div`
   position: relative;
   background: var(--white-color);
-  max-width: 500px;
+  width: 50%;
   height: auto;
-  max-height: 650px;
+  max-height: 550px;
   overflow-y: overlay;
   overflow-x: hidden;
   border-radius: 4px;
-  padding: 2rem 3rem;
   opacity: 0;
   animation: ${OpacityAnimation} 0.5s ease-in-out forwards;
 
@@ -38,12 +38,12 @@ export const ConfirmationContainer = styled.div`
   }
 `;
 
-export const Backdrop = styled.div`
-  position: fixed;
-  left: 0;
+export const CloseIcon = styled(Icon)`
+  position: absolute;
+  right: -4rem;
   top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 2000;
+  font-size: 3.5rem;
+  cursor: pointer;
+  color: #f2f2f2;
+  z-index: 1000;
 `;

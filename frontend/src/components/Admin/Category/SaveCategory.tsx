@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   deleteCategoryImage,
+  deleteFile,
   getCategoryById,
   saveCategory,
   updateCategory,
@@ -14,7 +15,7 @@ import { isApiError } from "../../../types/Api";
 import Modal from "../../Modal";
 import { CloseIcon, DetailsContainer, Wrapper } from "./styled";
 import Loader from "../../Loader";
-import { Category, FileResponse, GetCategory } from "../../../types/Admin";
+import { Category, CategoryList, FileResponse } from "../../../types/Admin";
 import { useForm } from "react-hook-form";
 import { Icon } from "@iconify/react";
 import { ConfirmationModal } from "../../ConfirmModal";
@@ -33,7 +34,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
   const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [props, activateConfirmModal] = useConfirmModal();
-  
+
   const {
     register,
     reset,
@@ -41,7 +42,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     setValue,
     getValues,
     formState: { errors, isDirty },
-  } = useForm<GetCategory>();
+  } = useForm<CategoryList>();
 
   const [fileResponse, setFileResponse] = useState<FileResponse | null>(null);
 
@@ -77,16 +78,30 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
   };
 
   const deleteImage = async (imageKey: string): Promise<void> => {
+    if (
+      !(await activateConfirmModal(
+        "Do you want to delete this image? This is an irreversible action and it will be permanently removed from the database!"
+      ))
+    ) {
+      return;
+    }
+
     try {
       startLoading("/deleteCategoryImage");
-      const res = await deleteCategoryImage(api, getValues().id, imageKey);
+      let res;
+      if(getValues().id) {
+         res = await deleteCategoryImage(api, getValues().id, imageKey);
+      } else {
+         res = await deleteFile(api, imageKey);
+      }
+     
       if (!res || !isApiError(res)) {
         setFileResponse(null);
-        showToast("Image deleted successfully", "success");
+        showToast("Image successfully removed from the database", "success");
       }
     } finally {
+      setFileDirty(false);
       endLoading("/deleteCategoryImage");
-      setFileDirty(true);
     }
   };
 
@@ -101,6 +116,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
     }
     resetForm();
     close();
+    refreshList();
   };
 
   const resetForm = () => {
@@ -110,10 +126,11 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
   };
 
   const onSubmit = async (data: Category): Promise<void> => {
-    if (!fileResponse) {
-      showToast("Please upload image before saving category!!", "error");
-      return;
-    }
+    // for now this is not a mandatory fields
+    // if (!fileResponse) {
+    //   showToast("Please upload image before saving category!!", "error");
+    //   return;
+    // }
 
     data.imageKey = fileResponse?.imageKey;
     data.imagePath = fileResponse?.imagePath;
@@ -145,13 +162,16 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
       Object.keys(data).forEach((key) => {
         switch (key) {
           case "imageKey": {
-            setFileResponse((pre) => ({
-              ...pre,
-              entityKey: "category",
-              imagePath: data["imagePath"],
-              imageKey: data["imageKey"],
-            }));
-            setValue("imageKey", data["imageKey"]);
+            if (data["imagePath"] != null && data["imageKey"] != null) {
+              setFileResponse({
+                entityKey: "category",
+                imagePath: data["imagePath"],
+                imageKey: data["imageKey"],
+              });
+              setValue("imageKey", data["imageKey"]);
+            } else {
+              setFileResponse(null);
+            }
             break;
           }
 
@@ -200,7 +220,7 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                       className="relative text-[1.5rem] font-semibold mb-2"
                       htmlFor="name"
                     >
-                      Name
+                      Name*
                     </label>
                     <input
                       id="name"
@@ -220,14 +240,14 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
 
                   <div className="relative flex flex-col mb-6">
                     <label
-                      htmlFor="password"
+                      htmlFor="Description"
                       className="relative text-[1.5rem] font-semibold mb-2"
                     >
-                      Message
+                      Description*
                     </label>
                     <textarea
-                      id="password"
-                      placeholder="Message.."
+                      id="Description"
+                      placeholder="Description.."
                       {...register("categoryDescription", {
                         required: "CategoryDescription is required",
                       })}
@@ -259,8 +279,8 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                       <div className="relative overflow-hidden h-[150px] w-[150px]">
                         <img
                           className="border h-full w-full object-cover"
-                          src={fileResponse?.imagePath}
-                          alt={fileResponse?.entityKey}
+                          src={fileResponse.imagePath}
+                          alt={fileResponse.entityKey}
                         />
                       </div>
                       <Icon
@@ -285,12 +305,12 @@ const Details = ({ open, close, selectedId, refreshList }: DetailsProps) => {
                       Cancel
                     </button>
 
-                    {isLoading("/saveCategory") ? (
+                    {isLoading("/saveCategory") || (!isDirty && !fileDirty) ? (
                       <button
                         disabled
                         className="relative disabled:bg-gray-300 disabled:border-gray-300 disabled:pointer-events-none  bg-orange-400 border-2 border-orange-400 text-[1.5rem] px-10 py-1 rounded-md text-white hover:bg-orange-600 hover:border-orange-600 transition-all duration-300"
                       >
-                        Saving...
+                        {isLoading("/saveCategory") ? "Saving" : "Save"}
                       </button>
                     ) : (
                       <button

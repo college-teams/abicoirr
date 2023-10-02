@@ -8,13 +8,13 @@ import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
 import useToast from "../../../hooks/useToast";
 import { Column } from "react-table";
 import { Icon } from "@iconify/react";
-import { GetCategory } from "../../../types/Admin";
+import { CategoryList } from "../../../types/Admin";
 import { ConfirmationModal } from "../../ConfirmModal";
 import { useConfirmModal } from "../../../hooks/useConfirmModal";
 
 const Category = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [data, setData] = useState<GetCategory[]>([]);
+  const [data, setData] = useState<CategoryList[]>([]);
   const [seletedDetails, setSelectedDetails] = useState<number | null>(null);
 
   const api = useAPI();
@@ -53,7 +53,7 @@ const Category = () => {
       const res = await deleteCategory(api, categoryId);
 
       if (!res || !isApiError(res)) {
-        showToast("Contact details deleted successfully", "success");
+        showToast("Category deleted successfully", "success");
         fetchCategoryList();
       }
     } finally {
@@ -65,7 +65,7 @@ const Category = () => {
     fetchCategoryList();
   }, []);
 
-  const columns = useMemo<Column<GetCategory>[]>(
+  const columns = useMemo<Column<CategoryList>[]>(
     () => [
       {
         Header: "Image",
