@@ -10,12 +10,14 @@ import {
   CardPrice,
 } from "./styled";
 import RedirectSite from "../RedirectSite";
+import { calculateDiscountPercentage } from "../../utils";
 
 const Card = ({
   id,
   name,
   externalSites,
-  price,
+  sellingPrice,
+  actualPrice,
   image,
   buttonText,
   classNames,
@@ -44,9 +46,9 @@ const Card = ({
         <CardDetailsContainer>
           <CardName>{name}</CardName>
           <CardPrice>
-            &#8377; {price}
-            <span className="font-light ml-3  line-through ">&#8377;30.00</span>
-            <span className="ml-5 font-normal">10% off</span>
+            &#8377; {sellingPrice}
+            <span className="font-light ml-3  line-through ">&#8377;{actualPrice}</span>
+            <span className="ml-5 font-normal">{calculateDiscountPercentage(actualPrice,sellingPrice)}% off</span>
           </CardPrice>
           <CardButton
             disabled={isOutOfStock}

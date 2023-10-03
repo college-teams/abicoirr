@@ -17,8 +17,7 @@ type PopularProductsProps = {
   PopularProductList: Product[];
 };
 
-
-const PopularProducts = ({PopularProductList}:PopularProductsProps) => {
+const PopularProducts = ({ PopularProductList }: PopularProductsProps) => {
   const navigate = useNavigate();
 
   const clickHandler = () => {
@@ -94,21 +93,24 @@ const PopularProducts = ({PopularProductList}:PopularProductsProps) => {
         </Carousel> */}
 
         <div className="relative flex flex-wrap gap-[3rem] justify-center">
-          {PopularProductList &&  PopularProductList.map((e, i) =>  {
-            const image = e.images.length > 0 ? e.images[0].imagePath : NoImage;
-            return (
-              <Card
-                key={i}
-                id={e.id}
-                name={e.productName}
-                price={e.price}
-                image={image}
-                externalSites={e.links}
-                stockQuantity={e.stockQuantity}
-                buttonText="Shop now"
-              />
-            );
-          })}
+          {PopularProductList &&
+            PopularProductList.map((e, i) => {
+              const image =
+                e.images.length > 0 ? e.images[0].imagePath : NoImage;
+              return (
+                <Card
+                  key={i}
+                  id={e.id}
+                  name={e.productName}
+                  sellingPrice={e.sellingPrice}
+                  actualPrice={e.actualPrice}
+                  image={image}
+                  externalSites={e.links}
+                  stockQuantity={e.stockQuantity}
+                  buttonText="Shop now"
+                />
+              );
+            })}
         </div>
       </div>
     </PopularProductsContainer>

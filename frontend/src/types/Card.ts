@@ -4,7 +4,8 @@ export interface CardProps{
     id:number
     name:string;
     image: string;
-    price: number;
+    sellingPrice: number;
+    actualPrice: number;
     buttonText: string;
     classNames?: string;
     stockQuantity?:number;

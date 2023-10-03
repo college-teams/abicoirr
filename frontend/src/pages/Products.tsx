@@ -189,7 +189,8 @@ const Products = () => {
                     key={i}
                     id={e.id}
                     name={e.productName}
-                    price={e.price}
+                    sellingPrice={e.sellingPrice}
+                    actualPrice={e.actualPrice}
                     image={image}
                     stockQuantity={e.stockQuantity}
                     externalSites={e.links}

@@ -10,6 +10,7 @@ import { useAPI } from "../hooks/useApi";
 import { isApiError } from "../types/Api";
 import { Product, ProductImages } from "../types/Admin";
 import { SubImagesContainer } from "./styled";
+import { calculateDiscountPercentage } from "../utils";
 
 const ProductDetail = () => {
   const api = useAPI();
@@ -89,7 +90,7 @@ const ProductDetail = () => {
                       key={i}
                       className={`relative h-[7rem] w-[8rem] cursor-pointer ${
                         e.imageKey === primaryImage?.imageKey
-                          ? "border-[3px] border-yellow-600 "
+                          ? "border-[3.5px] border-yellow-600 "
                           : ""
                       }`}
                       onClick={() =>
@@ -123,13 +124,17 @@ const ProductDetail = () => {
             </p>
             <p className="relative mb-6 text-[1.6rem]  xl:text-[1.8rem] text-center mlg:text-left">
               <span className="relative font-semibold">
-                &#8377;{product?.price}
+                &#8377;{product?.sellingPrice}
               </span>
               <span className="font-light ml-3 text-[1.6rem] line-through ">
-                &#8377;10.00
+                &#8377;{product?.actualPrice}
               </span>
               <span className="ml-5 font-normal text-[1.6rem]">
-                {product?.discountPercent || 0}% off
+                {calculateDiscountPercentage(
+                  product?.actualPrice || 0,
+                  product?.sellingPrice || 0
+                )}
+                % off
               </span>
             </p>
             <div className="mb-10 mlg:mb-8 w-[50%] sm:w-[30%] lg:w-[60%] xl:w-[40%] mx-auto mlg:ml-0">
@@ -242,7 +247,8 @@ const ProductDetail = () => {
                       key={i}
                       id={e.id}
                       name={e.productName}
-                      price={e.price}
+                      sellingPrice={e.sellingPrice}
+                      actualPrice={e.actualPrice}
                       image={image}
                       stockQuantity={e.stockQuantity}
                       externalSites={e.links}

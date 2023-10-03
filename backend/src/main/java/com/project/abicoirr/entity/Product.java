@@ -37,7 +37,10 @@ public class Product extends CommonEntity {
   private String productDescription;
 
   @Column(nullable = false)
-  private float price;
+  private float sellingPrice;
+
+  @Column(nullable = false)
+  private float actualPrice;
 
   @Column(nullable = true)
   private float discountPercent;

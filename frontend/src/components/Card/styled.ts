@@ -9,7 +9,7 @@ export const CardContainer = styled.div`
   /* height: 250px; */
   width: 250px;
   cursor: pointer;
-  border: 2px dotted #cbc911;
+  border: 2px solid #cbc911;
 
   @media screen and (max-width: 1300px) {
     width: 240px;
@@ -44,6 +44,8 @@ export const CardImageContainer = styled.div`
   height: 150px;
   height: 60%;
   width: 100%;
+  border-bottom: 2px solid #cbc911;
+
 
   img {
     position: relative;

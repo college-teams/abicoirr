@@ -26,7 +26,8 @@ public class ProductResponse {
   private Long id;
   private String productName;
   private String productDescription;
-  private float price;
+  private float actualPrice;
+  private float sellingPrice;
   private float discountPercent;
   private int stockQuantity;
   private int minOrder;
@@ -45,7 +46,8 @@ public class ProductResponse {
         .id(product.getId() > 0 ? product.getId() : null)
         .productName(product.getProductName())
         .productDescription(product.getProductDescription())
-        .price(product.getPrice())
+        .actualPrice(product.getActualPrice())
+        .sellingPrice(product.getSellingPrice())
         .discountPercent(product.getDiscountPercent())
         .stockQuantity(product.getStockQuantity())
         .minOrder(product.getMinOrder())

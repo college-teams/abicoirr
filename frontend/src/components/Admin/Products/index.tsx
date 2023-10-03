@@ -84,7 +84,7 @@ const Products = () => {
           );
         },
       },
-      { Header: "Price", accessor: "price" },
+      { Header: "Price", accessor: "sellingPrice" },
       { Header: "Stock Quantity", accessor: "stockQuantity" },
       {
         Header: "Category",
@@ -110,7 +110,7 @@ const Products = () => {
     ],
     []
   );
-  
+
   return (
     <React.Fragment>
       <ConfirmationModal {...props} />

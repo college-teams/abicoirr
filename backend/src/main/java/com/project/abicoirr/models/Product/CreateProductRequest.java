@@ -1,7 +1,9 @@
 package com.project.abicoirr.models.Product;
 
-import com.project.abicoirr.entity.*;
+import com.project.abicoirr.entity.Category;
+import com.project.abicoirr.entity.ExternalLinks;
 import com.project.abicoirr.entity.Product;
+import com.project.abicoirr.entity.ProductImage;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -20,7 +22,8 @@ public class CreateProductRequest {
   @NotNull private long categoryId;
   @NotNull private String productName;
   @NotNull private String productDescription;
-  @NotNull private float price;
+  @NotNull private float actualPrice;
+  @NotNull private float sellingPrice;
   private float discountPercent;
   @NotNull private int stockQuantity;
   private int minOrder;
@@ -34,7 +37,8 @@ public class CreateProductRequest {
     product.setCategory(category);
     product.setProductName(createProductRequest.getProductName());
     product.setProductDescription(createProductRequest.getProductDescription());
-    product.setPrice(createProductRequest.getPrice());
+    product.setActualPrice(createProductRequest.getActualPrice());
+    product.setSellingPrice(createProductRequest.getSellingPrice());
     product.setDiscountPercent(createProductRequest.getDiscountPercent());
     product.setStockQuantity(createProductRequest.getStockQuantity());
     product.setMaxOrder(createProductRequest.getMaxOrder());
