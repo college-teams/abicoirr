@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "aws_region": "ap-south-1",
+    "user": "ec2-user",
+    "instance_type": "t2.micro"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "{{user `aws_region`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "ami_name": "my-custom-ami-{{timestamp}}",
+      "ssh_username": "{{user `user`}}",
+      "profile": "default",
+      "source_ami": "{{user `source_ami`}}",
+      "source_ami_filter": {
+        "most_recent": true,
+        "owners": ["amazon"],
+        "filters": {
+          "name": "al2023-ami-2023.*-x86_64",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm",
+          "architecture": "x86_64",
+          "platform-details": "Linux/UNIX"
+        }
+      },
+      "run_tags": {
+        "Name": "test-app",
+        "env": "test"
+      },
+      "run_volume_tags": {
+        "Name": "test-app",
+        "env": "test"
+      },
+      "tags": {
+        "Name": "test-app",
+        "env": "test"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "../terraform/app.install.sh"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json"
+    }
+  ]
+}

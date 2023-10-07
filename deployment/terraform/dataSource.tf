@@ -4,7 +4,7 @@ data "aws_ami" "amzlinux" {
 
   filter {
     name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
+    values = ["my-custom-ami-*"]
   }
   filter {
     name   = "root-device-type"
@@ -21,8 +21,9 @@ data "aws_ami" "amzlinux" {
   }
 
   filter {
-    name   = "platform-details"
-    values = ["Linux/UNIX"]
+    name   = "tag:env"
+    values = ["test"]
   }
-  owners = ["amazon"]
+
+  owners = ["689413200757"]
 }
