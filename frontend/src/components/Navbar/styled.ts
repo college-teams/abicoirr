@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const NavbarContainer = styled.div<{ active: boolean }>`
   position: fixed;
@@ -29,6 +29,10 @@ export const NavLinksWrapper = styled.div`
   justify-content: space-between;
   width: 85%;
   margin: 0 auto;
+
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
 `;
 
 export const NavLinks = styled.ul`
@@ -87,14 +91,66 @@ export const Icons = styled.div`
   .dropdown {
     &:before {
       content: " ";
-      top: -21px;
+      top: -23px;
       display: block;
       height: 20px;
-      left: 115px;
+      right: 0px;
       position: absolute;
-      border-color:transparent transparent  #fff   transparent;
+      border-color: transparent transparent #fff transparent;
       border-style: solid;
-      border-width: 11px;
+      border-width: 12px;
     }
+  }
+`;
+
+const scrollDown = keyframes`
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
+const scrollUp = keyframes`
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+`;
+
+export const MobileDeviceNavContainer = styled.div`
+  display: none;
+  @media screen and (max-width: 500px) {
+    display: flex;
+  }
+`;
+
+export const MenuBarLayout = styled.div<{ isOpen: boolean }>`
+  display: none;
+
+  animation: ${({ isOpen }) => (isOpen ? scrollDown : scrollUp)} 0.4s
+    ease-in-out forwards;
+
+  @media screen and (max-width: 500px) {
+    display: flex;
+  transform: translateY(-100%);
+  }
+`;
+
+export const Backdrop = styled.div`
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;

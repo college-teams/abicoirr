@@ -1,16 +1,41 @@
-import { CategoryProps } from "../../types/Category";
-import { CategoryListContainer, CategoryImageContainer, CategoryWrapper, CategoryName } from "./styled";
+import { useNavigate } from "react-router-dom";
+import { CategoryList } from "../../types/Admin";
+import {
+  CategoryListContainer,
+  CategoryImageContainer,
+  CategoryWrapper,
+  CategoryName,
+} from "./styled";
+import NoImage from "../../assets/noImage.png";
+
+interface CategoryProps {
+  content: CategoryList[];
+}
 
 const Category = (props: CategoryProps) => {
+  const navigate = useNavigate();
+  const navigationHandler = (categoryId: number): void => {
+    navigate(`/products?categoryId=${categoryId}`);
+  };
+
   return (
     <CategoryWrapper>
-      {props.content.map((e,index) => {
+      {props.content.map((e, index) => {
         return (
-          <CategoryListContainer key={index}>
+          <CategoryListContainer
+            onClick={() => navigationHandler(e.id)}
+            key={index}
+          >
             <CategoryImageContainer>
-              <img src={e.imagePath} alt={e.name} />
+              <img
+                className="relative h-full w-full object-cover"
+                src={e.imagePath || NoImage}
+                alt={e.categoryName}
+              />
             </CategoryImageContainer>
-            <CategoryName>{e.name}</CategoryName>
+            <CategoryName className="font-semibold">
+              {e.categoryName}
+            </CategoryName>
           </CategoryListContainer>
         );
       })}

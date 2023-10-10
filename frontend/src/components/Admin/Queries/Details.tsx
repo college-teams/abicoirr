@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getContactDetailsById } from "../../../api";
 import { useAPI } from "../../../hooks/useApi";
-import useToast from "../../../hooks/useToast";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
 import { ContactDetails } from "../../../types/Admin";
 import { isApiError } from "../../../types/Api";
@@ -23,7 +22,6 @@ const Details = ({
   updateUnReadMessageCount,
 }: DetailsProps) => {
   const api = useAPI();
-  const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
   const [data, setData] = useState<ContactDetails | null>(null);
@@ -34,11 +32,10 @@ const Details = ({
       const res = await getContactDetailsById(api, id);
       if (!isApiError(res)) {
         setData(res);
-        showToast("Contact details fetched successfully", "success");
       }
     } finally {
       endLoading("/getContactDetailsById");
-      // Update UnreadMessagecount in UI
+      // Update UnreadMessagecount in frontend
       updateUnReadMessageCount();
     }
   };

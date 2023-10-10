@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends AbstractRepository<Product> {
 
-  List<Product> findByProductNameContainingIgnoreCase(String keyword);
+  List<Product> findByProductNameContainingIgnoreCase(String productName);
 
   List<Product> findByCategory(Category category);
 }

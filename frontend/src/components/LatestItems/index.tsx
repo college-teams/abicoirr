@@ -5,47 +5,19 @@ import {
   LatestProductsContainer,
   ViewButton,
 } from "./styled";
+import NoImage from "../../assets/noImage.png";
 import { Icon } from "@iconify/react";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { CardProps } from "../../types/Card";
-import Product1 from "../../assets/card3.jpg";
-import Product2 from "../../assets/card4.jpg";
-import Product3 from "../../assets/card5.jpg";
-import Product4 from "../../assets/card6.jpg";
-import Product5 from "../../assets/card7.jpeg";
 import Card from "../Card";
 import { useNavigate } from "react-router-dom";
+import { Product } from "../../types/Admin";
 
-const tempLatestProducts: CardProps[] = [
-  {
-    name: "Coco peat",
-    image: Product1,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "Wet coco peat",
-    image: Product2,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "dry coco peat",
-    image: Product3,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  {
-    name: "wet with dry peat",
-    image: Product4,
-    price: "20.00",
-    buttonText: "Shop now",
-  },
-  { name: "product5", image: Product5, price: "20.00", buttonText: "Shop now" },
-];
+type LatestProductsProps = {
+  latestProductList: Product[];
+};
 
-const LatestProducts = () => {
+const LatestProducts = ({ latestProductList }: LatestProductsProps) => {
   const navigate = useNavigate();
 
   const clickHandler = () => {
@@ -61,11 +33,11 @@ const LatestProducts = () => {
       <ViewButton onClick={clickHandler}>
         View more <Icon icon="bi:arrow-right" />
       </ViewButton>
-      <div className=" mt-20">
-        <Carousel
+      <div className="mt-20">
+        {/* <Carousel
           additionalTransfrom={0}
           arrows
-          autoPlay
+          // autoPlay
           autoPlaySpeed={3000}
           centerMode={false}
           className=""
@@ -127,7 +99,26 @@ const LatestProducts = () => {
           {tempLatestProducts.map((e, i) => (
             <Card key={i} {...e} />
           ))}
-        </Carousel>
+        </Carousel> */}
+
+        <div className="relative flex flex-wrap gap-[3rem] justify-center">
+          {latestProductList && latestProductList.map((e, i) => {
+            const image = e.images.length > 0 ? e.images[0].imagePath : NoImage;
+            return (
+              <Card
+                key={i}
+                id={e.id}
+                name={e.productName}
+                sellingPrice={e.sellingPrice}
+                actualPrice={e.actualPrice}
+                image={image}
+                stockQuantity={e.stockQuantity}
+                externalSites={e.links}
+                buttonText="Shop now"
+              />
+            );
+          })}
+        </div>
       </div>
     </LatestProductsContainer>
   );

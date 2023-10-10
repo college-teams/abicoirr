@@ -8,15 +8,17 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public abstract class CommonEntity {
 
   @Id
@@ -30,7 +32,7 @@ public abstract class CommonEntity {
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
-  protected LocalDateTime createAt;
+  protected LocalDateTime createdAt;
 
   @UpdateTimestamp
   @Column(name = "updated_at", updatable = true, nullable = false)

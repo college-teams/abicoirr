@@ -19,7 +19,7 @@ export default function Slider(props: SliderProps) {
           clickable: true,
         }}
         modules={[Autoplay, Pagination]}
-        className="mySwiper"
+        className="mySwiper h-[300px] sm:h-[500px]"
       >
         {props.content.map((e,index) => (
           <SwiperSlider key={index}>

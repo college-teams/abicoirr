@@ -12,7 +12,6 @@ import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.util.Util;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +59,7 @@ public class FileService {
   }
 
   public ApiResponse<List<FileResponse>> uploadImages(
-      String entityKey, MultipartFile[] multipartFiles) throws BaseException {
+      String entityKey, List<MultipartFile> multipartFiles) throws BaseException {
     try {
       List<FileResponse> fileResponses = new ArrayList<>();
 
@@ -78,7 +77,7 @@ public class FileService {
     } catch (Exception ex) {
       log.info("Rollback the uploaded images");
       deleteImages(
-          Arrays.stream(multipartFiles)
+          multipartFiles.stream()
               .filter(file -> !file.isEmpty())
               .map(file -> Util.generateUniqueImageKey(entityKey, file.getOriginalFilename()))
               .collect(Collectors.toList()));

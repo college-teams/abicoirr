@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
@@ -27,13 +28,17 @@ public class Category extends CommonEntity {
   @Lob
   private String categoryDescription;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String imagePath;
 
-  @Column(nullable = false)
+  @Column(nullable = true, unique = true)
   private String imageKey;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Product> images = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "category",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Product> products = new ArrayList<>();
 }

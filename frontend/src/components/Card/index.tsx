@@ -10,41 +10,63 @@ import {
   CardPrice,
 } from "./styled";
 import RedirectSite from "../RedirectSite";
+import { calculateDiscountPercentage } from "../../utils";
 
-const Card = ({ name, price, image, buttonText, classNames }: CardProps) => {
+const Card = ({
+  id,
+  name,
+  externalSites,
+  sellingPrice,
+  actualPrice,
+  image,
+  buttonText,
+  classNames,
+  stockQuantity,
+}: CardProps) => {
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
 
+  const isOutOfStock = (stockQuantity || 0) <= 0;
   return (
     <React.Fragment>
       <CardContainer
         className={classNames}
         onClick={() => {
-          navigate("/products/1");
+          navigate(`/products/${id}`);
         }}
       >
+        {isOutOfStock && (
+          <span className="absolute -left-0 top-0  bg-orange-500 text-white capitalize z-50 text-[1.2rem] font-medium px-4 py-1">
+            out of stock
+          </span>
+        )}
         <CardImageContainer>
           <img src={image} alt={name} />
         </CardImageContainer>
         <CardDetailsContainer>
           <CardName>{name}</CardName>
           <CardPrice>
-            &#8377; {price}
-            <span className="font-light ml-3  line-through ">&#8377;30.00</span>
-            <span className="ml-5 font-normal">10% off</span>
+            &#8377; {sellingPrice}
+            <span className="font-light ml-3  line-through ">&#8377;{actualPrice}</span>
+            <span className="ml-5 font-normal">{calculateDiscountPercentage(actualPrice,sellingPrice)}% off</span>
           </CardPrice>
           <CardButton
+            disabled={isOutOfStock}
             onClick={(e) => {
               setRedirect(true);
               e.stopPropagation();
             }}
           >
-            {buttonText}
+            {isOutOfStock ? 'Out of stock': buttonText}
           </CardButton>
         </CardDetailsContainer>
       </CardContainer>
 
-      <RedirectSite open={redirect} close={() => setRedirect(false)} />
+      <RedirectSite
+        externalSites={externalSites}
+        open={redirect}
+        close={() => setRedirect(false)}
+      />
     </React.Fragment>
   );
 };
