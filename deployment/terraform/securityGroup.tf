@@ -1,5 +1,5 @@
-resource "aws_security_group" "instance_sg" {
-  name = "Instance web sg"
+resource "aws_security_group" "lb_sg" {
+  name = "Lb_sg"
   ingress {
     from_port   = 80
     to_port     = 80
@@ -12,6 +12,38 @@ resource "aws_security_group" "instance_sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" : "lb sg"
+  }
+
+}
+
+
+resource "aws_security_group" "instance_sg" {
+  name = "Instance web sg"
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb_sg.id]
+
+    # cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
