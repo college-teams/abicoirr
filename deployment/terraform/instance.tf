@@ -90,10 +90,10 @@ resource "aws_launch_template" "launchTemplate" {
   name        = "Demo_launch_template"
   description = "Demo launch template test description"
 
-  image_id      = data.aws_ami.amzlinux.id
-  instance_type = var.instance_type
-  key_name      = var.key_pair
-  # user_data               = file("./app.install.sh")
+  image_id                = data.aws_ami.amzlinux.id
+  instance_type           = var.instance_type
+  key_name                = var.key_pair
+  user_data               = base64encode(file("./app.install.sh"))
   vpc_security_group_ids  = [aws_security_group.instance_sg.id, aws_security_group.instance_ssh.id]
   disable_api_termination = false
 
@@ -135,7 +135,7 @@ resource "aws_autoscaling_group" "instance_asg" {
   min_size                  = 1
   max_size                  = 2
   desired_capacity          = 1
-  health_check_type         = "ELB"
+  health_check_type         = "EC2"
   health_check_grace_period = 60
 
   target_group_arns = [aws_lb_target_group.instance_lb_tg.arn]
@@ -176,7 +176,7 @@ resource "aws_lb_target_group" "instance_lb_tg" {
     unhealthy_threshold = 2
     timeout             = 5
     interval            = 10
-    matcher = 200
+    # matcher = 200
     # path                = "/"
     # port                = "traffic-port"
   }
