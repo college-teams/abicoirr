@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Appenders>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d{ABSOLUTE} %5p %c{1}:%L [%X{x-myntra-req-id}] - %m%n %throwable}" />
+        </Console>
+
+        <RollingFile name="app" 
+                     filepattern="'.'yyyy-MM-dd">
+            <PatternLayout pattern="%highlight{%d %5p %c{1}:(%t):%L [%X{x-myntra-req-id}] - %m%n %throwable}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500 MB" />
+            </Policies>
+        </RollingFile>
+
+    
+    </Appenders>
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="console" />
+        </Root>
+        <Logger name="com.example" level="info" additivity="false">
+            <appender-ref ref="console"/>
+        </Logger>
+        <Logger name="com.project.abicoirr" level="debug" additivity="false">
+            <appender-ref ref="app" level="info"/>
+        </Logger>
+       
+
+        <Logger name="org.hibernate" level="ERROR" />
+        <Logger name="com.mchange" level="ERROR" />
+        <Logger name="org.springframework" level="ERROR" />
+        <Logger name="org.apache" level="ERROR" />
+        <Logger name="org.apache.cxf.interceptor" level="DEBUG" />
+    </Loggers>
+</Configuration>
+
+
+

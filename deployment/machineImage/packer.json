@@ -1,8 +1,10 @@
 {
   "variables": {
-    "aws_region": "ap-south-1",
+    "aws_region": "us-east-1",
     "user": "ec2-user",
-    "instance_type": "t2.micro"
+    "instance_type": "t2.micro",
+    "install_dir": "/tmp/deployment",
+    "abicoirr_be_dir": "/etc/abicoirr-api"
   },
   "builders": [
     {
@@ -40,8 +42,33 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "{{template_dir}}",
+      "destination": "{{user `install_dir`}}"
+    },
+    {
       "type": "shell",
-      "script": "../terraform/app.install.sh"
+      "script": "general.sh",
+      "environment_vars": [
+        "INSTALL_DIR={{user `install_dir`}}",
+        "ABICOIRR_BE_DIR={{user `abicoirr_be_dir`}}"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "log.sh",
+      "environment_vars": [
+        "ABICOIRR_BE_DIR={{user `abicoirr_be_dir`}}",
+        "INSTALL_DIR={{user `install_dir`}}"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "nginx.sh"
+    },
+    {
+      "type": "shell",
+      "inline": "sudo rm -rf {{user `install_dir`}}"
     }
   ],
   "post-processors": [
