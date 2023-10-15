@@ -64,7 +64,10 @@
     },
     {
       "type": "shell",
-      "script": "nginx.sh"
+      "script": "nginx.sh",
+      "environment_vars": [
+        "INSTALL_DIR={{user `install_dir`}}"
+      ]
     },
     {
       "type": "shell",

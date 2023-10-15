@@ -8,7 +8,9 @@ echo $ABICOIRR_BE_DIR
 
 cat $INSTALL_DIR/authorized_keys >> .ssh/authorized_keys
 
-sudo dnf -y install java-11-amazon-corretto
+# sudo dnf -y install java-11-amazon-corretto
+
+sudo yum install -y java-17-amazon-corretto
 sudo yum install -y nano
 sudo yum install -y vim
 
