@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NoImage from "../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 import Card from "../components/Card";
 import RedirectSite from "../components/RedirectSite";
 import GifLoader from "../components/Loader/GifLoader";

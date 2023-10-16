@@ -6,7 +6,7 @@ import {
   CategoryWrapper,
   CategoryName,
 } from "./styled";
-import NoImage from "../../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 
 interface CategoryProps {
   content: CategoryList[];

@@ -8,7 +8,7 @@ import {
 import { Icon } from "@iconify/react";
 // import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import NoImage from "../../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 import Card from "../Card";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../../types/Admin";

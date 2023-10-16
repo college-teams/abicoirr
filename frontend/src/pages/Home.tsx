@@ -1,13 +1,13 @@
 import Slider from "../components/Slider";
-import CocoBg from "../assets/cocoBG.jpg";
+import CocoBg from "/assets/cocoBG.jpg";
 import { HomeSlideContents } from "../utils/HomeSlides";
 import Category from "../components/Category";
 import LatestProducts from "../components/LatestItems";
 import PopularProducts from "../components/PopularItems";
 import Location from "../components/Location";
-import Info1 from "../assets/lighter.webp";
-import Info2 from "../assets/green.webp";
-import Info3 from "../assets/smatter.webp";
+import Info1 from "/assets/lighter.webp";
+import Info2 from "/assets/green.webp";
+import Info3 from "/assets/smatter.webp";
 import { InfoStepsContainer } from "./styled";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";

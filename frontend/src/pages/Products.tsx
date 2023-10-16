@@ -1,6 +1,6 @@
-import NoImage from "../assets/noImage.png";
-import PageImg from "../assets/productsPageImg.jpeg";
-import AllCategory from "../assets/card3.jpg";
+import NoImage from "/assets/noImage.png";
+import PageImg from "/assets/productsPageImg.jpeg";
+import AllCategory from "/assets/card3.jpg";
 import Card from "../components/Card";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";

@@ -5,7 +5,7 @@ import {
   LatestProductsContainer,
   ViewButton,
 } from "./styled";
-import NoImage from "../../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 import { Icon } from "@iconify/react";
 // import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
