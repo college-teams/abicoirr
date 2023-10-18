@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "public_bucket" {
+resource "aws_s3_bucket" "file_bucket" {
   bucket = "abicoirr-test"
 
   tags = {
@@ -7,15 +7,8 @@ resource "aws_s3_bucket" "public_bucket" {
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "example" {
-  bucket = aws_s3_bucket.public_bucket.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "example" {
-  bucket = aws_s3_bucket.public_bucket.id
+resource "aws_s3_bucket_public_access_block" "file_bucket_public_access_block" {
+  bucket = aws_s3_bucket.file_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -23,13 +16,27 @@ resource "aws_s3_bucket_public_access_block" "example" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_acl" "example" {
-  depends_on = [
-    aws_s3_bucket_ownership_controls.example,
-    aws_s3_bucket_public_access_block.example,
-  ]
+data "aws_iam_policy_document" "allow_access_from_another_account" {
+  statement {
+    sid     = "AddPerm"
+    effect  = "Allow"
+    actions = ["*"]
 
-  bucket = aws_s3_bucket.public_bucket.id
-  acl    = "public-read"
+    resources = [
+      aws_s3_bucket.file_bucket.arn,
+      "${aws_s3_bucket.file_bucket.arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+  }
 }
 
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.file_bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+
+  depends_on = [aws_s3_bucket_public_access_block.file_bucket_public_access_block]
+}

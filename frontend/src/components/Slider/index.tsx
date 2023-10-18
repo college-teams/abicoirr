@@ -1,32 +1,26 @@
-import "swiper/css";
-import "swiper/css/pagination";
-
-import { Autoplay, Pagination } from "swiper/modules";
-import { SwiperSlider, SwipperWrapper } from "./styled";
 import { SliderProps } from "../../types/Slider";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-export default function Slider(props: SliderProps) {
+export default function SliderCompponent(props: SliderProps) {
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    speed: 500,
+  };
+
   return (
-    <>
-      <SwipperWrapper
-        spaceBetween={0}
-        centeredSlides={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Autoplay, Pagination]}
-        className="mySwiper h-[300px] sm:h-[500px]"
-      >
-        {props.content.map((e,index) => (
-          <SwiperSlider key={index}>
-            <img src={e.imagePath} alt={e.name} />
-          </SwiperSlider>
-        ))}
-      </SwipperWrapper>
-    </>
+    <Slider {...settings}>
+      {props.content.map((e, index) => (
+        <div key={index}>
+          <img src={e.imagePath} alt={e.name} />
+        </div>
+      ))}
+    </Slider>
   );
 }
