@@ -1,6 +1,3 @@
 #!/usr/bin/env bash
 
-sudo bash -c "cat > /etc/abicoirr-api/environment.properties" <<-EOL
-ENVIRONMENT=$DEPLOYMENT_ENV_NAME
-EOL
-
+sudo bash -c "printf 'ENVIRONMENT=%s\n' '$DEPLOYMENT_ENV_NAME' > /etc/abicoirr-api/environment.properties"

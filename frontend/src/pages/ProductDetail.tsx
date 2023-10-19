@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NoImage from "../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 import Card from "../components/Card";
 import RedirectSite from "../components/RedirectSite";
 import GifLoader from "../components/Loader/GifLoader";
@@ -178,65 +178,6 @@ const ProductDetail = () => {
               </p>
             </div>
             <div className="w-[90%] mx-auto">
-              {/* <Carousel
-
-            additionalTransfrom={0}
-            arrows
-            autoPlay
-            autoPlaySpeed={3000}
-            centerMode={false}
-            className=""
-            containerClass="container-with-dots"
-            dotListClass=""
-            draggable
-            focusOnSelect={false}
-            infinite
-            itemClass=""
-            keyBoardControl
-            minimumTouchDrag={80}
-            pauseOnHover
-            renderArrowsWhenDisabled={false}
-            renderButtonGroupOutside={false}
-            renderDotsOutside={false}
-            responsive={{
-              desktop: {
-                breakpoint: {
-                  max: 3000,
-                  min: 1024,
-                },
-                items: 4,
-                partialVisibilityGutter: 20,
-              },
-              mobile: {
-                breakpoint: {
-                  max: 464,
-                  min: 0,
-                },
-                items: 1,
-                partialVisibilityGutter: 20,
-              },
-              tablet: {
-                breakpoint: {
-                  max: 1024,
-                  min: 464,
-                },
-                items: 3,
-                partialVisibilityGutter: 20,
-              },
-            }}
-            rewind={false}
-            rewindWithAnimation={false}
-            rtl={false}
-            shouldResetAutoplay
-            showDots={false}
-            sliderClass=""
-            slidesToSlide={1}
-            swipeable
-          >
-            {tempPopularProducts.map((e, i) => (
-              <Card key={i} {...e} />
-            ))}
-          </Carousel> */}
 
               <div className="relative flex flex-wrap gap-[3rem] justify-center">
                 {relatedProductList.map((e, i) => {

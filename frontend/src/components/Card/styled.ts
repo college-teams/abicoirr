@@ -5,8 +5,7 @@ export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 325px;
-  /* height: 250px; */
+  height: 350px;
   width: 250px;
   cursor: pointer;
   border: 2px solid #cbc911;
@@ -41,7 +40,7 @@ export const CardContainer = styled.div`
 
 export const CardImageContainer = styled.div`
   position: relative;
-  height: 150px;
+  /* height: 200px; */
   height: 60%;
   width: 100%;
   border-bottom: 2px solid #cbc911;
@@ -90,6 +89,7 @@ export const CardPrice = styled.p`
   margin-bottom: 1.5rem;
   color: #a15125;
   padding: 0 1rem;
+  word-wrap: break-word;
 `;
 
 export const CardButton = styled.button`

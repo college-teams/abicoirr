@@ -14,63 +14,77 @@ def upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote
         ssh_client.load_host_keys(users_known_hosts)
     
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-
+    
     try:
-        print("connecting to remote host...")
+        print(f"Connecting to remote host {host}...")
         ssh_client.connect(host, username=username)
-        print("connected to remote host")
+        print(f"Connected to remote host {host}")
         
-        print("Uploading jar to the host..")
+        print("Uploading backend jar...")
+        
         sftp = ssh_client.open_sftp()
         
         root = Path().resolve()
         parent_directory = os.path.dirname(root)
-        local_setup =  os.path.join(parent_directory, "deployment","machineImage","setup.sh")
         
-        sftp.put(local_setup, f"{remote_dir}/setup.sh")  # Adjust the remote filename as needed
+        local_setup =  os.path.join(parent_directory,"deployment","machineImage","setup.sh")
+        
+        ssh_client.exec_command(f"sudo chown ${username}:${username} /etc/abicoirr-api/")
+        ssh_client.exec_command("rm -rf /etc/abicoirr-api/*.jar")
+        
+        sftp.put(local_setup, f"{remote_dir}/setup.sh")
         ssh_client.exec_command(f"chmod +x {remote_dir}/setup.sh")
-        # Run the setup script with the provided environment variable
         ssh_client.exec_command(f"cd {remote_dir} && DEPLOYMENT_ENV_NAME={'prod'} ./setup.sh")
 
-
-        sftp.put(local_jar_path, f"{remote_dir}/abicoirr-0.0.1-SNAPSHOT.jar")  # Adjust the remote filename as needed
+        sftp.put(local_jar_path, f"{remote_dir}/abicoirr-0.0.1-SNAPSHOT.jar")
+        
         sftp.close()
         ssh_client.close()
         print(f"JAR file uploaded successfully to {host}")
     except Exception as e:
         print(f"Error: {e}")
 
-
-
-def upload_files_to_remote(host, username, public_key_path, local_dir, remote_dir):
+def upload_frontEndFiles_to_remote(host, username, public_key_path, local_dir, remote_dir):
     ssh_client = paramiko.SSHClient()
     users_known_hosts = os.path.expanduser("~/.ssh/known_hosts")
     if os.path.exists(users_known_hosts):
         ssh_client.load_host_keys(users_known_hosts)
     
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-
+    
     try:
         print(f"Connecting to remote host {host}...")
         ssh_client.connect(host, username=username)
         print(f"Connected to remote host {host}")
         
+        print("Uploading frontend files...")
+        
         sftp = ssh_client.open_sftp()
+        
+        # ssh_client.exec_command(f"sudo chown -R ec2-user:ec2-user /etc/abicoirr-ui/")
+        ssh_client.exec_command(f"sudo chown ${username}:${username} {remote_dir}")
+        
+        ssh_client.exec_command("rm -rf /etc/abicoirr-ui/*")
 
         for root, dirs, files in os.walk(local_dir):
             for file in files:
                 local_file_path = os.path.join(root, file)
-                remote_file_path = os.path.join(remote_dir, os.path.relpath(local_file_path, local_dir))
                 
-                print(f"Uploading {local_file_path} to {host}:{remote_file_path}")
-                sftp.put(local_file_path, remote_file_path)
+                remote_file_path = os.path.join(remote_dir, os.path.relpath(local_file_path, local_dir))
+                remote_file_dir = os.path.dirname(remote_file_path)
+                try:
+                    sftp.chdir(remote_file_dir)
+                except IOError:
+                    sftp.mkdir(remote_file_dir)
+                    sftp.chdir(remote_file_dir)
+                
+                sftp.put(local_file_path, f'{remote_file_dir}/{file}')
 
         sftp.close()
         ssh_client.close()
-        print(f"All files uploaded successfully to {host}")
+        print(f"Frontend files uploaded successfully to {host}")
     except Exception as e:
         print(f"Error: {e}")
-
 
 def get_asg_instances(asg_name, region):
     client = boto3.client('autoscaling', region_name=region)
@@ -126,48 +140,48 @@ def run_custom_command(directory, command):
     except subprocess.CalledProcessError as e:
         print(f"Error: Build failed with exit code {e.returncode}")
 
-
 def get_backend_path(parent_directory):
     return os.path.join(parent_directory, "backend")
 
 def get_frontend_path(parent_directory):
     return os.path.join(parent_directory, "frontend")
 
-
 def main():
     args = parse_args()
-    print(args.environment)
+    print(f"Deploying to {args.environment} ENV")
     root = Path().resolve().parent
     root_dir=os.path.dirname(root)
     
     backend_path = get_backend_path(root_dir)
-    # build_be(backend_path)
+    build_be(backend_path)
     
     frontend_path = get_frontend_path(root_dir)
-    # build_fe(frontend_path)
+    build_fe(frontend_path)
     
     print("Fetch instance host names")
     
-    region = 'us-east-1'  # Replace with your desired region
+    region = 'us-east-1' 
     instance_ids = get_asg_instances("Instance_asg", region)
     hostnames = get_instance_hostnames(instance_ids, region)
     print(hostnames)
     
-    username = 'ec2-user' # Replace with your SSH username
-    public_key_path = '~/.ssh/id_rsa.pub'  # Path to your public key
+    username = 'ec2-user'
+    public_key_path = '~/.ssh/id_rsa.pub' 
     local_jar_path = os.path.join(backend_path,"target","abicoirr-0.0.1-SNAPSHOT.jar")
-    remote_dir = '/etc/abicoirr-api'  # Replace with the desired remote directory
+    remote_dir = '/etc/abicoirr-api'
 
-    # for host in hostnames:
-    #     upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote_dir)
+    for host in hostnames:
+        upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote_dir)
 
 
     local_frontend_dist = os.path.join(frontend_path, "dist")
-    remote_frontend_dir = '/var/www/html/'
+    remote_frontend_dir = '/etc/abicoirr-ui/'
 
     for host in hostnames:
-        upload_files_to_remote(host, username, public_key_path, local_frontend_dist, remote_frontend_dir)
+        upload_frontEndFiles_to_remote(host, username, public_key_path, local_frontend_dist, remote_frontend_dir)
 
+    message = f"All the files uploaded successfully to {', '.join(hostnames)}"
+    print(message)
 
 if __name__ == "__main__":
     main()
