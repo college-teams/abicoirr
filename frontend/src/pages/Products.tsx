@@ -1,6 +1,6 @@
-import NoImage from "../assets/noImage.png";
-import PageImg from "../assets/productsPageImg.jpeg";
-import AllCategory from "../assets/card3.jpg";
+import NoImage from "/assets/noImage.png";
+import PageImg from "/assets/productsPageImg.jpeg";
+import AllCategory from "/assets/card3.jpg";
 import Card from "../components/Card";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
@@ -189,7 +189,8 @@ const Products = () => {
                     key={i}
                     id={e.id}
                     name={e.productName}
-                    price={e.price}
+                    sellingPrice={e.sellingPrice}
+                    actualPrice={e.actualPrice}
                     image={image}
                     stockQuantity={e.stockQuantity}
                     externalSites={e.links}

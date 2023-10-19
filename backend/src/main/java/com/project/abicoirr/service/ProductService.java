@@ -262,7 +262,8 @@ public class ProductService {
     existingProduct.setAvgRating(updateProductRequest.getAvgRating());
     existingProduct.setMaxOrder(updateProductRequest.getMaxOrder());
     existingProduct.setMinOrder(updateProductRequest.getMinOrder());
-    existingProduct.setPrice(updateProductRequest.getPrice());
+    existingProduct.setActualPrice(updateProductRequest.getActualPrice());
+    existingProduct.setSellingPrice(updateProductRequest.getSellingPrice());
     existingProduct.setStockQuantity(updateProductRequest.getStockQuantity());
     existingProduct.setCategory(newCategory);
   }

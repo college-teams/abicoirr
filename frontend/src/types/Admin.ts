@@ -59,7 +59,8 @@ export interface Product {
   category: CategoryList;
   productName: string;
   productDescription: string;
-  price: number;
+  sellingPrice: number;
+  actualPrice: number;
   discountPercent: number;
   stockQuantity: number;
   minOrder: number;
@@ -86,7 +87,8 @@ export interface CreateProductRequest {
   categoryId: number;
   productName: string;
   productDescription: string;
-  price: number;
+  sellingPrice: number;
+  actualPrice: number;
   discountPercent: number;
   stockQuantity: number;
   images: ProductImages[];

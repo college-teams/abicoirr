@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import Bottom from "../assets/bottomBox.webp";
-import Left from "../assets/leftBox.webp";
-import Top from "../assets/topBox.webp";
-import Right from "../assets/rightBox.webp";
+import Bottom from "/assets/bottomBox.webp";
+import Left from "/assets/leftBox.webp";
+import Top from "/assets/topBox.webp";
+import Right from "/assets/rightBox.webp";
 
 export const InfoStepsContainer = styled.div`
   background: #f6f3d1;

@@ -1,4 +1,4 @@
-import GifLoaderImg from "../../assets/loader_gif.gif";
+import GifLoaderImg from "/assets/loader_gif.gif";
 
 const GifLoader = () => {
   return (

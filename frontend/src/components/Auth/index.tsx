@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AuthCard, AuthWrapper, CloseIcon } from "./styled";
 import Modal from "../Modal";
-import Img from "../../assets/auth.png";
+import Img from "/assets/auth.png";
 import AuthForm from "./Authform";
 
 interface PropType {

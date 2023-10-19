@@ -3,7 +3,8 @@ interface SaveOrderProps {
   close: () => void;
 }
 
-const SaveOrder = ({ open, close }: SaveOrderProps) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const SaveOrder = (_props:SaveOrderProps) => {
   return <div>SaveOrder</div>;
 };
 

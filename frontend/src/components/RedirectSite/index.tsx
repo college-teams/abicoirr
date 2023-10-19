@@ -4,9 +4,9 @@ import {
   RedirectCardWrapper,
   RedirectLink,
 } from "./styled";
-import Amazon from "../../assets/amazon.png";
-import Flipkart from "../../assets/flipkart.png";
-import Meesho from "../../assets/meesho.png";
+import Amazon from "/assets/amazon.png";
+import Flipkart from "/assets/flipkart.png";
+import Meesho from "/assets/meesho.png";
 import Modal from "../Modal";
 import { ECommercePlatformName, ExternalLinks } from "../../types/Admin";
 interface PropType {

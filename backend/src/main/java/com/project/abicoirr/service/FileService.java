@@ -44,6 +44,7 @@ public class FileService {
       log.info("Rollback the uploaded images");
       deleteImage(uniqueKey);
       log.error("Unknown exception occurred while uploading image to aws {}", ex.getMessage());
+      log.error("ERROR STACK", ex);
       throw new BaseException(IMAGE_UPLOAD_FAILED);
     }
   }
