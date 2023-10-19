@@ -16,6 +16,3 @@ sudo yum install -y vim
 
 sudo cp $INSTALL_DIR/abicoirr-api.service  /etc/systemd/system/abicoirr-api.service
 sudo systemctl enable abicoirr-api.service
-
-# Add any additional setup steps for your backend Spring Boot service here
-
