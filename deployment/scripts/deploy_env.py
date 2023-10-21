@@ -36,6 +36,7 @@ def upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote
         sftp.put(local_setup, f"{remote_dir}/environment.properties")
 
         sftp.put(local_jar_path, f"{remote_dir}/abicoirr-0.0.1-SNAPSHOT.jar")
+        ssh_client.exec_command("sudo systemctl restart abicoirr-api.service")
         
         sftp.close()
         ssh_client.close()
@@ -77,6 +78,8 @@ def upload_frontEndFiles_to_remote(host, username, public_key_path, local_dir, r
                     sftp.chdir(remote_file_dir)
                 
                 sftp.put(local_file_path, f'{remote_file_dir}/{file}')
+
+        ssh_client.exec_command("sudo systemctl restart nginx.service")
 
         sftp.close()
         ssh_client.close()
