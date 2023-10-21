@@ -11,6 +11,7 @@ import { isApiError } from "../types/Api";
 import { Product, ProductImages } from "../types/Admin";
 import { SubImagesContainer } from "./styled";
 import { calculateDiscountPercentage } from "../utils";
+import ImageWithFallback from "../utils/ImageWithFallback";
 
 const ProductDetail = () => {
   const api = useAPI();
@@ -75,9 +76,15 @@ const ProductDetail = () => {
         <div className="relative flex w-[90%] mx-auto  mlg:gap-[5rem] gap-[7rem] mb-20 flex-col mlg:flex-row ">
           <div className="relative flex-1 ">
             <div className="h-[200px] w-full sm:h-[250px]  lg:w-[600px] lg:h-[300px] xl:h-[400px]  mb-8 border">
-              <img
+              {/* <img
                 src={primaryImage?.imagePath || NoImage}
                 alt={product?.productName}
+                className="h-full w-full object-cover"
+              /> */}
+              <ImageWithFallback
+                imagePath={primaryImage?.imagePath}
+                defaultImage={NoImage}
+                alt={product?.productName || "productDetailsImage"}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -97,11 +104,13 @@ const ProductDetail = () => {
                         handleImageChangehandler(e.imageKey, e.imagePath)
                       }
                     >
-                      <img
-                        src={e.imagePath}
-                        alt={e.imageKey}
-                        className="h-full w-full object-cover"
-                      />
+                       <ImageWithFallback
+                          imagePath={e.imagePath}
+                          defaultImage={NoImage}
+                          alt={e.imageKey}
+                          className="h-full w-full object-cover"
+                          hideOnError={false}
+              />
                     </div>
                   );
                 })}
@@ -178,7 +187,6 @@ const ProductDetail = () => {
               </p>
             </div>
             <div className="w-[90%] mx-auto">
-
               <div className="relative flex flex-wrap gap-[3rem] justify-center">
                 {relatedProductList.map((e, i) => {
                   const image =
