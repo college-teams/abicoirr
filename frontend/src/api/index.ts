@@ -15,6 +15,7 @@ import {
   GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
+  GetDashboardEntityItemsCount,
   GetLatestProductList,
   GetPopularProductList,
   GetProductById,
@@ -39,6 +40,7 @@ import {
   MessageCount,
   Product,
 } from "../types/Admin";
+import { DashboardEntityItemsCount } from "../types/Dashboard";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const showToast = useToast();
@@ -450,5 +452,20 @@ export const getPopularProductList: GetPopularProductList = async (
     "GET",
     null,
     params
+  );
+};
+
+// Dashboard
+export const getDashboardEntityItemsCount: GetDashboardEntityItemsCount = async (
+  api,
+) => {
+
+  return makeRequest<DashboardEntityItemsCount>(
+    api,
+    "dashboard/entityItemsCount",
+    "getDashboardEntityItemsCount",
+    "Error occurred while fetching entity items count",
+    "GET",
+    null
   );
 };

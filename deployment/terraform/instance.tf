@@ -1,8 +1,3 @@
-# Instance profile
-resource "aws_iam_instance_profile" "s3_access_instance_profile" {
-  role = aws_iam_role.s3_access_role.name
-}
-
 resource "aws_iam_role" "s3_access_role" {
   name = "s3_access_role"
 
@@ -18,6 +13,11 @@ resource "aws_iam_role" "s3_access_role" {
       }
     ]
   })
+}
+
+# Instance profile
+resource "aws_iam_instance_profile" "s3_access_instance_profile" {
+  role = aws_iam_role.s3_access_role.name
 }
 
 resource "aws_iam_policy" "s3_access_policy" {
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "s3_access_policy" {
     effect = "Allow"
 
     resources = [
-      aws_s3_bucket.public_bucket.arn,
+      aws_s3_bucket.file_bucket.arn,
     ]
   }
 }
@@ -69,7 +69,7 @@ resource "aws_launch_template" "launchTemplate" {
   image_id               = data.aws_ami.amzlinux.id
   instance_type          = var.instance_type
   key_name               = var.key_pair
-  user_data              = base64encode(file("./app.install.sh"))
+  # user_data              = base64encode(file("./app.install.sh"))
   vpc_security_group_ids = [aws_security_group.instance_sg.id, aws_security_group.instance_ssh.id]
 
   disable_api_termination = false
@@ -218,7 +218,7 @@ resource "aws_db_parameter_group" "mysql" {
 
   parameter {
     name  = "max_connections"
-    value = "10"
+    value = "15"
   }
 }
 

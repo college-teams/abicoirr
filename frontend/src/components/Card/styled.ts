@@ -4,7 +4,7 @@ export const CardContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   height: 350px;
   width: 250px;
   cursor: pointer;
@@ -66,6 +66,7 @@ export const CardDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
   /* border-right: 2px dotted #cbc911;
   border-left: 2px dotted #cbc911; */
 `;
@@ -74,11 +75,11 @@ export const CardName = styled.p`
   position: relative;
   font-weight: 600;
   color: var(--light-green);
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-transform: capitalize;
-  margin-top: 1.4rem;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
+  /* margin-top: 1.4rem;
+  margin-bottom: 1rem; */
+  padding: 10px 1rem 0px 1.5rem;
 `;
 
 export const CardPrice = styled.p`
@@ -86,9 +87,9 @@ export const CardPrice = styled.p`
   position: relative;
   font-weight: 600;
   font-size: 1.4rem;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
   color: #a15125;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   word-wrap: break-word;
 `;
 
@@ -97,7 +98,7 @@ export const CardButton = styled.button`
   background-color: #cbc911;
   color: #0c0b0b;
   font-size: 1.4rem;
-  font-weight: 400;
+  font-weight: 500;
   padding: 1rem;
 
   &:disabled {

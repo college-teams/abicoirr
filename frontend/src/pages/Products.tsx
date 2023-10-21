@@ -29,7 +29,7 @@ const Products = () => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [totalCategoryProducts, setTotalCategoryProducts] = useState<number>(0);
 
-  const categoryImages = [category2,category3,category4,category5];
+  const categoryImages = [category2, category3, category4, category5];
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -97,7 +97,7 @@ const Products = () => {
       {loading && <GifLoader />}
 
       <div className="relative mt-[8rem]">
-        <div className="relative w-full lg:w-[95%] m-auto">
+        <div className="relative w-full lg:w-[100%] m-auto">
           <img
             className="relative w-full h-full object-cover"
             src={PageImg}
@@ -107,12 +107,12 @@ const Products = () => {
 
         {/* Mobile screens */}
         <div className="relative flex flex-col flex-wrap gap-10  mt-[4rem] px-14 lg:hidden">
-          <div className="relative flex gap-x-8 gap-y-8 flex-wrap  items-center">
+          <div className="relative flex gap-y-8 flex-wrap  items-center justify-center">
             <div
               onClick={() => handleCategorySelection()}
               className="relative flex items-center justify-center flex-col cursor-pointer"
             >
-              <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden  mb-7">
+              <div className="relative h-[72px] w-[72px] rounded-full overflow-hidden  mb-7">
                 <img
                   className="relative h-full w-full object-cover"
                   src={category1}
@@ -131,10 +131,14 @@ const Products = () => {
                     onClick={() => handleCategorySelection(e.id)}
                     className="relative flex items-center justify-center flex-col cursor-pointer"
                   >
-                    <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden  mb-7">
+                    <div className="relative h-[72px] w-[72px] rounded-full overflow-hidden  mb-7">
                       <img
                         className="relative h-full w-full object-cover"
-                        src={categoryImages[Math.floor(Math.random() * categoryImages.length)]}
+                        src={
+                          categoryImages[
+                            Math.floor(Math.random() * categoryImages.length)
+                          ]
+                        }
                         alt={e.categoryName}
                       />
                     </div>
@@ -146,8 +150,8 @@ const Products = () => {
               })}
           </div>
         </div>
-{/* Desktop screens */}
-        <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto">
+        {/* Desktop screens */}
+        <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto ">
           <div className="w-[20%] sticky top-[8rem] max-h-screen  hidden lg:block ">
             <p className="relative text-[2.6rem] font-semibold mb-[4rem]">
               Categories

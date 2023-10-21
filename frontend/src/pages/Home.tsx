@@ -73,7 +73,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative w-screen overflow-x-hidden">
       {loading && <GifLoader />}
 
       <Slider content={HomeSlideContents} />
