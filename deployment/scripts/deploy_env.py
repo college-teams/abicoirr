@@ -27,10 +27,11 @@ def upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote
         root = Path().resolve()
         parent_directory = os.path.dirname(root)
         
-        local_setup =  os.path.join(parent_directory,"deployment","machineImage","setup.sh")
+        local_setup =  os.path.join(parent_directory,"deployment","machineImage","environment.properties")
         
         ssh_client.exec_command(f"sudo chown ${username}:${username} /etc/abicoirr-api/")
         ssh_client.exec_command("rm -rf /etc/abicoirr-api/*.jar")
+        ssh_client.exec_command("rm -rf /etc/abicoirr-api/environment.properties")
         
         sftp.put(local_setup, f"{remote_dir}/environment.properties")
 
