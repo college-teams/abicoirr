@@ -11,6 +11,8 @@ import {
 } from "./styled";
 import RedirectSite from "../RedirectSite";
 import { calculateDiscountPercentage } from "../../utils";
+import NoImage from "/assets/noImage.png";
+import ImageWithFallback from "../../utils/ImageWithFallback";
 
 const Card = ({
   id,
@@ -35,20 +37,34 @@ const Card = ({
           navigate(`/products/${id}`);
         }}
       >
-        {isOutOfStock && (
-          <span className="absolute -left-0 top-0  bg-orange-500 text-white capitalize z-50 text-[1.2rem] font-medium px-4 py-1">
+        {isOutOfStock ? (
+          <span className="absolute -left-0 top-0  bg-orange-600 text-white capitalize z-50 text-[1.2rem] font-medium px-4 py-1 -mx-[2px] -my-[1.5px]">
             out of stock
           </span>
+        ) : (
+          calculateDiscountPercentage(actualPrice, sellingPrice) > 0 && (
+            <span className="absolute -left-0 top-0 bg-green-600 text-white capitalize z-50 text-[1.2rem] font-medium px-4 py-1 -mx-[2px] -my-[1.5px]">
+              {calculateDiscountPercentage(actualPrice, sellingPrice)}% off
+            </span>
+          )
         )}
         <CardImageContainer>
-          <img src={image} alt={name} />
+          <ImageWithFallback
+            imagePath={image}
+            defaultImage={NoImage}
+            alt={name}
+          />
         </CardImageContainer>
         <CardDetailsContainer>
           <CardName>{name}</CardName>
           <CardPrice>
             &#8377; {sellingPrice}
-            <span className="font-light ml-3  line-through ">&#8377;{actualPrice}</span>
-            <span className="ml-5 font-normal">{calculateDiscountPercentage(actualPrice,sellingPrice)}% off</span>
+            <span className="ml-3  line-through font-medium">
+              &#8377;{actualPrice}
+            </span>
+            {/* <span className="ml-5 font-normal">
+              {calculateDiscountPercentage(actualPrice, sellingPrice)}% off
+            </span> */}
           </CardPrice>
           <CardButton
             disabled={isOutOfStock}
@@ -57,7 +73,7 @@ const Card = ({
               e.stopPropagation();
             }}
           >
-            {isOutOfStock ? 'Out of stock': buttonText}
+            {isOutOfStock ? "Out of stock" : buttonText}
           </CardButton>
         </CardDetailsContainer>
       </CardContainer>

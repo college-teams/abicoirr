@@ -16,3 +16,5 @@ sudo yum install -y vim
 
 sudo cp $INSTALL_DIR/abicoirr-api.service  /etc/systemd/system/abicoirr-api.service
 sudo systemctl enable abicoirr-api.service
+
+sudo chown ${USER}:${USER} $ABICOIRR_BE_DIR/environment.properties

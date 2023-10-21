@@ -140,7 +140,7 @@ public class ProductService {
       }
     }
 
-    productRepository.delete(product);
+    productRepository.deleteProduct(product.getId());
 
     return new ApiResponse<>(PRODUCT_DELETE_SUCCESS, AbstractResponse.StatusType.SUCCESS);
   }
