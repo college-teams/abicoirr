@@ -32,9 +32,7 @@ def upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote
         ssh_client.exec_command(f"sudo chown ${username}:${username} /etc/abicoirr-api/")
         ssh_client.exec_command("rm -rf /etc/abicoirr-api/*.jar")
         
-        sftp.put(local_setup, f"{remote_dir}/setup.sh")
-        ssh_client.exec_command(f"chmod +x {remote_dir}/setup.sh")
-        ssh_client.exec_command(f"cd {remote_dir} && DEPLOYMENT_ENV_NAME={'prod'} ./setup.sh")
+        sftp.put(local_setup, f"{remote_dir}/environment.properties")
 
         sftp.put(local_jar_path, f"{remote_dir}/abicoirr-0.0.1-SNAPSHOT.jar")
         
@@ -61,7 +59,6 @@ def upload_frontEndFiles_to_remote(host, username, public_key_path, local_dir, r
         
         sftp = ssh_client.open_sftp()
         
-        # ssh_client.exec_command(f"sudo chown -R ec2-user:ec2-user /etc/abicoirr-ui/")
         ssh_client.exec_command(f"sudo chown ${username}:${username} {remote_dir}")
         
         ssh_client.exec_command("rm -rf /etc/abicoirr-ui/*")
