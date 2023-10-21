@@ -7,6 +7,7 @@ import {
   CategoryName,
 } from "./styled";
 import NoImage from "/assets/noImage.png";
+import ImageWithFallback from "../../utils/ImageWithFallback";
 
 interface CategoryProps {
   content: CategoryList[];
@@ -14,6 +15,7 @@ interface CategoryProps {
 
 const Category = (props: CategoryProps) => {
   const navigate = useNavigate();
+
   const navigationHandler = (categoryId: number): void => {
     navigate(`/products?categoryId=${categoryId}`);
   };
@@ -27,9 +29,10 @@ const Category = (props: CategoryProps) => {
             key={index}
           >
             <CategoryImageContainer>
-              <img
+              <ImageWithFallback
                 className="relative h-full w-full object-cover"
-                src={e.imagePath || NoImage}
+                imagePath={e.imagePath}
+                defaultImage={NoImage}
                 alt={e.categoryName}
               />
             </CategoryImageContainer>
