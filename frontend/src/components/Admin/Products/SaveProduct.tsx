@@ -48,8 +48,9 @@ const SaveProductDetails = ({
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
-  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [props, activateConfirmModal] = useConfirmModal();
+  
+  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [categoryListOptions, setCategoryListOptions] = useState([]);
   const [categoryList, setCategoryList] = useState<CategoryList[]>([]);
   const [seletedCategoryId, setSeletedCategoryId] = useState<number | null>(

@@ -5,10 +5,12 @@ import {
   CategoryList,
   ContactDetails,
   ContactDetailsList,
+  CreateAdminOrderRequest,
   CreateProductRequest,
   FileResponse,
   MessageCount,
   Product,
+  UpdateAdminOrderRequest,
   UpdateProductRequest,
 } from "./Admin";
 import { DashboardEntityItemsCount } from "./Dashboard";
@@ -37,6 +39,23 @@ export const isApiError = (data: unknown): data is ApiError => {
 export type GetAdminOrders = (
   api: AxiosInstance
 ) => Promise<AdminOrderResponseData[] | ApiError>;
+
+export type GetAdminOrderById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type SaveAdminOrder = (
+  api: AxiosInstance,
+  data: CreateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type UpdateAdminOrder = (
+  api: AxiosInstance,
+  adminOrderId:number,
+  data: UpdateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
+
 
 export type GetContactDetailList = (
   api: AxiosInstance

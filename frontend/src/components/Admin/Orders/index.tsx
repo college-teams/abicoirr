@@ -16,6 +16,9 @@ const Orders = () => {
   const api = useAPI();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
+  // states
+  const [seletedOrderId, setSeletedOrderId] = useState<number | null>(null);
+
   const fetchAdminOrders = async () => {
     startLoading("/getAdminOrders");
     try {
@@ -28,20 +31,41 @@ const Orders = () => {
     }
   };
 
+  const handleClose = () => {
+    setOpenModal(false);
+    setSeletedOrderId(null);
+  };
+
   useEffect(() => {
     fetchAdminOrders();
   }, []);
 
   const columns = useMemo<Column<AdminOrderResponseData>[]>(
     () => [
-      { Header: "Order_id", accessor: "id" },
+      {
+        Header: "Order_id",
+        accessor: "id",
+        Cell: ({ cell }): JSX.Element => {
+          return (
+            <div
+              className="relative cursor-pointer font-medium text-black hover:text-blue-500"
+              onClick={() => {
+                setSeletedOrderId(cell.row.original.id);
+                setOpenModal(true);
+              }}
+            >
+              {cell.row.original.id}
+            </div>
+          );
+        },
+      },
       { Header: "OrderStatus", accessor: "orderStatus" },
       { Header: "Quantity", accessor: "quantity" },
       { Header: "Total", accessor: "totalAmount" },
       {
         Header: "Delivery date",
         accessor: "deliveryDate",
-        Cell: ({ value }):string => format(new Date(value), "yyyy-mm-dd"),
+        Cell: ({ value }): string => format(new Date(value), "yyyy-mm-dd"),
       },
     ],
     []
@@ -49,7 +73,12 @@ const Orders = () => {
 
   return (
     <React.Fragment>
-      <SaveOrder open={openModal} close={() => setOpenModal(false)} />
+      <SaveOrder
+        open={openModal}
+        close={handleClose}
+        refreshList={fetchAdminOrders}
+        selectedId={seletedOrderId}
+      />
 
       <div className="relative">
         <div className="relative flex justify-between items-center mb-10">

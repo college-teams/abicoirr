@@ -24,7 +24,7 @@ public class SchedulerService {
   private final CategoryRepository categoryRepository;
 
   //  This cron job will run every day at 12 AM (00:00:00)
-  @Scheduled(cron = "0 0 * * * *") // This cron expression represents 12 AM every day
+  @Scheduled(cron = "0 0 0 * * *") // This cron expression represents 12 AM every day
   public void cleanupBucket() {
     log.info("Scheduler started for cleanup...");
     try {

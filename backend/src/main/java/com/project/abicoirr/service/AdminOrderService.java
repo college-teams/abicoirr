@@ -15,6 +15,7 @@ import com.project.abicoirr.models.AdminOrder.UpdateAdminOrderRequest;
 import com.project.abicoirr.models.response.AbstractResponse.StatusType;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.AdminOrderRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,7 @@ public class AdminOrderService {
       Product product = productService.getProductById(productId);
       products.add(product);
     }
-
+    createAdminOrderRequest.setOrderTimestamp(LocalDateTime.now());
     AdminOrder adminOrder = CreateAdminOrderRequest.from(createAdminOrderRequest, products);
     adminOrderRepository.save(adminOrder);
 
