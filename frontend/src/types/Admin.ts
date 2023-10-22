@@ -90,6 +90,7 @@ export interface CreateProductRequest {
   sellingPrice: number;
   actualPrice: number;
   discountPercent: number;
+  maxOrder: number;
   stockQuantity: number;
   images: ProductImages[];
   links: ExternalLinks[];
