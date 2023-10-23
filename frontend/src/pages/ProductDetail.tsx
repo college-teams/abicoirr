@@ -70,11 +70,13 @@ const ProductDetail = () => {
   };
 
   const quantityHandler = (action: QUANTITY_ACTIONS): void => {
-    if (action === "Add") {
-      setQuantity((pre) => pre + 1);
-    } else if (action === "REMOVE") {
-      if (quantity !== 0) {
-        setQuantity((pre) => pre - 1);
+    if ((product?.stockQuantity ?? 0) > 0) {
+      if (action === "Add") {
+        setQuantity((pre) => pre + 1);
+      } else if (action === "REMOVE") {
+        if (quantity !== 0) {
+          setQuantity((pre) => pre - 1);
+        }
       }
     }
   };

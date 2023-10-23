@@ -49,7 +49,7 @@ const SaveProductDetails = ({
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
   const [props, activateConfirmModal] = useConfirmModal();
-  
+
   const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [categoryListOptions, setCategoryListOptions] = useState([]);
   const [categoryList, setCategoryList] = useState<CategoryList[]>([]);
@@ -169,7 +169,7 @@ const SaveProductDetails = ({
   const onSubmit = async (
     data: Product | UpdateProductRequest
   ): Promise<void> => {
-    if (data.actualPrice < data.sellingPrice) {
+    if (Number(data.actualPrice) < Number(data.sellingPrice)) {
       setError("sellingPrice", {
         message: "SellingPrice should always less than actual price",
       });
