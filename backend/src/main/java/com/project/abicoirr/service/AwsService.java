@@ -87,6 +87,7 @@ public class AwsService {
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentType(multipartFile.getContentType());
     metadata.setContentDisposition("inline");
+    metadata.setContentLength(multipartFile.getSize());
     return metadata;
   }
 

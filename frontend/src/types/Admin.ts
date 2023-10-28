@@ -11,9 +11,9 @@ export type TabComponentType = {
   [key in TabType]: JSX.Element;
 };
 
-export interface AdminOrderRequestData {
+export interface AdminOrder {
   userId: number;
-  orderStatus: string;
+  orderStatus: ORDER_STATUS;
   productIds: number[];
   quantity: number;
   unitPrice: number;
@@ -22,33 +22,38 @@ export interface AdminOrderRequestData {
   totalAmount: number;
   shippingAddress: string;
   billingAddress: string;
-  paymentType: string;
-  paymentStatus: string;
+  paymentType: PAYEMENT_TYPE;
+  paymentStatus: PAYEMENT_STATUS;
   deliveryDate: string;
-  specialInstructions: string;
-  orderNotes: string;
+  specialInstructions?: string;
+  orderNotes?: string;
   trackingNumber: string;
 }
 
-export interface AdminOrderResponseData {
+export type ORDER_STATUS =
+  | "PENDING"
+  | "PROCESSED"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
+
+export type PAYEMENT_TYPE =
+  | "CREDIT_CARD"
+  | "DEBIT_CARD"
+  | "NET_BANKING"
+  | "CASH_ON_DELIVERY";
+
+export type PAYEMENT_STATUS = "PENDING" | "PAID" | "FAILED" | "REFUNDED";
+
+export interface CreateAdminOrderRequest extends AdminOrder {}
+
+export interface UpdateAdminOrderRequest extends AdminOrder {
   id: number;
-  userId: number;
-  orderStatus: string;
-  products: Product[];
-  orderTimestamp: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-  shippingCost: number;
-  totalAmount: number;
-  shippingAddress: string;
-  billingAddress: string;
-  paymentType: string;
-  paymentStatus: string;
-  deliveryDate: string;
-  specialInstructions: string;
-  orderNotes: string;
-  trackingNumber: string;
+}
+
+export interface AdminOrderResponseData extends AdminOrder {
+  id: number;
+  products:Product[]
 }
 
 export interface Product {
@@ -59,7 +64,8 @@ export interface Product {
   category: CategoryList;
   productName: string;
   productDescription: string;
-  price: number;
+  sellingPrice: number;
+  actualPrice: number;
   discountPercent: number;
   stockQuantity: number;
   minOrder: number;
@@ -75,7 +81,7 @@ export interface ProductImages {
   imageKey: string;
 }
 
-export type ECommercePlatformName = "AMAZON" | "FLIPKART" | "MEESHO"|"Other";
+export type ECommercePlatformName = "AMAZON" | "FLIPKART" | "MEESHO" | "Other";
 
 export interface ExternalLinks {
   link: string;
@@ -86,8 +92,10 @@ export interface CreateProductRequest {
   categoryId: number;
   productName: string;
   productDescription: string;
-  price: number;
+  sellingPrice: number;
+  actualPrice: number;
   discountPercent: number;
+  maxOrder: number;
   stockQuantity: number;
   images: ProductImages[];
   links: ExternalLinks[];
@@ -99,6 +107,7 @@ export interface UpdateProductRequest extends CreateProductRequest {
 
 export interface CategoryList extends Category {
   id: number;
+  count: number;
   version?: number;
   createAt?: string;
   updatedAt?: string;

@@ -8,7 +8,7 @@ import {
   NavLogoWrapper,
   NavbarContainer,
 } from "./styled";
-import logoSvg from "../../assets/logo.svg";
+import logoSvg from "/assets/logo.svg";
 import { useEffect, useState, useCallback } from "react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";

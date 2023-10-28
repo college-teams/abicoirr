@@ -27,7 +27,7 @@ public class CreateAdminOrderRequest {
 
   @NotEmpty private List<Long> productIds;
 
-  private LocalDateTime orderTimestamp = LocalDateTime.now();
+  private LocalDateTime orderTimestamp; // TODO: do we need this
 
   @NotNull private int quantity;
 

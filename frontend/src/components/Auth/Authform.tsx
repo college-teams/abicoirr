@@ -1,4 +1,3 @@
-import React from "react";
 import { InputBox } from "./styled";
 
 interface PropType {

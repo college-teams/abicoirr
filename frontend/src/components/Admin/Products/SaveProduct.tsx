@@ -30,6 +30,7 @@ import { Icon } from "@iconify/react";
 import { ConfirmationModal } from "../../ConfirmModal";
 import { useConfirmModal } from "../../../hooks/useConfirmModal";
 import Select from "react-select";
+import { calculateDiscountPercentage } from "../../../utils";
 
 interface SaveProductDetailsProps {
   open: boolean;
@@ -47,8 +48,9 @@ const SaveProductDetails = ({
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
-  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [props, activateConfirmModal] = useConfirmModal();
+
+  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [categoryListOptions, setCategoryListOptions] = useState([]);
   const [categoryList, setCategoryList] = useState<CategoryList[]>([]);
   const [seletedCategoryId, setSeletedCategoryId] = useState<number | null>(
@@ -167,6 +169,15 @@ const SaveProductDetails = ({
   const onSubmit = async (
     data: Product | UpdateProductRequest
   ): Promise<void> => {
+    if (Number(data.actualPrice) < Number(data.sellingPrice)) {
+      setError("sellingPrice", {
+        message: "SellingPrice should always less than actual price",
+      });
+      return;
+    } else {
+      clearErrors("sellingPrice");
+    }
+
     if (!data.links || data.links.length <= 0) {
       setError("links", {
         message: "Shop links is required",
@@ -195,6 +206,7 @@ const SaveProductDetails = ({
       ) || [];
 
     data.images = images;
+    data.discountPercent = getDiscountPrice;
 
     startLoading("/saveProduct");
 
@@ -309,6 +321,12 @@ const SaveProductDetails = ({
     remove(index);
   };
 
+  const discountPercent = calculateDiscountPercentage(
+    watch("actualPrice") || 0,
+    watch("sellingPrice") || 0
+  );
+  const getDiscountPrice = Number(discountPercent) > 0 ? discountPercent : 0;
+
   useEffect(() => {
     reset({});
     fetchCategoryList();
@@ -316,9 +334,6 @@ const SaveProductDetails = ({
       fetchProductDetailsById(selectedId);
     }
   }, [selectedId, open]);
-
-  // console.log(watch(), seletedCategoryName, categoryList);
-  watch();
 
   const modalContent = (
     <Wrapper>
@@ -337,7 +352,7 @@ const SaveProductDetails = ({
 
             <div className="relative py-10 ml-10 w-full ">
               <div className="relative ">
-                <h2 className="relative text-[2.2rem] font-semibold text-[#3068ec] capitalize">
+                <h2 className="relative text-[2.4rem] font-semibold text-[#3068ec] capitalize">
                   {selectedId ? "Edit" : "Add"} product
                 </h2>
               </div>
@@ -436,14 +451,14 @@ const SaveProductDetails = ({
                         className="relative text-[1.5rem] font-semibold mb-2"
                         htmlFor="price"
                       >
-                        Price*
+                        Selling Price*
                       </label>
                       <input
-                        id="price"
+                        id="sellingPrice"
                         type="text"
-                        placeholder="Price"
-                        {...register("price", {
-                          required: "Price is required",
+                        placeholder="Selling Price"
+                        {...register("sellingPrice", {
+                          required: "Selling Price is required",
                           pattern: {
                             value: /^\d+(\.\d{1,5})?$/,
                             message: "Please enter a valid price",
@@ -452,13 +467,79 @@ const SaveProductDetails = ({
                         className={`relative border-2 border-gray-300 font-medium  py-2  px-4 outline-none text-[1.4rem] rounded-md`}
                       />
                       <span className="relative text-red-600 font-medium mt-2">
-                        {errors?.price &&
-                          (errors?.price?.message ||
+                        {errors?.sellingPrice &&
+                          (errors?.sellingPrice?.message ||
                             "Please enter valid input data")}
                       </span>
                     </div>
 
                     <div className="relative flex-1 flex flex-col mb-6">
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="stockQuantity"
+                      >
+                        Actual price*
+                      </label>
+                      <input
+                        id="actualPrice"
+                        type="text"
+                        min={0}
+                        placeholder="Actual price"
+                        {...register("actualPrice", {
+                          required: "Actual Price is required",
+                          pattern: {
+                            value: /^\d+$/,
+                            message: "Please enter a valid stock quantity",
+                          },
+                        })}
+                        className={`relative border-2 border-gray-300 font-medium  py-2 px-4 outline-none text-[1.4rem] rounded-md`}
+                      />
+                      <span className="relative text-red-600 font-medium mt-2">
+                        {errors?.actualPrice &&
+                          (errors?.actualPrice?.message ||
+                            "Please enter valid input data")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative flex justify-between w-[85%] gap-5">
+                    <div className="relative flex  flex-1 flex-col mb-6">
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="discountPercent"
+                      >
+                        Discount Percent{" "}
+                        <span className="relative ml-2 text-sm">
+                          ( Auto calculate )
+                        </span>
+                      </label>
+                      <input
+                        id="discountPercent"
+                        type="number"
+                        min={0}
+                        max={100}
+                        readOnly
+                        placeholder="Discount Percent"
+                        {...register("discountPercent", {
+                          pattern: {
+                            value: /^\d+$/,
+                            message: "Please enter a valid discount price",
+                          },
+                        })}
+                        value={getDiscountPrice}
+                        onChange={() => {
+                          setValue("discountPercent", getDiscountPrice);
+                        }}
+                        className={`relative border-2 border-gray-300 font-medium  bg-gray-200 py-2 px-4 outline-none text-[1.4rem] rounded-md`}
+                      />
+                      <span className="relative text-red-600 font-medium mt-2">
+                        {errors?.discountPercent &&
+                          (errors?.discountPercent?.message ||
+                            "Please enter valid input data")}
+                      </span>
+                    </div>
+
+                    <div className="relative flex-1  flex flex-col mb-6">
                       <label
                         className="relative text-[1.5rem] font-semibold mb-2"
                         htmlFor="stockQuantity"
@@ -477,7 +558,7 @@ const SaveProductDetails = ({
                             message: "Please enter a valid stock quantity",
                           },
                         })}
-                        className={`relative border-2 border-gray-300 font-medium  py-2 px-4 outline-none text-[1.4rem] rounded-md`}
+                        className={`relative border-2 border-gray-300 font-medium  py-2  px-4 outline-none text-[1.4rem] rounded-md`}
                       />
                       <span className="relative text-red-600 font-medium mt-2">
                         {errors?.stockQuantity &&
@@ -487,32 +568,34 @@ const SaveProductDetails = ({
                     </div>
                   </div>
 
-                  <div className="relative flex flex-col mb-6">
-                    <label
-                      className="relative text-[1.5rem] font-semibold mb-2"
-                      htmlFor="discountPercent"
-                    >
-                      Discount Percent
-                    </label>
-                    <input
-                      id="discountPercent"
-                      type="number"
-                      min={0}
-                      max={100}
-                      placeholder="Discount Percent"
-                      {...register("discountPercent", {
-                        pattern: {
-                          value: /^\d+$/,
-                          message: "Please enter a valid discount price",
-                        },
-                      })}
-                      className={`relative border-2 border-gray-300 font-medium  py-2 w-[85%] px-4 outline-none text-[1.4rem] rounded-md`}
-                    />
-                    <span className="relative text-red-600 font-medium mt-2">
-                      {errors?.discountPercent &&
-                        (errors?.discountPercent?.message ||
-                          "Please enter valid input data")}
-                    </span>
+                  <div className="relative flex justify-between w-[43%] gap-5">
+                    <div className="relative flex-1  flex flex-col mb-6">
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="maxOrder"
+                      >
+                        Max Order*
+                      </label>
+                      <input
+                        id="maxOrder"
+                        type="number"
+                        min={0}
+                        placeholder="Max order"
+                        {...register("maxOrder", {
+                          required: "MaxOrder is required",
+                          pattern: {
+                            value: /^\d+$/,
+                            message: "Please enter a valid max order quantity",
+                          },
+                        })}
+                        className={`relative border-2 border-gray-300 font-medium  py-2  px-4 outline-none text-[1.4rem] rounded-md`}
+                      />
+                      <span className="relative text-red-600 font-medium mt-2">
+                        {errors?.maxOrder &&
+                          (errors?.maxOrder?.message ||
+                            "Please enter valid input data")}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="relative flex flex-col mb-6">

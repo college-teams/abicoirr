@@ -3,9 +3,15 @@ package com.project.abicoirr.service;
 import static com.project.abicoirr.codes.ErrorCodes.EMPTY_FILE_REQUEST;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
-import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_IMAGE_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_NOT_FOUND;
-import static com.project.abicoirr.codes.SuccessCodes.*;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.LATEST_PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.POPULAR_PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_CREATED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_DELETE_SUCCESS;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_LIST_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.PRODUCT_UPDATED;
 
 import com.project.abicoirr.entity.Category;
 import com.project.abicoirr.entity.ExternalLinks;
@@ -133,7 +139,7 @@ public class ProductService {
       }
     }
 
-    productRepository.delete(product);
+    productRepository.deleteProduct(product.getId());
 
     return new ApiResponse<>(PRODUCT_DELETE_SUCCESS, AbstractResponse.StatusType.SUCCESS);
   }
@@ -142,15 +148,14 @@ public class ProductService {
     try {
       Optional<ProductImage> productImage = productImageRepository.findByImageKey(key);
 
-      if (productImage.isEmpty()) {
-        throw new BaseException(PRODUCT_IMAGE_NOT_FOUND);
-      }
+      //      if (productImage.isEmpty()) {
+      //        throw new BaseException(PRODUCT_IMAGE_NOT_FOUND);
+      //      }
 
       if (!Util.isEmpty(key)) {
         deleteImage(key);
       }
-
-      productImageRepository.delete(productImage.get());
+      productImage.ifPresent(productImageRepository::delete);
     } catch (Exception ex) {
       log.error("Error ", ex);
       throw new BaseException(IMAGE_DELETE_FAILED);
@@ -255,7 +260,8 @@ public class ProductService {
     existingProduct.setAvgRating(updateProductRequest.getAvgRating());
     existingProduct.setMaxOrder(updateProductRequest.getMaxOrder());
     existingProduct.setMinOrder(updateProductRequest.getMinOrder());
-    existingProduct.setPrice(updateProductRequest.getPrice());
+    existingProduct.setActualPrice(updateProductRequest.getActualPrice());
+    existingProduct.setSellingPrice(updateProductRequest.getSellingPrice());
     existingProduct.setStockQuantity(updateProductRequest.getStockQuantity());
     existingProduct.setCategory(newCategory);
   }
