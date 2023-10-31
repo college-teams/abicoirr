@@ -9,21 +9,25 @@ import {
   DeleteFile,
   DeleteProduct,
   DeleteProductImage,
+  GetAdminOrderById,
   GetAdminOrders,
   GetCategoryById,
   GetCategoryList,
   GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
+  GetDashboardEntityItemsCount,
   GetLatestProductList,
   GetPopularProductList,
   GetProductById,
   GetProductList,
   GetUnReadMessageCount,
   HttpMethod,
+  SaveAdminOrder,
   SaveCategory,
   SaveContactDetails,
   SaveProduct,
+  UpdateAdminOrder,
   UpdateCategory,
   UpdateProduct,
   UploadFile,
@@ -39,6 +43,7 @@ import {
   MessageCount,
   Product,
 } from "../types/Admin";
+import { DashboardEntityItemsCount } from "../types/Dashboard";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const showToast = useToast();
@@ -139,6 +144,45 @@ export const getAdminOrders: GetAdminOrders = async (api) => {
     "getAdminOrders",
     "Error occurred while fetching admin orders",
     "GET"
+  );
+};
+
+export const getAdminOrderById: GetAdminOrderById = async (
+  api,
+  adminOrderId
+) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/${adminOrderId}`,
+    "getAdminOrderById",
+    "Error occurred while fetching admin order",
+    "GET"
+  );
+};
+
+export const saveAdminOrder: SaveAdminOrder = async (api, data) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/`,
+    "saveAdminOrder",
+    "Error occurred while saving admin details",
+    "POST",
+    data
+  );
+};
+
+export const updateAdminOrder: UpdateAdminOrder = async (
+  api,
+  adminOrderId,
+  data
+) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/${adminOrderId}`,
+    "saveAdminOrder",
+    "Error occurred while updating admin details",
+    "PUT",
+    data
   );
 };
 
@@ -452,3 +496,16 @@ export const getPopularProductList: GetPopularProductList = async (
     params
   );
 };
+
+// Dashboard
+export const getDashboardEntityItemsCount: GetDashboardEntityItemsCount =
+  async (api) => {
+    return makeRequest<DashboardEntityItemsCount>(
+      api,
+      "dashboard/entityItemsCount",
+      "getDashboardEntityItemsCount",
+      "Error occurred while fetching entity items count",
+      "GET",
+      null
+    );
+  };

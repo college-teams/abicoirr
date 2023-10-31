@@ -1,4 +1,4 @@
-import LocationImg from "../../assets/location1.webp";
+import LocationImg from "/assets/location1.webp";
 import { LocateButton } from "./styled";
 
 const Location = () => {

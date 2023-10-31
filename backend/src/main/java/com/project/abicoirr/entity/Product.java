@@ -51,7 +51,7 @@ public class Product extends CommonEntity {
   @Column(nullable = true)
   private int minOrder;
 
-  @Column(nullable = true)
+  @Column(nullable = false)
   private int maxOrder;
 
   @Column(nullable = true)

@@ -2,11 +2,13 @@ import React, { useState, useMemo } from "react";
 import Table from "../../Table";
 import { Icon } from "@iconify/react";
 import SaveUser from "./SaveUser";
+import { Column } from "react-table";
 
 const Users = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const columns = useMemo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const columns = useMemo<Column<any>[]>(
     () => [
       { Header: "ID", accessor: "id" },
       { Header: "Name", accessor: "name" },

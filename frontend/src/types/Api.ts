@@ -5,12 +5,15 @@ import {
   CategoryList,
   ContactDetails,
   ContactDetailsList,
+  CreateAdminOrderRequest,
   CreateProductRequest,
   FileResponse,
   MessageCount,
   Product,
+  UpdateAdminOrderRequest,
   UpdateProductRequest,
 } from "./Admin";
+import { DashboardEntityItemsCount } from "./Dashboard";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -36,6 +39,23 @@ export const isApiError = (data: unknown): data is ApiError => {
 export type GetAdminOrders = (
   api: AxiosInstance
 ) => Promise<AdminOrderResponseData[] | ApiError>;
+
+export type GetAdminOrderById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type SaveAdminOrder = (
+  api: AxiosInstance,
+  data: CreateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type UpdateAdminOrder = (
+  api: AxiosInstance,
+  adminOrderId:number,
+  data: UpdateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
+
 
 export type GetContactDetailList = (
   api: AxiosInstance
@@ -109,15 +129,13 @@ export type GetProductList = (
 
 export type GetLatestProductList = (
   api: AxiosInstance,
-  limit?:number,
+  limit?: number
 ) => Promise<Product[] | ApiError>;
-
 
 export type GetPopularProductList = (
   api: AxiosInstance,
-  limit?:number,
+  limit?: number
 ) => Promise<Product[] | ApiError>;
-
 
 export type GetProductById = (
   api: AxiosInstance,
@@ -142,13 +160,17 @@ export type UpdateProduct = (
 
 export type DeleteProductImage = (
   api: AxiosInstance,
-  productId:number,
+  productId: number,
   imageKey: string
 ) => Promise<void | ApiError>;
 
 export type GetCategoryProducts = (
   api: AxiosInstance,
-  categoryId:number,
-  limit?:number,
-  excludedProductIds?:number[]
+  categoryId: number,
+  limit?: number,
+  excludedProductIds?: number[]
 ) => Promise<Product[] | ApiError>;
+
+export type GetDashboardEntityItemsCount = (
+  api: AxiosInstance
+) => Promise<DashboardEntityItemsCount | ApiError>;

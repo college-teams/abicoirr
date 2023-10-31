@@ -1,9 +1,7 @@
 package com.project.abicoirr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ExternalLinks extends CommonEntity {
   private String link;
+
+  @Enumerated(EnumType.STRING)
   private ECommercePlatformName platformName;
 
   @JsonIgnore

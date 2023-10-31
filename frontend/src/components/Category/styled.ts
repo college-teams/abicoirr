@@ -53,8 +53,8 @@ export const CategoryImageContainer = styled.div`
   }
 
   @media screen and (max-width: 500px) {
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
   }
 `;
 

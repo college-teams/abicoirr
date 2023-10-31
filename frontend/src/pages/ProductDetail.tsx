@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NoImage from "../assets/noImage.png";
+import NoImage from "/assets/noImage.png";
 import Card from "../components/Card";
 import RedirectSite from "../components/RedirectSite";
 import GifLoader from "../components/Loader/GifLoader";
@@ -11,6 +11,8 @@ import { isApiError } from "../types/Api";
 import { Product, ProductImages } from "../types/Admin";
 import { SubImagesContainer } from "./styled";
 import { calculateDiscountPercentage } from "../utils";
+import ImageWithFallback from "../utils/ImageWithFallback";
+import BulkOrder from "../components/BulkOrder";
 
 const ProductDetail = () => {
   const api = useAPI();
@@ -18,10 +20,16 @@ const ProductDetail = () => {
 
   const [loading, startLoading, endLoading] = useLoadingIndicator();
   const navigate = useNavigate();
+
+  // states
   const [redirect, setRedirect] = useState(false);
   const [product, setProduct] = useState<Product>();
   const [relatedProductList, setRelatedProductList] = useState<Product[]>([]);
   const [primaryImage, setPrimaryImage] = useState<ProductImages | null>();
+  const [quantity, setQuantity] = useState<number>(1);
+  const [openBulkOrderModal, setOpenBulkOrderModaltate] = useState(false);
+
+  type QUANTITY_ACTIONS = "Add" | "REMOVE";
 
   const fetchProductDetails = async () => {
     startLoading("/getProductById");
@@ -61,9 +69,30 @@ const ProductDetail = () => {
     setPrimaryImage({ imageKey, imagePath });
   };
 
+  const quantityHandler = (action: QUANTITY_ACTIONS): void => {
+    if ((product?.stockQuantity ?? 0) > 0) {
+      if (action === "Add") {
+        setQuantity((pre) => pre + 1);
+      } else if (action === "REMOVE") {
+        if (quantity !== 0) {
+          setQuantity((pre) => pre - 1);
+        }
+      }
+    }
+  };
+
+  const orderPlacinghandler = (): void => {
+    if (product && quantity > product?.maxOrder) {
+      setOpenBulkOrderModaltate(true);
+    } else {
+      setRedirect(true);
+    }
+  };
+
   useEffect(() => {
     if (productId) {
       setPrimaryImage(null);
+      setQuantity(1);
       fetchProductDetails();
     }
   }, [productId]);
@@ -75,9 +104,10 @@ const ProductDetail = () => {
         <div className="relative flex w-[90%] mx-auto  mlg:gap-[5rem] gap-[7rem] mb-20 flex-col mlg:flex-row ">
           <div className="relative flex-1 ">
             <div className="h-[200px] w-full sm:h-[250px]  lg:w-[600px] lg:h-[300px] xl:h-[400px]  mb-8 border">
-              <img
-                src={primaryImage?.imagePath || NoImage}
-                alt={product?.productName}
+              <ImageWithFallback
+                imagePath={primaryImage?.imagePath}
+                defaultImage={NoImage}
+                alt={product?.productName || "productDetailsImage"}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -97,10 +127,12 @@ const ProductDetail = () => {
                         handleImageChangehandler(e.imageKey, e.imagePath)
                       }
                     >
-                      <img
-                        src={e.imagePath}
+                      <ImageWithFallback
+                        imagePath={e.imagePath}
+                        defaultImage={NoImage}
                         alt={e.imageKey}
                         className="h-full w-full object-cover"
+                        hideOnError={false}
                       />
                     </div>
                   );
@@ -137,14 +169,37 @@ const ProductDetail = () => {
                 % off
               </span>
             </p>
+
+            <div className="relative mb-6 text-xl flex justify-center mlg:justify-start">
+              <div className="relative border border-black px-4 py-3 flex items-center justify-between w-[20%]">
+                <span
+                  className="relative cursor-pointer block text-[3rem]"
+                  onClick={() => quantityHandler("REMOVE")}
+                >
+                  -
+                </span>
+                <input
+                  className="relative outline-none border-none bg-transparent w-full text-center text-[1.6rem]"
+                  min={1}
+                  value={quantity}
+                />
+                <span
+                  className="relative cursor-pointer block  text-[3rem] outline-none"
+                  onClick={() => quantityHandler("Add")}
+                >
+                  +
+                </span>
+              </div>
+            </div>
+
             <div className="mb-10 mlg:mb-8 w-[50%] sm:w-[30%] lg:w-[60%] xl:w-[40%] mx-auto mlg:ml-0">
               <button
-                className={`relative bg-[#008000] w-full py-4 text-white text-[1.6rem] ${
+                className={`relative bg-[#008000] w-full py-4 text-white text-[1.6rem] hover:bg-[#008004c8] ${
                   (product?.stockQuantity || 0) <= 0
                     ? "pointer-events-none bg-gray-400"
                     : ""
                 }`}
-                onClick={() => setRedirect(true)}
+                onClick={orderPlacinghandler}
               >
                 Shop now
               </button>
@@ -178,66 +233,6 @@ const ProductDetail = () => {
               </p>
             </div>
             <div className="w-[90%] mx-auto">
-              {/* <Carousel
-
-            additionalTransfrom={0}
-            arrows
-            autoPlay
-            autoPlaySpeed={3000}
-            centerMode={false}
-            className=""
-            containerClass="container-with-dots"
-            dotListClass=""
-            draggable
-            focusOnSelect={false}
-            infinite
-            itemClass=""
-            keyBoardControl
-            minimumTouchDrag={80}
-            pauseOnHover
-            renderArrowsWhenDisabled={false}
-            renderButtonGroupOutside={false}
-            renderDotsOutside={false}
-            responsive={{
-              desktop: {
-                breakpoint: {
-                  max: 3000,
-                  min: 1024,
-                },
-                items: 4,
-                partialVisibilityGutter: 20,
-              },
-              mobile: {
-                breakpoint: {
-                  max: 464,
-                  min: 0,
-                },
-                items: 1,
-                partialVisibilityGutter: 20,
-              },
-              tablet: {
-                breakpoint: {
-                  max: 1024,
-                  min: 464,
-                },
-                items: 3,
-                partialVisibilityGutter: 20,
-              },
-            }}
-            rewind={false}
-            rewindWithAnimation={false}
-            rtl={false}
-            shouldResetAutoplay
-            showDots={false}
-            sliderClass=""
-            slidesToSlide={1}
-            swipeable
-          >
-            {tempPopularProducts.map((e, i) => (
-              <Card key={i} {...e} />
-            ))}
-          </Carousel> */}
-
               <div className="relative flex flex-wrap gap-[3rem] justify-center">
                 {relatedProductList.map((e, i) => {
                   const image =
@@ -265,6 +260,10 @@ const ProductDetail = () => {
           externalSites={product?.links || []}
           open={redirect}
           close={() => setRedirect(false)}
+        />
+        <BulkOrder
+          open={openBulkOrderModal}
+          close={() => setOpenBulkOrderModaltate(false)}
         />
       </div>
     </React.Fragment>

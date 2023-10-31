@@ -11,6 +11,9 @@ spring:
     multipart:
       max-file-size: 15MB # Maximum file size allowed
       max-request-size: 50MB  # Maximum request size allowed
+  flyway:
+    enabled: true
+    table: flyway_schema_table
 
 server:
   servlet:

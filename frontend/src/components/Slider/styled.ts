@@ -1,41 +1,41 @@
-import styled, { keyframes } from "styled-components";
-import { SwiperSlide, Swiper } from "swiper/react";
+// import styled, { keyframes } from "styled-components";
+// // import { SwiperSlide, Swiper } from "swiper/react";
 
-const imageScale = keyframes`
-  from {
-    transform: scale(1.2);
-  }
-  to {
-    transform: scale(1);
-  }
-`;
+// const imageScale = keyframes`
+//   from {
+//     transform: scale(1.2);
+//   }
+//   to {
+//     transform: scale(1);
+//   }
+// `;
 
-export const SwiperSlider = styled(SwiperSlide)`
-  position: relative;
-  /* display: flex; */
-  width: 100%;
-  height: 100%;
-  /* align-items: center;
-  justify-content: center; */
-  background-color: #000000;
+// // export const SwiperSlider = styled(SwiperSlide)`
+// //   position: relative;
+// //   /* display: flex; */
+// //   width: 100%;
+// //   height: 100%;
+// //   /* align-items: center;
+// //   justify-content: center; */
+// //   background-color: #000000;
 
-  img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-position: center center;
-    background-size:contain;
-    background-repeat: no-repeat;
-    /* object-fit: contain; */
-  }
-`;
+// //   img {
+// //     position: relative;
+// //     width: 100%;
+// //     height: 100%;
+// //     background-position: center center;
+// //     background-size:contain;
+// //     background-repeat: no-repeat;
+// //     /* object-fit: contain; */
+// //   }
+// // `;
 
-export const SwipperWrapper = styled(Swiper)`
-  .swiper-pagination-bullet {
-    background-color: #fff;
-  }
+// // export const SwipperWrapper = styled(Swiper)`
+// //   .swiper-pagination-bullet {
+// //     background-color: #fff;
+// //   }
 
-  .swiper-slide-active {
-    animation: ${imageScale} 1s linear;
-  }
-`;
+// //   .swiper-slide-active {
+// //     animation: ${imageScale} 1s linear;
+// //   }
+// // `;

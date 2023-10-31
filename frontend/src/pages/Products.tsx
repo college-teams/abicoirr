@@ -1,6 +1,6 @@
-import NoImage from "../assets/noImage.png";
-import PageImg from "../assets/productsPageImg.jpeg";
-import AllCategory from "../assets/card3.jpg";
+import NoImage from "/assets/noImage.png";
+import PageImg from "/assets/productsPageImg.jpeg";
+import EmptyProductsList from "/assets/notfound.webp";
 import Card from "../components/Card";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
@@ -8,6 +8,11 @@ import { getCategoryList, getCategoryProducts, getProductList } from "../api";
 import { isApiError } from "../types/Api";
 import { useEffect, useState } from "react";
 import GifLoader from "../components/Loader/GifLoader";
+import category1 from "/assets/category1.webp";
+import category2 from "/assets/category2.webp";
+import category3 from "/assets/category3.webp";
+import category4 from "/assets/category4.webp";
+import category5 from "/assets/category5.webp";
 import { CategoryList, Product } from "../types/Admin";
 import { CategoryListContainer, ProductListContainer } from "./styled";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -24,6 +29,8 @@ const Products = () => {
   const [categoryLists, setCategoryLists] = useState<CategoryList[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const [totalCategoryProducts, setTotalCategoryProducts] = useState<number>(0);
+
+  const categoryImages = [category2, category3, category4, category5];
 
   const fetchCategoryList = async () => {
     startLoading("/getCategoryList");
@@ -91,7 +98,7 @@ const Products = () => {
       {loading && <GifLoader />}
 
       <div className="relative mt-[8rem]">
-        <div className="relative w-full lg:w-[95%] m-auto">
+        <div className="relative w-full lg:w-[100%] m-auto">
           <img
             className="relative w-full h-full object-cover"
             src={PageImg}
@@ -99,16 +106,17 @@ const Products = () => {
           />
         </div>
 
+        {/* Mobile screens */}
         <div className="relative flex flex-col flex-wrap gap-10  mt-[4rem] px-14 lg:hidden">
-          <div className="relative flex gap-x-12 gap-y-8 flex-wrap justify-center items-center">
+          <div className="relative flex gap-y-8 flex-wrap  items-center justify-center">
             <div
               onClick={() => handleCategorySelection()}
               className="relative flex items-center justify-center flex-col cursor-pointer"
             >
-              <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
+              <div className="relative h-[72px] w-[72px] rounded-full overflow-hidden  mb-7">
                 <img
                   className="relative h-full w-full object-cover"
-                  src={AllCategory}
+                  src={category1}
                   alt={"All categories"}
                 />
               </div>
@@ -124,14 +132,18 @@ const Products = () => {
                     onClick={() => handleCategorySelection(e.id)}
                     className="relative flex items-center justify-center flex-col cursor-pointer"
                   >
-                    <div className="relative h-[75px] w-[75px] rounded-full overflow-hidden border border-gray-700 mb-7">
+                    <div className="relative h-[72px] w-[72px] rounded-full overflow-hidden  mb-7">
                       <img
                         className="relative h-full w-full object-cover"
-                        src={e.imagePath || NoImage}
+                        src={
+                          categoryImages[
+                            Math.floor(Math.random() * categoryImages.length)
+                          ]
+                        }
                         alt={e.categoryName}
                       />
                     </div>
-                    <div className="relative break-words font-semibold text-2xl text-center w-[100px]">
+                    <div className="relative break-words font-semibold text-2xl text-center w-[100px] capitalize">
                       {e.categoryName}
                     </div>
                   </div>
@@ -139,8 +151,8 @@ const Products = () => {
               })}
           </div>
         </div>
-
-        <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto">
+        {/* Desktop screens */}
+        <div className="flex gap-20 w-[90%] lg:mt-[6rem] mb-[6rem] mx-auto ">
           <div className="w-[20%] sticky top-[8rem] max-h-screen  hidden lg:block ">
             <p className="relative text-[2.6rem] font-semibold mb-[4rem]">
               Categories
@@ -180,25 +192,35 @@ const Products = () => {
             <p className="relative text-[1.4rem] mb-8 font-medium text-black/60 mt-[5rem]">
               Showing all {productList.length} result(s)
             </p>
-            <ProductListContainer className="">
-              {productList.map((e, i) => {
-                const image =
-                  e.images.length > 0 ? e.images[0].imagePath : NoImage;
-                return (
-                  <Card
-                    key={i}
-                    id={e.id}
-                    name={e.productName}
-                    sellingPrice={e.sellingPrice}
-                    actualPrice={e.actualPrice}
-                    image={image}
-                    stockQuantity={e.stockQuantity}
-                    externalSites={e.links}
-                    buttonText={"Shop now"}
-                  />
-                );
-              })}
-            </ProductListContainer>
+
+            {productList && productList.length <= 0 ? (
+              <div className="relative flex flex-col items-center justify-center">
+                <img src={EmptyProductsList} alt="Empty products" />
+                <span className="relative text-[3rem] font-medium">
+                  Product list is empty
+                </span>
+              </div>
+            ) : (
+              <ProductListContainer className="">
+                {productList.map((e, i) => {
+                  const image =
+                    e.images.length > 0 ? e.images[0].imagePath : NoImage;
+                  return (
+                    <Card
+                      key={i}
+                      id={e.id}
+                      name={e.productName}
+                      sellingPrice={e.sellingPrice}
+                      actualPrice={e.actualPrice}
+                      image={image}
+                      stockQuantity={e.stockQuantity}
+                      externalSites={e.links}
+                      buttonText={"Shop now"}
+                    />
+                  );
+                })}
+              </ProductListContainer>
+            )}
           </div>
         </div>
       </div>

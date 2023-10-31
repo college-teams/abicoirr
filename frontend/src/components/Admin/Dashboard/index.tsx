@@ -1,8 +1,39 @@
 import { Icon } from "@iconify/react";
 import { BarChart } from "./BarChart";
 import { LineChart } from "./LineChart";
+import { useAPI } from "../../../hooks/useApi";
+import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
+import { useEffect, useState } from "react";
+import { DashboardEntityItemsCount } from "../../../types/Dashboard";
+import { getDashboardEntityItemsCount } from "../../../api";
+import { isApiError } from "../../../types/Api";
+import Loader from "../../Loader";
 
 const Dashboard = (): JSX.Element => {
+  const api = useAPI();
+  const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
+
+  // States
+  const [entityItemsCount, setEntityItemsCount] =
+    useState<DashboardEntityItemsCount>();
+
+  const fetchEntityItemsCount = async () => {
+    startLoading("/getDashboardEntityItemsCount");
+    try {
+      const res = await getDashboardEntityItemsCount(api);
+      if (!isApiError(res)) {
+        setEntityItemsCount(res);
+      }
+    } finally {
+      endLoading("/getDashboardEntityItemsCount");
+    }
+  };
+
+  // Api calls
+  useEffect(() => {
+    fetchEntityItemsCount();
+  }, []);
+
   return (
     <div className="relative ">
       <div className="relative flex items-center justify-between flex-wrap gap-2">
@@ -12,7 +43,13 @@ const Dashboard = (): JSX.Element => {
           </div>
           <div className="relative flex flex-col gap-2 text-[1.7rem] capitalize">
             <span className=" font-medium">Total Users</span>
-            <span className="relative text-[2rem] font-semibold">200</span>
+            <span className="relative text-[2rem] font-semibold">
+              {isLoading("/getDashboardEntityItemsCount") ? (
+                <Loader />
+              ) : (
+                entityItemsCount?.users || 0
+              )}
+            </span>
           </div>
         </div>
 
@@ -22,7 +59,13 @@ const Dashboard = (): JSX.Element => {
           </div>
           <div className="relative flex flex-col gap-2 text-[1.7rem] capitalize">
             <span className=" font-medium">Total Categories</span>
-            <span className="relative text-[2rem] font-semibold">120</span>
+            <span className="relative text-[2rem] font-semibold">
+              {isLoading("/getDashboardEntityItemsCount") ? (
+                <Loader />
+              ) : (
+                entityItemsCount?.categories || 0
+              )}
+            </span>
           </div>
         </div>
 
@@ -32,7 +75,13 @@ const Dashboard = (): JSX.Element => {
           </div>
           <div className="relative flex flex-col gap-2 text-[1.7rem] capitalize">
             <span className=" font-medium">Total Products</span>
-            <span className="relative text-[2rem] font-semibold">600</span>
+            <span className="relative text-[2rem] font-semibold">
+              {isLoading("/getDashboardEntityItemsCount") ? (
+                <Loader />
+              ) : (
+                entityItemsCount?.products || 0
+              )}
+            </span>
           </div>
         </div>
 
@@ -42,7 +91,13 @@ const Dashboard = (): JSX.Element => {
           </div>
           <div className="relative flex flex-col gap-2 text-[1.7rem] capitalize">
             <span className=" font-medium">Total Orders</span>
-            <span className="relative text-[2rem] font-semibold">500</span>
+            <span className="relative text-[2rem] font-semibold">
+              {isLoading("/getDashboardEntityItemsCount") ? (
+                <Loader />
+              ) : (
+                entityItemsCount?.adminOrders || 0
+              )}
+            </span>
           </div>
         </div>
       </div>
