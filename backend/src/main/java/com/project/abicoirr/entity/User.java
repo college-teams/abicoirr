@@ -1,31 +1,32 @@
 package com.project.abicoirr.entity;
 
 import com.project.abicoirr.util.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "_user")
-public class User implements UserDetails {
-  @Id @GeneratedValue private Integer id;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class User extends CommonEntity implements UserDetails {
+
   private String firstname;
   private String lastname;
   private String email;
   private String password;
-  private String confirmationId;
-  private boolean emailVerification;
+  private String confirmationToken;
+  private boolean isAccountVerified;
 
   @Enumerated(EnumType.STRING)
   private Role role;

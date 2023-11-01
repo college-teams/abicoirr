@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface AppState {
   isAdmin: boolean;
+  user:object;
 }
 
 const initialState: AppState = {
   isAdmin: false,
+  user:{}
 };
 
 const UsersSlice = createSlice({

@@ -35,6 +35,12 @@ public class ErrorCodes extends StatusCodes {
   public static final StatusCodes PRODUCT_IMAGE_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "PRODUCT_IMAGE_NOT_FOUND");
 
+  public static final StatusCodes USER_ALREADY_EXISTS =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "USER_ALREADY_EXISTS");
+
+  public static final StatusCodes ACCOUNT_NOT_VERIFIED =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "ACCOUNT_NOT_VERIFIED");
+
   public ErrorCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }
