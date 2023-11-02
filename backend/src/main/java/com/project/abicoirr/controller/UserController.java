@@ -2,6 +2,7 @@ package com.project.abicoirr.controller;
 
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Authentication.UserSignupResponse;
+import com.project.abicoirr.models.User.ForgotPasswordRequest;
 import com.project.abicoirr.models.User.UserLoginRequest;
 import com.project.abicoirr.models.User.UserLoginResponse;
 import com.project.abicoirr.models.User.UserRegisterRequest;
@@ -42,4 +43,25 @@ public class UserController {
       @RequestParam("confirmationToken") String confirmationToken) throws IllegalAccessException {
     return ResponseEntity.ok(userService.signupConfirmation(confirmationToken));
   }
+
+  @PostMapping(value = "/forgot-password/otp-generate")
+  public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest)
+      throws Exception {
+    return new ResponseEntity<>(
+        userService.generateOtpForForgotPassword(forgotPasswordRequest), HttpStatus.OK);
+  }
+
+  // otp verification
+  //  @PostMapping(value = "/forgotpassword/reset")
+  //  public ResponseEntity<?> resetPassword(@RequestBody OtpVefication data) throws Exception {
+  //    return userService.otpVerification(data);
+  //  }
+
+  //  @GetMapping("/{userId}")
+  //  @PreAuthorize("@accessControlService.isAuthenticated(#userId)")
+  //  public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
+  //    UserResponse user = userService.getUserFromId(userId);
+  //    return new ResponseEntity<>(ResponseUtil.createResponse("User Fetched Successfully", user,
+  // HttpStatus.OK), HttpStatus.OK);
+  //  }
 }

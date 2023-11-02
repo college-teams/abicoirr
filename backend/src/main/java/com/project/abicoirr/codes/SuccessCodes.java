@@ -74,6 +74,12 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes USER_LOGIN_SUCCESS =
       new SuccessCodes(200, HttpStatus.OK, "USER_LOGIN_SUCCESS");
 
+  public static final StatusCodes ACCOUNT_ALREADY_EXISTS =
+      new SuccessCodes(200, HttpStatus.OK, "ACCOUNT_ALREADY_EXISTS");
+
+  public static final StatusCodes FORGOT_PASSWORD_REQUEST_SENDS =
+      new SuccessCodes(200, HttpStatus.OK, "FORGOT_PASSWORD_REQUEST_SENDS");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }

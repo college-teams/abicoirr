@@ -26,8 +26,10 @@ spring:
           starttls:
             enable: true
 
-
 server:
   servlet:
     context-path: /api/v1
   port: 8000
+
+application:
+  url: ${application.url}

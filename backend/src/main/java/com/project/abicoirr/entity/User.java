@@ -27,6 +27,8 @@ public class User extends CommonEntity implements UserDetails {
   private String password;
   private String confirmationToken;
   private boolean isAccountVerified;
+  private String otp;
+  private Long otpValidityTimestamp;
 
   @Enumerated(EnumType.STRING)
   private Role role;
