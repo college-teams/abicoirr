@@ -3,6 +3,7 @@ package com.project.abicoirr.controller;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Authentication.UserSignupResponse;
 import com.project.abicoirr.models.User.ForgotPasswordRequest;
+import com.project.abicoirr.models.User.UserDetailsResponse;
 import com.project.abicoirr.models.User.UserLoginRequest;
 import com.project.abicoirr.models.User.UserLoginResponse;
 import com.project.abicoirr.models.User.UserRegisterRequest;
@@ -10,6 +11,7 @@ import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
+
+  @GetMapping("/self")
+  public ResponseEntity<ApiResponse<UserDetailsResponse>> getLoggedInUserDetails() {
+    return new ResponseEntity<>(userService.getUserSelf(), HttpStatus.OK);
+  }
+
+  @GetMapping("/")
+  public ResponseEntity<ApiResponse<List<UserDetailsResponse>>> getAllUserDetails() {
+    return new ResponseEntity<>(userService.getUserList(), HttpStatus.OK);
+  }
 
   @PostMapping("/register")
   public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request)

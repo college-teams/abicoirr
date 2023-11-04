@@ -80,6 +80,12 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes FORGOT_PASSWORD_REQUEST_SENDS =
       new SuccessCodes(200, HttpStatus.OK, "FORGOT_PASSWORD_REQUEST_SENDS");
 
+  public static final StatusCodes CURRENT_USER_DETAILS_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "CURRENT_USER_DETAILS_FETCHED");
+
+  public static final StatusCodes All_USER_DETAILS_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "All_USER_DETAILS_FETCHED");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }

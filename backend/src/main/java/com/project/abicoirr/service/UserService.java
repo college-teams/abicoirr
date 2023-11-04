@@ -4,6 +4,8 @@ import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_NOT_VERIFIED;
 import static com.project.abicoirr.codes.ErrorCodes.USER_ALREADY_EXISTS;
 import static com.project.abicoirr.codes.ErrorCodes.USER_NOT_EXISTS;
 import static com.project.abicoirr.codes.SuccessCodes.ACCOUNT_ALREADY_EXISTS;
+import static com.project.abicoirr.codes.SuccessCodes.All_USER_DETAILS_FETCHED;
+import static com.project.abicoirr.codes.SuccessCodes.CURRENT_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.FORGOT_PASSWORD_REQUEST_SENDS;
 import static com.project.abicoirr.codes.SuccessCodes.USER_LOGIN_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.USER_REGISTER_SUCCESS;
@@ -13,6 +15,7 @@ import com.project.abicoirr.entity.User;
 import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.Authentication.UserSignupResponse;
 import com.project.abicoirr.models.User.ForgotPasswordRequest;
+import com.project.abicoirr.models.User.UserDetailsResponse;
 import com.project.abicoirr.models.User.UserLoginRequest;
 import com.project.abicoirr.models.User.UserLoginResponse;
 import com.project.abicoirr.models.User.UserRegisterRequest;
@@ -21,6 +24,7 @@ import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -41,9 +45,25 @@ public class UserService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final EmailService emailService;
+  private final AccessControlService accessControlService;
 
   @Value("${application.url}")
   private String Application_url;
+
+  public ApiResponse<UserDetailsResponse> getUserSelf() {
+    User currentUser = accessControlService.getCurrentUser();
+    return new ApiResponse<>(
+        CURRENT_USER_DETAILS_FETCHED,
+        AbstractResponse.StatusType.SUCCESS,
+        UserDetailsResponse.from(currentUser));
+  }
+
+  public ApiResponse<List<UserDetailsResponse>> getUserList() {
+    return new ApiResponse<>(
+        All_USER_DETAILS_FETCHED,
+        AbstractResponse.StatusType.SUCCESS,
+        UserDetailsResponse.from(userRepository.findAll()));
+  }
 
   @Transactional
   public ApiResponse<?> register(UserRegisterRequest request)
@@ -86,9 +106,7 @@ public class UserService {
 
     var jwtToken = jwtService.generateToken(user);
     return new ApiResponse<>(
-        USER_LOGIN_SUCCESS,
-        AbstractResponse.StatusType.SUCCESS,
-        UserLoginResponse.from(jwtToken, user));
+        USER_LOGIN_SUCCESS, AbstractResponse.StatusType.SUCCESS, UserLoginResponse.from(jwtToken));
   }
 
   public UserSignupResponse signupConfirmation(String confirmationToken) {
