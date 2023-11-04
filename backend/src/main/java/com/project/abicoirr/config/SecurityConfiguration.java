@@ -32,7 +32,7 @@ public class SecurityConfiguration {
             "/users/login",
             "/users/forgot-password/otp-generate")
         .permitAll()
-        .requestMatchers(HttpMethod.GET, "/users/validate")
+        .requestMatchers(HttpMethod.GET, "/users/validate", "/category/**", "/products/**")
         .permitAll()
         .anyRequest()
         .authenticated()
