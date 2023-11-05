@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class CategoryController {
   }
 
   @PostMapping("/")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(
       @Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
     return new ResponseEntity<>(
@@ -51,6 +53,7 @@ public class CategoryController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
       @PathVariable Long id, @Valid @RequestBody UpdateCategoryRequest updateCategoryRequest)
       throws BaseException {
@@ -59,6 +62,7 @@ public class CategoryController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
   }
@@ -81,6 +85,7 @@ public class CategoryController {
 
   @Deprecated
   @PostMapping("/{id}/image")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> uploadImage(
       @PathVariable(name = "id") Long categoryId,
       @Valid @RequestParam("file") MultipartFile multipartFile)
@@ -90,6 +95,7 @@ public class CategoryController {
   }
 
   @DeleteMapping("/{id}/image")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> deleteImage(
       @PathVariable(name = "id") Long categoryId, @Valid @RequestParam("imageKey") String key)
       throws BaseException {

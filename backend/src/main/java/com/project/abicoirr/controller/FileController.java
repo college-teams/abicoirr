@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class FileController {
   private final FileService fileService;
 
   @PostMapping
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> uploadImage(
       @RequestParam(name = "entityKey") String entityKey,
       @RequestParam("file") MultipartFile multipartFile)
@@ -32,6 +34,7 @@ public class FileController {
   }
 
   @PostMapping("bulk-upload")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> uploadImages(
       @RequestParam(name = "entityKey") String entityKey,
       @RequestParam("files") List<MultipartFile> multipartFiles)
@@ -40,6 +43,7 @@ public class FileController {
   }
 
   @DeleteMapping
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> deleteImage(@Valid @RequestParam("imageKey") String key)
       throws BaseException {
     return new ResponseEntity<>(fileService.deleteImage(key), HttpStatus.OK);

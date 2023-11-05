@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +30,20 @@ public class AdminOrderController {
   private final AdminOrderService adminOrderService;
 
   @GetMapping("/")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<List<AdminOrderResponse>>> getAdminOrderList() {
     return new ResponseEntity<>(adminOrderService.getAdminOrderList(), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<AdminOrderResponse>> getAdminOrder(@PathVariable Long id)
       throws BaseException {
     return new ResponseEntity<>(adminOrderService.getAdminOrder(id), HttpStatus.OK);
   }
 
   @PostMapping("/")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<AdminOrderResponse>> addAdminOrder(
       @Valid @RequestBody CreateAdminOrderRequest createAdminOrderRequest) throws BaseException {
     return new ResponseEntity<>(
@@ -47,6 +51,7 @@ public class AdminOrderController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<AdminOrderResponse>> UpdateAdminOrder(
       @PathVariable Long id, @Valid @RequestBody UpdateAdminOrderRequest updateAdminOrderRequest)
       throws BaseException {
@@ -55,6 +60,7 @@ public class AdminOrderController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse> deleteAdminOrder(@PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(adminOrderService.deleteAdminOrder(id), HttpStatus.OK);
   }

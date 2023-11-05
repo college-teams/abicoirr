@@ -1,10 +1,12 @@
 package com.project.abicoirr.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,7 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class SecurityConfiguration {
 
   private final JwtAuthenticationFilter jwtAuthFilter;
@@ -30,7 +33,8 @@ public class SecurityConfiguration {
             HttpMethod.POST,
             "/users/register",
             "/users/login",
-            "/users/forgot-password/otp-generate")
+            "/users/forgot-password/otp-generate",
+            "/contact-details/")
         .permitAll()
         .requestMatchers(HttpMethod.GET, "/users/validate", "/category/**", "/products/**")
         .permitAll()

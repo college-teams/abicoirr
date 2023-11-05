@@ -31,5 +31,8 @@ server:
     context-path: /api/v1
   port: 8000
 
+jwt:
+  secret-key: 400857d99aa816063fb87d0a35166b7a79b69abe046e7ea4537cf78d5d16d219
+
 application:
   url: ${application.url}

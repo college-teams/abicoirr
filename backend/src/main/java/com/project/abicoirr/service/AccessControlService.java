@@ -1,15 +1,16 @@
 package com.project.abicoirr.service;
 
 import com.project.abicoirr.entity.User;
+import com.project.abicoirr.util.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccessControlService {
 
-  public boolean isAuthenticated(String userId) {
-    User principal = getCurrentUser();
-    return userId.equals(String.valueOf(principal.getId()));
+  public boolean isAdmin() {
+    User user = getCurrentUser();
+    return Role.ADMIN.equals(user.getRole());
   }
 
   public User getCurrentUser() {
