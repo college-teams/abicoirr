@@ -1,7 +1,6 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
       properties:
         hibernate:
           dialect: org.hibernate.dialect.MySQL5Dialect
@@ -16,3 +15,5 @@ logging:
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql: INFO
 
+application:
+  url: <prod load balancer url>

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class ProductController {
   }
 
   @PostMapping("/")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<ProductResponse>> addProduct(
       @Valid @RequestBody CreateProductRequest createProductRequest) throws BaseException {
     return new ResponseEntity<>(
@@ -62,6 +64,7 @@ public class ProductController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<ProductResponse>> updateProductById(
       @PathVariable("id") Long productId, @Valid @RequestBody UpdateProductRequest product)
       throws BaseException {
@@ -70,12 +73,14 @@ public class ProductController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse> deleteProductById(@PathVariable("id") Long productId)
       throws BaseException {
     return new ResponseEntity<>(productService.deleteProductById(productId), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}/image")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> deleteImage(@Valid @RequestParam("imageKey") String key)
       throws BaseException {
     return new ResponseEntity<>(productService.deleteProductImage(key), HttpStatus.OK);
@@ -83,6 +88,7 @@ public class ProductController {
 
   @Deprecated
   @PostMapping("/product/{id}/upload")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<?>> uploadImages(
       @PathVariable(name = "id") Long productId,
       @Valid @RequestParam("files") List<MultipartFile> multipartFiles)
@@ -91,6 +97,7 @@ public class ProductController {
         productService.uploadImage(productId, multipartFiles), HttpStatus.OK);
   }
 
+  //  Not using currently, may be for future use??..
   @GetMapping("/search-product")
   public List<Product> searchProduct(@RequestParam String keyword) {
     return productService.searchProduct(keyword);

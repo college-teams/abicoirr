@@ -134,12 +134,16 @@ def run_custom_command(directory, command):
         # Change directory to the specified path
         os.chdir(directory)
 
-        # Run the custom Maven command
-        os.system(command)
+        # Run the  command
+        result = os.system(command)
 
+        if result != 0:
+            raise subprocess.CalledProcessError(result, command)
+        
         print("Build successful")
     except subprocess.CalledProcessError as e:
         print(f"Error: Build failed with exit code {e.returncode}")
+        raise e
 
 def get_backend_path(parent_directory):
     return os.path.join(parent_directory, "backend")
@@ -148,41 +152,44 @@ def get_frontend_path(parent_directory):
     return os.path.join(parent_directory, "frontend")
 
 def main():
-    args = parse_args()
-    print(f"Deploying to {args.environment} ENV")
-    root = Path().resolve().parent
-    root_dir=os.path.dirname(root)
-    
-    backend_path = get_backend_path(root_dir)
-    build_be(backend_path)
-    
-    frontend_path = get_frontend_path(root_dir)
-    build_fe(frontend_path)
-    
-    print("Fetch instance host names")
-    
-    region = 'us-east-1' 
-    instance_ids = get_asg_instances("Instance_asg", region)
-    hostnames = get_instance_hostnames(instance_ids, region)
-    print(hostnames)
-    
-    username = 'ec2-user'
-    public_key_path = '~/.ssh/id_rsa.pub' 
-    local_jar_path = os.path.join(backend_path,"target","abicoirr-0.0.1-SNAPSHOT.jar")
-    remote_dir = '/etc/abicoirr-api'
+    try:
+        args = parse_args()
+        print(f"Deploying to {args.environment} ENV")
+        root = Path().resolve().parent
+        root_dir=os.path.dirname(root)
+        
+        backend_path = get_backend_path(root_dir)
+        build_be(backend_path)
+        
+        frontend_path = get_frontend_path(root_dir)
+        build_fe(frontend_path)
+        
+        print("Fetch instance host names")
+        
+        region = 'us-east-1' 
+        instance_ids = get_asg_instances("Instance_asg", region)
+        hostnames = get_instance_hostnames(instance_ids, region)
+        print(hostnames)
+        
+        username = 'ec2-user'
+        public_key_path = '~/.ssh/id_rsa.pub' 
+        local_jar_path = os.path.join(backend_path,"target","abicoirr-0.0.1-SNAPSHOT.jar")
+        remote_dir = '/etc/abicoirr-api'
 
-    for host in hostnames:
-        upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote_dir)
+        for host in hostnames:
+            upload_jar_to_remote(host, username, public_key_path, local_jar_path, remote_dir)
 
 
-    local_frontend_dist = os.path.join(frontend_path, "dist")
-    remote_frontend_dir = '/etc/abicoirr-ui/'
+        local_frontend_dist = os.path.join(frontend_path, "dist")
+        remote_frontend_dir = '/etc/abicoirr-ui/'
 
-    for host in hostnames:
-        upload_frontEndFiles_to_remote(host, username, public_key_path, local_frontend_dist, remote_frontend_dir)
+        for host in hostnames:
+            upload_frontEndFiles_to_remote(host, username, public_key_path, local_frontend_dist, remote_frontend_dir)
 
-    message = f"All the files uploaded successfully to {', '.join(hostnames)}"
-    print(message)
+        message = f"All the files uploaded successfully to {', '.join(hostnames)}"
+        print(message)
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()

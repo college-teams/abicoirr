@@ -21,7 +21,6 @@ import lombok.Setter;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductResponse {
-
   private Category category;
   private Long id;
   private String productName;

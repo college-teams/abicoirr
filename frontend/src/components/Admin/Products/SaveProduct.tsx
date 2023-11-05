@@ -48,8 +48,9 @@ const SaveProductDetails = ({
   const api = useAPI();
   const showToast = useToast();
   const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
-  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [props, activateConfirmModal] = useConfirmModal();
+
+  const [fileDirty, setFileDirty] = useState<boolean>(false);
   const [categoryListOptions, setCategoryListOptions] = useState([]);
   const [categoryList, setCategoryList] = useState<CategoryList[]>([]);
   const [seletedCategoryId, setSeletedCategoryId] = useState<number | null>(
@@ -168,6 +169,15 @@ const SaveProductDetails = ({
   const onSubmit = async (
     data: Product | UpdateProductRequest
   ): Promise<void> => {
+    if (Number(data.actualPrice) < Number(data.sellingPrice)) {
+      setError("sellingPrice", {
+        message: "SellingPrice should always less than actual price",
+      });
+      return;
+    } else {
+      clearErrors("sellingPrice");
+    }
+
     if (!data.links || data.links.length <= 0) {
       setError("links", {
         message: "Shop links is required",
@@ -491,6 +501,7 @@ const SaveProductDetails = ({
                       </span>
                     </div>
                   </div>
+
                   <div className="relative flex justify-between w-[85%] gap-5">
                     <div className="relative flex  flex-1 flex-col mb-6">
                       <label
@@ -552,6 +563,36 @@ const SaveProductDetails = ({
                       <span className="relative text-red-600 font-medium mt-2">
                         {errors?.stockQuantity &&
                           (errors?.stockQuantity?.message ||
+                            "Please enter valid input data")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative flex justify-between w-[43%] gap-5">
+                    <div className="relative flex-1  flex flex-col mb-6">
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="maxOrder"
+                      >
+                        Max Order*
+                      </label>
+                      <input
+                        id="maxOrder"
+                        type="number"
+                        min={0}
+                        placeholder="Max order"
+                        {...register("maxOrder", {
+                          required: "MaxOrder is required",
+                          pattern: {
+                            value: /^\d+$/,
+                            message: "Please enter a valid max order quantity",
+                          },
+                        })}
+                        className={`relative border-2 border-gray-300 font-medium  py-2  px-4 outline-none text-[1.4rem] rounded-md`}
+                      />
+                      <span className="relative text-red-600 font-medium mt-2">
+                        {errors?.maxOrder &&
+                          (errors?.maxOrder?.message ||
                             "Please enter valid input data")}
                       </span>
                     </div>

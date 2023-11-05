@@ -3,7 +3,6 @@ package com.project.abicoirr.service;
 import static com.project.abicoirr.codes.ErrorCodes.EMPTY_FILE_REQUEST;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_DELETE_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.IMAGE_UPLOAD_FAILED;
-import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_IMAGE_NOT_FOUND;
 import static com.project.abicoirr.codes.ErrorCodes.PRODUCT_NOT_FOUND;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.IMAGE_UPLOAD_SUCCESS;
@@ -149,15 +148,14 @@ public class ProductService {
     try {
       Optional<ProductImage> productImage = productImageRepository.findByImageKey(key);
 
-      if (productImage.isEmpty()) {
-        throw new BaseException(PRODUCT_IMAGE_NOT_FOUND);
-      }
+      //      if (productImage.isEmpty()) {
+      //        throw new BaseException(PRODUCT_IMAGE_NOT_FOUND);
+      //      }
 
       if (!Util.isEmpty(key)) {
         deleteImage(key);
       }
-
-      productImageRepository.delete(productImage.get());
+      productImage.ifPresent(productImageRepository::delete);
     } catch (Exception ex) {
       log.error("Error ", ex);
       throw new BaseException(IMAGE_DELETE_FAILED);

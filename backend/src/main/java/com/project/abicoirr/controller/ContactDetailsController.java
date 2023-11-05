@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,17 +28,20 @@ public class ContactDetailsController {
   private final ContactDetailsService contactDetailsService;
 
   @GetMapping("/")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<List<ContactDetailsResponse>>> getContactDetailsList() {
     return new ResponseEntity<>(contactDetailsService.getContactDetailsList(), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<ContactDetailsResponse>> getContactDetails(
       @PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(contactDetailsService.getContactDetails(id), HttpStatus.OK);
   }
 
   @GetMapping("/message-count")
+  @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse<MessageCount>> getUnreadMessageCount() throws BaseException {
     return new ResponseEntity<>(contactDetailsService.getUnreadMessageCount(), HttpStatus.OK);
   }

@@ -13,6 +13,7 @@ type NavbarProps = {
 const Navbar = (props: NavbarProps) => {
   const dispatch = useAppDispatch();
   const [showDropDown, setShowDropDown] = useState(false);
+  // const [shoeAuth, setShowAuth] = useState(false);
   const [isLoggedIn] = useState(true);
 
   const handleDropdown = (e: React.MouseEvent) => {
