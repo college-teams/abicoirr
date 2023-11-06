@@ -17,3 +17,5 @@ logging:
 
 application:
   url: <prod load balancer url>
+  backend-url: <prod load balancer url>
+  frontend-url: <prod load balancer url>

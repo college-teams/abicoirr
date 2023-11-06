@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useRef } from "react";
+import { getHeaderToken } from "../utils";
 
 export const useAPI = () => {
   const controller = new AbortController();
@@ -18,8 +19,10 @@ export const useAPI = () => {
     const requestInterceptorId = currentAPI.interceptors.request.use(
       async (config) => {
         // ADD Token assign code.
-        const token = "";
-        config.headers.Authorization = `Bearer ${token}`;
+        const token = getHeaderToken();
+        if(token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
       }
     );

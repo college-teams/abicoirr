@@ -15,8 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDetailsResponse {
 
-  private String firstname;
-  private String lastname;
+  private String firstName;
+  private String lastName;
   private String email;
   private Role role;
 
@@ -27,8 +27,8 @@ public class UserDetailsResponse {
   public static UserDetailsResponse from(User user) {
     UserDetailsResponse userResponse = new UserDetailsResponse();
     userResponse.setEmail(user.getEmail());
-    userResponse.setFirstname(user.getFirstname());
-    userResponse.setLastname(user.getLastname());
+    userResponse.setFirstName(user.getFirstName());
+    userResponse.setLastName(user.getLastName());
     userResponse.setRole(user.getRole());
 
     return userResponse;

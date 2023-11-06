@@ -14,19 +14,22 @@ import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
 import type { Location } from "react-router-dom";
 import Auth from "../Auth";
-import { useAppDispatch } from "../../store/configureStore";
-import { setAdminStatus } from "../../store/slices/user";
+import { useAppDispatch, useAppSelector } from "../../store/configureStore";
+import { clearLocalStorage, isLoggedIn } from "../../utils";
+import { changeLayout, clearUserDetails } from "../../store/slices/user";
 
 const Navbar = () => {
   const { pathname }: Location = useLocation();
+  const loggedIn = isLoggedIn();
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.appState);
+
+  const isAdmin = state.user?.role === "ADMIN";
 
   const [active, setActive] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
   const [menubarOpen, setMenubarOpen] = useState(false);
-
-  const [isLoggedIn] = useState(true);
-  const dispatch = useAppDispatch();
 
   const handleScroll = useCallback(() => {
     if (window.scrollY >= 100 || pathname !== "/") {
@@ -37,15 +40,16 @@ const Navbar = () => {
   }, [pathname]);
 
   const handleDropdown = (e: React.MouseEvent) => {
-    if (isLoggedIn) {
-      setShowDropDown((pre) => !pre);
-    } else {
-      setShowAuth(true);
-    }
+    setShowDropDown((pre) => !pre);
     e.stopPropagation();
   };
 
   const closeMenu = () => {
+    if (loggedIn) {
+      logoutHandler();
+    } else {
+      setShowAuth(true);
+    }
     setMenubarOpen(false);
   };
 
@@ -53,6 +57,12 @@ const Navbar = () => {
     if (window.innerWidth > 500) {
       setMenubarOpen(false);
     }
+  };
+
+  const logoutHandler = () => {
+    dispatch(clearUserDetails());
+    dispatch(changeLayout("USER"));
+    clearLocalStorage();
   };
 
   useEffect(() => {
@@ -117,21 +127,36 @@ const Navbar = () => {
             {showDropDown && (
               <div className="dropdown absolute right-0  w-[180px] top-[4rem] bg-white shadow-xl border rounded-lg">
                 <ul className="relative text-[1.5rem] w-full">
-                  <Link to={"/admin"}>
+                  {loggedIn ? (
+                    <>
+                      {isAdmin && (
+                        <Link to={"/admin"}>
+                          <li
+                            className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
+                            style={{ fontWeight: 600 }}
+                            onClick={() => dispatch(changeLayout("ADMIN"))}
+                          >
+                            Admin
+                          </li>
+                        </Link>
+                      )}
+                      <li
+                        className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
+                        style={{ fontWeight: 600 }}
+                        onClick={logoutHandler}
+                      >
+                        Logout
+                      </li>
+                    </>
+                  ) : (
                     <li
-                      onClick={() => dispatch(setAdminStatus())}
-                      className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
+                      className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
                       style={{ fontWeight: 600 }}
+                      onClick={() => setShowAuth(true)}
                     >
-                      Admin
+                      Login
                     </li>
-                  </Link>
-                  <li
-                    className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
-                    style={{ fontWeight: 600 }}
-                  >
-                    Logout
-                  </li>
+                  )}
                 </ul>
               </div>
             )}
@@ -164,31 +189,44 @@ const Navbar = () => {
             {showDropDown && (
               <div className="dropdown absolute right-0  w-[180px] top-[5rem] bg-white shadow-xl border rounded-lg">
                 <ul className="relative text-[1.5rem] w-full">
-                  <Link to={"/admin"}>
+                  {loggedIn ? (
+                    <>
+                      {isAdmin && (
+                        <Link to={"/admin"}>
+                          <li
+                            className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
+                            style={{ fontWeight: 600 }}
+                            onClick={() => dispatch(changeLayout("ADMIN"))}
+                          >
+                            Admin
+                          </li>
+                        </Link>
+                      )}
+                      <li
+                        className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
+                        style={{ fontWeight: 600 }}
+                        onClick={logoutHandler}
+                      >
+                        Logout
+                      </li>
+                    </>
+                  ) : (
                     <li
-                      onClick={() => dispatch(setAdminStatus())}
-                      className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
+                      className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
                       style={{ fontWeight: 600 }}
+                      onClick={() => setShowAuth(true)}
                     >
-                      Admin
+                      Login
                     </li>
-                  </Link>
-                  <li
-                    className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
-                    style={{ fontWeight: 600 }}
-                  >
-                    Logout
-                  </li>
+                  )}
                 </ul>
               </div>
             )}
           </Icons>
         </MobileDeviceNavContainer>
       </NavbarContainer>
-      <Auth open={showAuth} close={() => setShowAuth(false)} />
 
       {/* Menubar design layout */}
-
       <Backdrop className={` ${menubarOpen ? "block" : "hidden"} `} />
 
       <MenuBarLayout
@@ -235,10 +273,12 @@ const Navbar = () => {
             onClick={closeMenu}
             className="relative bg-[#008000] text-white w-[50%] py-8 text-[2.2rem] rounded-md cursor-pointer hover:bg-[#008000c9]"
           >
-            Login / Signup
+            {loggedIn ? "Logout" : "Login / Signup"}
           </button>
         </div>
       </MenuBarLayout>
+
+      <Auth open={showAuth} close={() => setShowAuth(false)} />
     </>
   );
 };

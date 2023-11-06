@@ -5,3 +5,9 @@ Add lazy loading component
 Add gloable error boundary
 Add image lazy loading
 add regrex for email,password.
+token expire auto logout
+admin module user integration
+forgot password functionality
+Email verification success toast not working
+Add Email verification failed page
+mobile responsive in login

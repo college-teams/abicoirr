@@ -14,8 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserRegisterRequest {
 
-  @NotNull private String firstname;
-  @NotNull private String lastname;
+  @NotNull private String firstName;
+  @NotNull private String lastName;
   @NotNull private String email;
   @NotNull private String password;
   @NotNull private Role role;
@@ -23,8 +23,8 @@ public class UserRegisterRequest {
   public static User from(UserRegisterRequest userRegisterRequest) {
     User user = new User();
     user.setEmail(userRegisterRequest.getEmail());
-    user.setFirstname(userRegisterRequest.getFirstname());
-    user.setLastname(userRegisterRequest.getLastname());
+    user.setFirstName(userRegisterRequest.getFirstName());
+    user.setLastName(userRegisterRequest.getLastName());
     user.setPassword(userRegisterRequest.getPassword());
     user.setRole(userRegisterRequest.getRole());
 

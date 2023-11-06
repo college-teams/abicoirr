@@ -21,8 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 public class User extends CommonEntity implements UserDetails {
 
-  private String firstname;
-  private String lastname;
+  private String firstName;
+  private String lastName;
   private String email;
   private String password;
   private String confirmationToken;

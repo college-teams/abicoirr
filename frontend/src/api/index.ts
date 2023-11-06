@@ -16,6 +16,7 @@ import {
   GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
+  GetCurrentUser,
   GetDashboardEntityItemsCount,
   GetLatestProductList,
   GetPopularProductList,
@@ -32,6 +33,8 @@ import {
   UpdateProduct,
   UploadFile,
   UploadFiles,
+  UserLogin,
+  UserSignup,
 } from "../types/Api";
 import {
   AdminOrderResponseData,
@@ -44,6 +47,7 @@ import {
   Product,
 } from "../types/Admin";
 import { DashboardEntityItemsCount } from "../types/Dashboard";
+import { LoginResponse, UserDetails } from "../types/User";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const showToast = useToast();
@@ -509,3 +513,36 @@ export const getDashboardEntityItemsCount: GetDashboardEntityItemsCount =
       null
     );
   };
+
+// Users
+export const getCurrentUser: GetCurrentUser = async (api) => {
+  return makeRequest<UserDetails>(
+    api,
+    "/users/self",
+    "getCurrentUser",
+    "Error occurred while fetching loggedIn user details",
+    "GET"
+  );
+};
+
+export const userLogin: UserLogin = async (api, data) => {
+  return makeRequest<LoginResponse>(
+    api,
+    "/users/login",
+    "userLogin",
+    "Error occurred while login to the system",
+    "POST",
+    data
+  );
+};
+
+export const userSignup: UserSignup = async (api, data) => {
+  return makeRequest(
+    api,
+    "/users/register",
+    "userLogin",
+    "Error occurred while registering to the system",
+    "POST",
+    data
+  );
+};

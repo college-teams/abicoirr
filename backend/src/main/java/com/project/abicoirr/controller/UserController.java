@@ -1,7 +1,6 @@
 package com.project.abicoirr.controller;
 
 import com.project.abicoirr.exception.BaseException;
-import com.project.abicoirr.models.Authentication.UserSignupResponse;
 import com.project.abicoirr.models.User.ForgotPasswordRequest;
 import com.project.abicoirr.models.User.UserDetailsResponse;
 import com.project.abicoirr.models.User.UserLoginRequest;
@@ -13,6 +12,7 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
+
+  @Value("${application.frontend-url}")
+  private String Application_url;
 
   @GetMapping("/self")
   public ResponseEntity<ApiResponse<UserDetailsResponse>> getLoggedInUserDetails() {
@@ -53,9 +57,13 @@ public class UserController {
   }
 
   @GetMapping("/validate")
-  public ResponseEntity<UserSignupResponse> signupConfirmation(
-      @RequestParam("confirmationToken") String confirmationToken) throws IllegalAccessException {
-    return ResponseEntity.ok(userService.signupConfirmation(confirmationToken));
+  public RedirectView signupConfirmation(
+      @RequestParam("confirmationToken") String confirmationToken) throws BaseException {
+    userService.signupConfirmation(confirmationToken);
+
+    RedirectView redirectView = new RedirectView();
+    redirectView.setUrl(Application_url + "/emailVerification");
+    return redirectView;
   }
 
   @PostMapping(value = "/forgot-password/otp-generate")

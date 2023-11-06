@@ -44,6 +44,12 @@ public class ErrorCodes extends StatusCodes {
   public static final StatusCodes USER_NOT_EXISTS =
       new ErrorCodes(400, HttpStatus.BAD_REQUEST, "USER_NOT_EXISTS");
 
+  public static final StatusCodes ACCOUNT_ALREADY_EXISTS =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "ACCOUNT_ALREADY_EXISTS");
+
+  public static final StatusCodes EMAIL_VERIFICATION_FAILED =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "EMAIL_VERIFICATION_FAILED");
+
   public ErrorCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }
