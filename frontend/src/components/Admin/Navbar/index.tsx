@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../store/configureStore";
 import { changeLayout, clearUserDetails } from "../../../store/slices/user";
 import { clearLocalStorage } from "../../../utils";
+import useToast from "../../../hooks/useToast";
 
 type NavbarProps = {
   handleTabSwitch: (tabName: TabType) => void;
@@ -13,6 +14,7 @@ type NavbarProps = {
 
 const Navbar = (props: NavbarProps) => {
   const dispatch = useAppDispatch();
+  const showToast = useToast();
 
   const [showDropDown, setShowDropDown] = useState(false);
 
@@ -25,6 +27,7 @@ const Navbar = (props: NavbarProps) => {
     dispatch(clearUserDetails());
     dispatch(changeLayout("USER"));
     clearLocalStorage();
+    showToast("Logged out successfully!!","success")
   };
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const Navbar = (props: NavbarProps) => {
                 </li>
               </Link>
               <li
-                className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
+                className="relative text-center w-full py-5 hover:bg-slate-300 text-black cursor-pointer"
                 style={{ fontWeight: 600 }}
                 onClick={logoutHandler}
               >

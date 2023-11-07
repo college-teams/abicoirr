@@ -153,7 +153,6 @@ public class UserService {
     String to = user.getEmail();
     String subject = "Account verification";
 
-    //    TODO: fetch the below link from properties file
     Context context = new Context();
     context.setVariable("Name", "Hello, " + user.getFirstName() + " " + user.getLastName());
     context.setVariable(

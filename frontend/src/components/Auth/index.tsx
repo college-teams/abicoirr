@@ -43,7 +43,7 @@ const Auth = ({ open, close }: PropType) => {
   const [props, activateConfirmModal] = useConfirmModal();
   const dispatch = useAppDispatch();
 
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const toggleAuthMode = () => {
     reset();
@@ -83,7 +83,7 @@ const Auth = ({ open, close }: PropType) => {
       if (!res || !isApiError(res)) {
         showToast(
           `Successfully registered. Please check your email, verify your account, and proceed with logging in.`,
-          "success"
+          "success",4000
         );
         reset();
         setIsLogin(true);
@@ -107,7 +107,7 @@ const Auth = ({ open, close }: PropType) => {
   };
 
   const resetAndClose = () => {
-    setIsLogin(false);
+    setIsLogin(true);
     reset();
     close();
   };
@@ -147,7 +147,7 @@ const Auth = ({ open, close }: PropType) => {
             submitHandler={submitHandler}
             loading={loading}
           />
-          <div>
+          <div className="relative mt-5">
             <p
               className="relative text-[#2874F0] font-medium text-[1.4rem] cursor-pointer"
               onClick={toggleAuthMode}

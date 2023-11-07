@@ -72,7 +72,7 @@ export const InputBox = styled.div`
     color: #000;
     border-bottom: 1px solid gray;
     padding: 6px 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     margin-bottom: 1.5rem;
   }

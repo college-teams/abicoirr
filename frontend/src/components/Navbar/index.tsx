@@ -17,11 +17,13 @@ import Auth from "../Auth";
 import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 import { clearLocalStorage, isLoggedIn } from "../../utils";
 import { changeLayout, clearUserDetails } from "../../store/slices/user";
+import useToast from "../../hooks/useToast";
 
 const Navbar = () => {
   const { pathname }: Location = useLocation();
   const loggedIn = isLoggedIn();
   const dispatch = useAppDispatch();
+  const showToast = useToast();
   const state = useAppSelector((state) => state.appState);
 
   const isAdmin = state.user?.role === "ADMIN";
@@ -44,12 +46,15 @@ const Navbar = () => {
     e.stopPropagation();
   };
 
-  const closeMenu = () => {
+  const authHandler=()=>{
     if (loggedIn) {
       logoutHandler();
     } else {
       setShowAuth(true);
     }
+  }
+
+  const closeMenu = () => {
     setMenubarOpen(false);
   };
 
@@ -63,6 +68,7 @@ const Navbar = () => {
     dispatch(clearUserDetails());
     dispatch(changeLayout("USER"));
     clearLocalStorage();
+    showToast("Logged out successfully!!","success")
   };
 
   useEffect(() => {
@@ -270,7 +276,10 @@ const Navbar = () => {
 
         <div className="relative mt-auto mb-16 text-center">
           <button
-            onClick={closeMenu}
+            onClick={()=>{
+              authHandler();
+              closeMenu();
+            }}
             className="relative bg-[#008000] text-white w-[50%] py-8 text-[2.2rem] rounded-md cursor-pointer hover:bg-[#008000c9]"
           >
             {loggedIn ? "Logout" : "Login / Signup"}

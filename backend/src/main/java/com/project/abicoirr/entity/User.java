@@ -1,6 +1,7 @@
 package com.project.abicoirr.entity;
 
 import com.project.abicoirr.util.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,16 +22,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 public class User extends CommonEntity implements UserDetails {
 
+  @Column(nullable = false)
   private String firstName;
+
+  @Column(nullable = false)
   private String lastName;
+
+  @Column(nullable = false)
   private String email;
+
+  @Column(nullable = false)
+  private String phoneNumber;
+
+  @Column(nullable = false)
   private String password;
+
   private String confirmationToken;
   private boolean isAccountVerified;
   private String otp;
   private Long otpValidityTimestamp;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private Role role;
 
   @Override

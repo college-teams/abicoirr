@@ -2,6 +2,7 @@ export interface UserDetails {
   firstname: string;
   lastname: string;
   email: string;
+  phoneNumber: string;
   role: ROLE;
 }
 
@@ -19,6 +20,7 @@ export interface SignupRequest {
   lastName: string;
   email: string;
   password: string;
+  phoneNumber: string;
   role:ROLE
 }
 

@@ -79,6 +79,24 @@ const AuthForm = ({
               </span>
             </InputBox>
           </div>
+
+          <div>
+            <InputBox className="relative mb-[2rem]">
+              <input
+                id="lname"
+                type="text"
+                {...register("phoneNumber", {
+                  required: "PhoneNumber is required",
+                })}
+              />
+              <label htmlFor="lname"> PhoneNumber* </label>
+              <span className="relative text-red-600 font-medium mt-2">
+                {errors?.phoneNumber &&
+                  (errors?.phoneNumber?.message ||
+                    "Please enter valid input data")}
+              </span>
+            </InputBox>
+          </div>
         </>
       )}
 

@@ -1,5 +1,6 @@
 package com.project.abicoirr.models.User;
 
+import com.project.abicoirr.annotations.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ForgotPasswordRequest {
-  @NotNull private String email;
+  @NotNull @Email() private String email;
 }
