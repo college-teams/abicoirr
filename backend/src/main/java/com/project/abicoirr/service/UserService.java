@@ -1,10 +1,6 @@
 package com.project.abicoirr.service;
 
-import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_ALREADY_EXISTS;
-import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_NOT_VERIFIED;
-import static com.project.abicoirr.codes.ErrorCodes.EMAIL_VERIFICATION_FAILED;
-import static com.project.abicoirr.codes.ErrorCodes.USER_ALREADY_EXISTS;
-import static com.project.abicoirr.codes.ErrorCodes.USER_NOT_EXISTS;
+import static com.project.abicoirr.codes.ErrorCodes.*;
 import static com.project.abicoirr.codes.SuccessCodes.All_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.CURRENT_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.FORGOT_PASSWORD_REQUEST_SENDS;
@@ -63,6 +59,14 @@ public class UserService {
         All_USER_DETAILS_FETCHED,
         AbstractResponse.StatusType.SUCCESS,
         UserDetailsResponse.from(userRepository.findAll()));
+  }
+
+  public ApiResponse<UserDetailsResponse> getUserDetailsById(long userId) throws BaseException {
+    User user = getUserById(userId);
+    return new ApiResponse<>(
+        All_USER_DETAILS_FETCHED,
+        AbstractResponse.StatusType.SUCCESS,
+        UserDetailsResponse.from(user));
   }
 
   @Transactional
@@ -179,5 +183,14 @@ public class UserService {
     context.setVariable("otp", user.getOtp());
 
     emailService.sendEmail(to, subject, "forgotPasswordRequest", context);
+  }
+
+  public User getUserById(Long id) throws BaseException {
+    Optional<User> user = userRepository.findById(id);
+
+    if (user.isEmpty()) {
+      throw new BaseException(USER_NOT_EXISTS);
+    }
+    return user.get();
   }
 }

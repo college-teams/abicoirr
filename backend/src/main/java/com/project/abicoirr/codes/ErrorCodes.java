@@ -9,6 +9,12 @@ public class ErrorCodes extends StatusCodes {
   public static final StatusCodes CONSTRAINT_VIOLATIONS =
       new ErrorCodes(400, HttpStatus.BAD_REQUEST, "CONSTRAINT_VIOLATIONS");
 
+  public static final StatusCodes UNAUTHORIZED =
+      new ErrorCodes(401, HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
+
+  public static final StatusCodes FORBIDDEN =
+      new ErrorCodes(403, HttpStatus.FORBIDDEN, "FORBIDDEN");
+
   public static final StatusCodes ADMIN_ORDER_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "ADMIN_ORDER_NOT_FOUND");
 

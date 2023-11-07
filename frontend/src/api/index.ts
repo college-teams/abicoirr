@@ -11,6 +11,7 @@ import {
   DeleteProductImage,
   GetAdminOrderById,
   GetAdminOrders,
+  GetAllUsers,
   GetCategoryById,
   GetCategoryList,
   GetCategoryProducts,
@@ -23,6 +24,7 @@ import {
   GetProductById,
   GetProductList,
   GetUnReadMessageCount,
+  GetUserDetailsById,
   HttpMethod,
   SaveAdminOrder,
   SaveCategory,
@@ -544,5 +546,25 @@ export const userSignup: UserSignup = async (api, data) => {
     "Error occurred while registering to the system",
     "POST",
     data
+  );
+};
+
+export const getAllUsers: GetAllUsers = async (api) => {
+  return makeRequest<UserDetails[]>(
+    api,
+    "/users/",
+    "getAllUsers",
+    "Error occurred while fetching users list",
+    "GET"
+  );
+};
+
+export const getUserDetailsById: GetUserDetailsById = async (api, userId) => {
+  return makeRequest<UserDetails>(
+    api,
+    `/users/${userId}`,
+    "getUserDetailsById",
+    "Error occurred while fetching user details",
+    "GET"
   );
 };

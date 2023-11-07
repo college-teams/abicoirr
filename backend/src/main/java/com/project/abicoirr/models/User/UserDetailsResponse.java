@@ -14,10 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsResponse {
-
+  private long id;
   private String firstName;
   private String lastName;
   private String email;
+  private String phoneNumber;
   private Role role;
 
   public static List<UserDetailsResponse> from(List<User> users) {
@@ -26,10 +27,12 @@ public class UserDetailsResponse {
 
   public static UserDetailsResponse from(User user) {
     UserDetailsResponse userResponse = new UserDetailsResponse();
+    userResponse.setId(user.getId());
     userResponse.setEmail(user.getEmail());
     userResponse.setFirstName(user.getFirstName());
     userResponse.setLastName(user.getLastName());
     userResponse.setRole(user.getRole());
+    userResponse.setPhoneNumber(user.getPhoneNumber());
 
     return userResponse;
   }

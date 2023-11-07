@@ -1,6 +1,8 @@
 package com.project.abicoirr.exception;
 
 import static com.project.abicoirr.codes.ErrorCodes.CONSTRAINT_VIOLATIONS;
+import static com.project.abicoirr.codes.ErrorCodes.FORBIDDEN;
+import static com.project.abicoirr.codes.ErrorCodes.UNAUTHORIZED;
 
 import com.project.abicoirr.codes.ErrorCodes;
 import com.project.abicoirr.models.response.AbstractResponse.StatusType;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -49,9 +53,29 @@ public class ExceptionController {
   }
 
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ApiResponse> handleConStraintViolationException(
+  public ResponseEntity<ApiResponse> handleConstraintViolationException(
       ConstraintViolationException ex) {
     ApiResponse apiResponse = new ApiResponse(CONSTRAINT_VIOLATIONS, StatusType.FAILURE);
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<ApiResponse> handleAuthException(AuthenticationException ex) {
+    StringBuilder sb = new StringBuilder();
+    if (StringUtils.isNotBlank(ex.getMessage())) {
+      sb.append(ex.getMessage());
+    }
+    ApiResponse apiResponse = new ApiResponse(UNAUTHORIZED, StatusType.FAILURE, sb.toString());
+    return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ApiResponse> handleAccessDeniedException(AccessDeniedException ex) {
+    StringBuilder sb = new StringBuilder();
+    if (StringUtils.isNotBlank(ex.getMessage())) {
+      sb.append(ex.getMessage());
+    }
+    ApiResponse apiResponse = new ApiResponse(FORBIDDEN, StatusType.FAILURE, sb.toString());
     return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatusCode());
   }
 

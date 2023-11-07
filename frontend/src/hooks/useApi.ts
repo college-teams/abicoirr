@@ -1,9 +1,15 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useRef } from "react";
-import { getHeaderToken } from "../utils";
+import { clearLocalStorage, getHeaderToken } from "../utils";
+import { useAppDispatch } from "../store/configureStore";
+import useToast from "./useToast";
+import { changeLayout, clearUserDetails } from "../store/slices/user";
 
 export const useAPI = () => {
+  const dispatch = useAppDispatch();
+  const showToast = useToast();
+
   const controller = new AbortController();
 
   const api = useRef(
@@ -13,6 +19,13 @@ export const useAPI = () => {
     })
   );
 
+  const logoutHandler = () => {
+    dispatch(clearUserDetails());
+    dispatch(changeLayout("USER"));
+    clearLocalStorage();
+    showToast("Logged out successfully!!", "success");
+  };
+
   useEffect(() => {
     const currentAPI = api.current;
 
@@ -20,7 +33,7 @@ export const useAPI = () => {
       async (config) => {
         // ADD Token assign code.
         const token = getHeaderToken();
-        if(token) {
+        if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -34,6 +47,19 @@ export const useAPI = () => {
         //   // Request was canceled
         //   return Promise.resolve(null);
         // }
+
+        if (error.response && error.response.status === 401) {
+          logoutHandler();
+
+          // Example:
+          // removeToken(); // Assuming you have a function to remove the token
+          // performLogout(); // Assuming you have a function to handle logout
+
+          // You can also redirect to a login page if needed
+          // Example:
+          // window.location.href = '/login';
+        }
+
         return Promise.reject(error);
       }
     );

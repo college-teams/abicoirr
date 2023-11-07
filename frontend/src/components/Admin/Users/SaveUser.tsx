@@ -2,10 +2,17 @@ import { useForm } from "react-hook-form";
 import Modal from "../../Modal";
 import { AddUserContainer, CloseIcon, Wrapper } from "./styled";
 import toast from "react-hot-toast";
+import { useAPI } from "../../../hooks/useApi";
+import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
+import { UserDetails } from "../../../types/User";
+import { useEffect, useState } from "react";
+import { isApiError } from "../../../types/Api";
+import { getUserDetailsById } from "../../../api";
 
 interface CreateUserProps {
   open: boolean;
   close: () => void;
+  selectedId: number | undefined;
 }
 
 interface UserType {
@@ -14,7 +21,11 @@ interface UserType {
   phone: string;
   password: string;
 }
-const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
+const SaveUser = ({
+  open,
+  close,
+  selectedId,
+}: CreateUserProps): JSX.Element => {
   const {
     register,
     reset,
@@ -23,9 +34,31 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
   } = useForm({
     defaultValues: { name: "", email: "", phone: "", password: "" },
   });
+  const api = useAPI();
+  const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
 
   const EMAIL_REGREX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const [data, setData] = useState<UserDetails | null>(null);
+
+  const fetchUserDetailsById = async (id: number) => {
+    startLoading("/getUserDetailsById");
+    try {
+      const res = await getUserDetailsById(api, id);
+      if (!isApiError(res)) {
+        setData(res);
+      }
+    } finally {
+      endLoading("/getUserDetailsById");
+    }
+  };
+
+  useEffect(() => {
+    if (selectedId && open) {
+      fetchUserDetailsById(selectedId);
+    }
+  }, [selectedId, open]);
 
   const onSubmit = (data: UserType): void => {
     console.log(data);

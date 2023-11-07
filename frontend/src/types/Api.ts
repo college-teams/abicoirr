@@ -188,3 +188,13 @@ export type UserSignup = (
   api: AxiosInstance,
   data: SignupRequest
 ) => Promise<void | ApiError>;
+
+export type GetAllUsers = (
+  api: AxiosInstance
+) => Promise<UserDetails[] | ApiError>;
+
+export type GetUserDetailsById = (
+  api: AxiosInstance,
+  userId:number
+) => Promise<UserDetails | ApiError>;
+
