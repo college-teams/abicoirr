@@ -1,6 +1,10 @@
 package com.project.abicoirr.service;
 
-import static com.project.abicoirr.codes.ErrorCodes.*;
+import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_ALREADY_EXISTS;
+import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_NOT_VERIFIED;
+import static com.project.abicoirr.codes.ErrorCodes.EMAIL_VERIFICATION_FAILED;
+import static com.project.abicoirr.codes.ErrorCodes.USER_ALREADY_EXISTS;
+import static com.project.abicoirr.codes.ErrorCodes.USER_NOT_EXISTS;
 import static com.project.abicoirr.codes.SuccessCodes.All_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.CURRENT_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.FORGOT_PASSWORD_REQUEST_SENDS;
@@ -18,6 +22,8 @@ import com.project.abicoirr.models.User.UserRegisterRequest;
 import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.UserRepository;
+import com.project.abicoirr.util.Role;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -45,6 +51,22 @@ public class UserService {
 
   @Value("${application.backend-url}")
   private String Application_url;
+
+  @PostConstruct
+  public void adminSetup() {
+    Optional<User> userByEmail = userRepository.findByEmail("abicoirr09@gmail.com");
+    if (userByEmail.isEmpty()) {
+      User user = new User();
+      user.setFirstName("Abicoirr");
+      user.setEmail("abicoirr09@gmail.com");
+      user.setLastName("2023");
+      user.setPhoneNumber("7502919281");
+      user.setRole(Role.ADMIN);
+      user.setAccountVerified(true);
+      user.setPassword(passwordEncoder.encode("Crnational6@"));
+      userRepository.save(user);
+    }
+  }
 
   public ApiResponse<UserDetailsResponse> getUserSelf() {
     User currentUser = accessControlService.getCurrentUser();
