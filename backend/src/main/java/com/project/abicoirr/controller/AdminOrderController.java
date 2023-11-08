@@ -8,6 +8,7 @@ import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.service.AdminOrderService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,5 +64,11 @@ public class AdminOrderController {
   @PreAuthorize("@accessControlService.isAdmin()")
   public ResponseEntity<ApiResponse> deleteAdminOrder(@PathVariable Long id) throws BaseException {
     return new ResponseEntity<>(adminOrderService.deleteAdminOrder(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/adminorder-count")
+  public ResponseEntity<ApiResponse<Map<String, Integer>>> getOrderCountByMonth()
+      throws BaseException {
+    return new ResponseEntity<>(adminOrderService.getOrderCountByMonth(), HttpStatus.OK);
   }
 }
