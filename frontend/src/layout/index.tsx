@@ -9,11 +9,13 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { isAdmin } = useAppSelector((state) => state.user);
+  const state = useAppSelector((state) => state.appState);
+
+  const isAdminLayout = state.layout === "ADMIN";
 
   return (
     <BrowserRouter>
-      {isAdmin ? (
+      {isAdminLayout ? (
         <AdminLayout children={children} />
       ) : (
         <UserLayout children={children} />

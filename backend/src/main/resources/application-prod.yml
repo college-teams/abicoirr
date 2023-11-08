@@ -15,3 +15,7 @@ logging:
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql: INFO
 
+application:
+  url: <prod load balancer url>
+  backend-url: <prod load balancer url>
+  frontend-url: <prod load balancer url>

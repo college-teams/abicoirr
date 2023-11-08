@@ -7,5 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSignupResponse {
-    private String message;
+  private String message;
 }

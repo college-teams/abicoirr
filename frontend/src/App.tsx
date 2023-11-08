@@ -11,11 +11,43 @@ import ProductDetail from "./pages/ProductDetail";
 import ScrollToTop from "./hooks/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 import AdminHome from "./pages/AdminHome";
-import { useAppSelector } from "./store/configureStore";
+import { useAppDispatch, useAppSelector } from "./store/configureStore";
 import About from "./pages/About";
+import { useEffect } from "react";
+import { isLoggedIn } from "./utils";
+import { useAPI } from "./hooks/useApi";
+import { useLoadingIndicator } from "./hooks/useLoadingIndicator";
+import { getCurrentUser } from "./api";
+import { isApiError } from "./types/Api";
+import { setCurrentUserDetails } from "./store/slices/user";
+import PrivateRoute from "./utils/PrivateRoute";
+import EmailVerification from "./pages/EmailVerification";
 
 function App() {
-  const { isAdmin } = useAppSelector((state) => state.user);
+  const api = useAPI();
+  const [, startLoading, endLoading] = useLoadingIndicator();
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.appState);
+
+  const isAdminLayout = state.layout === "ADMIN";
+
+  const fetchLoggedInUserDetails = async () => {
+    startLoading("/getCurrentUser");
+    try {
+      const res = await getCurrentUser(api);
+      if (!isApiError(res)) {
+        dispatch(setCurrentUserDetails(res));
+      }
+    } finally {
+      endLoading("/getCurrentUser");
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      fetchLoggedInUserDetails();
+    }
+  }, []);
 
   return (
     <Layout>
@@ -23,7 +55,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isAdmin && <Navigate to="/admin" replace={true} />}
+          element={isAdminLayout && <Navigate to="/admin" replace={true} />}
         >
           <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
@@ -35,12 +67,18 @@ function App() {
           <Route path="shipping-policy" element={<Shippingpolicy />} />
         </Route>
 
-        <Route
-          path="/admin"
-          element={!isAdmin && <Navigate to="/" replace={true} />}
-        >
-          <Route index element={<AdminHome />} />
+        <Route path="/admin">
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <AdminHome />
+              </PrivateRoute>
+            }
+          />
         </Route>
+
+        <Route path="/emailVerification" element={<EmailVerification />} />
 
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace={true} />} />

@@ -10,9 +10,10 @@ import { useAPI } from "../hooks/useApi";
 import { isApiError } from "../types/Api";
 import { Product, ProductImages } from "../types/Admin";
 import { SubImagesContainer } from "./styled";
-import { calculateDiscountPercentage } from "../utils";
+import { calculateDiscountPercentage, isLoggedIn } from "../utils";
 import ImageWithFallback from "../utils/ImageWithFallback";
 import BulkOrder from "../components/BulkOrder";
+import Auth from "../components/Auth";
 
 const ProductDetail = () => {
   const api = useAPI();
@@ -28,6 +29,7 @@ const ProductDetail = () => {
   const [primaryImage, setPrimaryImage] = useState<ProductImages | null>();
   const [quantity, setQuantity] = useState<number>(1);
   const [openBulkOrderModal, setOpenBulkOrderModaltate] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
 
   type QUANTITY_ACTIONS = "Add" | "REMOVE";
 
@@ -82,10 +84,14 @@ const ProductDetail = () => {
   };
 
   const orderPlacinghandler = (): void => {
-    if (product && quantity > product?.maxOrder) {
-      setOpenBulkOrderModaltate(true);
+    if (isLoggedIn()) {
+      if (product && quantity > product?.maxOrder) {
+        setOpenBulkOrderModaltate(true);
+      } else {
+        setRedirect(true);
+      }
     } else {
-      setRedirect(true);
+      setShowAuth(true);
     }
   };
 
@@ -266,6 +272,7 @@ const ProductDetail = () => {
           close={() => setOpenBulkOrderModaltate(false)}
         />
       </div>
+      <Auth open={showAuth} close={() => setShowAuth(false)} />
     </React.Fragment>
   );
 };

@@ -68,6 +68,21 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes ENTITIES_ITEM_COUNT_FETCHED =
       new SuccessCodes(200, HttpStatus.OK, "ENTITIES_ITEM_COUNT_FETCHED");
 
+  public static final StatusCodes USER_REGISTER_SUCCESS =
+      new SuccessCodes(201, HttpStatus.CREATED, "USER_REGISTER_SUCCESS");
+
+  public static final StatusCodes USER_LOGIN_SUCCESS =
+      new SuccessCodes(200, HttpStatus.OK, "USER_LOGIN_SUCCESS");
+
+  public static final StatusCodes FORGOT_PASSWORD_REQUEST_SENDS =
+      new SuccessCodes(200, HttpStatus.OK, "FORGOT_PASSWORD_REQUEST_SENDS");
+
+  public static final StatusCodes CURRENT_USER_DETAILS_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "CURRENT_USER_DETAILS_FETCHED");
+
+  public static final StatusCodes All_USER_DETAILS_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "All_USER_DETAILS_FETCHED");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }

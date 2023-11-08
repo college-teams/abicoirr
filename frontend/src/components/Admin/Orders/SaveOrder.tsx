@@ -121,7 +121,6 @@ const SaveOrder = ({
     data.productIds = productsIds;
     data.userId = 1;
 
-    console.log(data);
     startLoading("/saveAdminOrder");
 
     let res;

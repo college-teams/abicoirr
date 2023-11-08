@@ -9,6 +9,12 @@ public class ErrorCodes extends StatusCodes {
   public static final StatusCodes CONSTRAINT_VIOLATIONS =
       new ErrorCodes(400, HttpStatus.BAD_REQUEST, "CONSTRAINT_VIOLATIONS");
 
+  public static final StatusCodes UNAUTHORIZED =
+      new ErrorCodes(401, HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
+
+  public static final StatusCodes FORBIDDEN =
+      new ErrorCodes(403, HttpStatus.FORBIDDEN, "FORBIDDEN");
+
   public static final StatusCodes ADMIN_ORDER_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "ADMIN_ORDER_NOT_FOUND");
 
@@ -34,6 +40,21 @@ public class ErrorCodes extends StatusCodes {
 
   public static final StatusCodes PRODUCT_IMAGE_NOT_FOUND =
       new ErrorCodes(404, HttpStatus.NOT_FOUND, "PRODUCT_IMAGE_NOT_FOUND");
+
+  public static final StatusCodes USER_ALREADY_EXISTS =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "USER_ALREADY_EXISTS");
+
+  public static final StatusCodes ACCOUNT_NOT_VERIFIED =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "ACCOUNT_NOT_VERIFIED");
+
+  public static final StatusCodes USER_NOT_EXISTS =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "USER_NOT_EXISTS");
+
+  public static final StatusCodes ACCOUNT_ALREADY_EXISTS =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "ACCOUNT_ALREADY_EXISTS");
+
+  public static final StatusCodes EMAIL_VERIFICATION_FAILED =
+      new ErrorCodes(400, HttpStatus.BAD_REQUEST, "EMAIL_VERIFICATION_FAILED");
 
   public ErrorCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
