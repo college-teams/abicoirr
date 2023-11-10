@@ -14,6 +14,10 @@ public class Util {
     return s == null || s.isEmpty();
   }
 
+  public static <T> boolean isEmpty(List<T> list) {
+    return list == null || list.isEmpty();
+  }
+
   public static String generateUniqueImageKey(String entityName, String fileName) {
     String fileKey = UUID.randomUUID() + "_" + fileName;
     return String.format("%s/%s", entityName, fileKey);
