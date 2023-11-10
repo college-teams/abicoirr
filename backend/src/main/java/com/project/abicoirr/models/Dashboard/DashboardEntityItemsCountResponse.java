@@ -19,9 +19,9 @@ public class DashboardEntityItemsCountResponse {
   private Long categories;
 
   public static DashboardEntityItemsCountResponse from(
-      Long productsCount, Long adminOrdersCount, Long categoriesCount) {
+      Long productsCount, Long adminOrdersCount, Long categoriesCount, Long userCount) {
     return DashboardEntityItemsCountResponse.builder()
-        .users(100L) // TODO: Update this once user module development is done
+        .users(userCount)
         .products(productsCount)
         .adminOrders(adminOrdersCount)
         .categories(categoriesCount)

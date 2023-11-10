@@ -51,7 +51,7 @@ const Footer = () => {
           </p>
           <p className="flex items-center gap-3  mb-4 ext-[1.5rem]">
             <Icon className="text-[2rem]" icon="fluent:mail-16-filled" />
-            <span>support@abicoirr.in</span>
+            <span>abicoirr09@gmail.com</span>
           </p>
           <div className="flex items-center text-[2.5rem] gap-[1rem] text-black">
             <Icon

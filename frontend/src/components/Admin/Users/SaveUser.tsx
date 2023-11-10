@@ -1,26 +1,20 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Modal from "../../Modal";
 import { AddUserContainer, CloseIcon, Wrapper } from "./styled";
 import toast from "react-hot-toast";
 import { useAPI } from "../../../hooks/useApi";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
-import { UserDetails } from "../../../types/User";
-import { useEffect, useState } from "react";
+import { SignupRequest, UserDetails } from "../../../types/User";
+import { useCallback, useEffect } from "react";
 import { isApiError } from "../../../types/Api";
 import { getUserDetailsById } from "../../../api";
 
 interface CreateUserProps {
   open: boolean;
   close: () => void;
-  selectedId: number | undefined;
+  selectedId: number | null;
 }
 
-interface UserType {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-}
 const SaveUser = ({
   open,
   close,
@@ -29,25 +23,23 @@ const SaveUser = ({
   const {
     register,
     reset,
+    control,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm({
-    defaultValues: { name: "", email: "", phone: "", password: "" },
-  });
+  } = useForm<SignupRequest | UserDetails>();
   const api = useAPI();
-  const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
+  const [, startLoading, endLoading] = useLoadingIndicator();
 
   const EMAIL_REGREX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  const [data, setData] = useState<UserDetails | null>(null);
 
   const fetchUserDetailsById = async (id: number) => {
     startLoading("/getUserDetailsById");
     try {
       const res = await getUserDetailsById(api, id);
       if (!isApiError(res)) {
-        setData(res);
+        setFormValues(res);
       }
     } finally {
       endLoading("/getUserDetailsById");
@@ -60,7 +52,16 @@ const SaveUser = ({
     }
   }, [selectedId, open]);
 
-  const onSubmit = (data: UserType): void => {
+  const setFormValues = useCallback(
+    (data: UserDetails) => {
+      Object.keys(data).forEach((key) => {
+        setValue(key as keyof UserDetails, data[key as keyof UserDetails]);
+      });
+    },
+    [setValue]
+  );
+
+  const onSubmit = (data: SignupRequest | UserDetails): void => {
     console.log(data);
     toast.success("User successfully saved!!", {
       className: "relative font-semibold",
@@ -72,6 +73,8 @@ const SaveUser = ({
     reset();
     close();
   };
+
+  const USER_ROLE_TYPE = ["ADMIN", "USER"];
 
   const modalContent = (
     <Wrapper>
@@ -93,22 +96,49 @@ const SaveUser = ({
               <div className="relative flex flex-col mb-6">
                 <label
                   className="relative text-[1.5rem] font-semibold mb-2"
-                  htmlFor="name"
+                  htmlFor="firstName"
                 >
-                  Name*
+                  First Name*
                 </label>
                 <input
-                  id="name"
+                  id="firstName"
                   type="text"
-                  placeholder="Enter the name"
+                  placeholder="Enter the firstName"
                   className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
-                    errors?.name && " border-red-500"
+                    errors?.firstName && " border-red-500"
                   } rounded-md`}
-                  {...register("name", { required: "Name is required" })}
+                  {...register("firstName", {
+                    required: "FirstName is required",
+                  })}
                 />
                 <span className="relative text-red-600 font-medium mt-2">
-                  {errors?.name &&
-                    (errors?.name?.message || "Please enter valid input data")}
+                  {errors?.firstName &&
+                    (errors?.firstName?.message ||
+                      "Please enter valid input data")}
+                </span>
+              </div>
+              <div className="relative flex flex-col mb-6">
+                <label
+                  className="relative text-[1.5rem] font-semibold mb-2"
+                  htmlFor="lastName"
+                >
+                  Last Name*
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  placeholder="Enter the lastName"
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                    errors?.lastName && " border-red-500"
+                  } rounded-md`}
+                  {...register("lastName", {
+                    required: "LastName is required",
+                  })}
+                />
+                <span className="relative text-red-600 font-medium mt-2">
+                  {errors?.lastName &&
+                    (errors?.lastName?.message ||
+                      "Please enter valid input data")}
                 </span>
               </div>
               <div className="relative flex flex-col mb-6">
@@ -138,45 +168,103 @@ const SaveUser = ({
                     (errors?.email?.message || "Please enter valid input data")}
                 </span>
               </div>
+
               <div className="relative flex flex-col mb-6">
                 <label
-                  htmlFor="phone"
+                  htmlFor="phoneNumber"
                   className="relative text-[1.5rem] font-semibold mb-2"
                 >
                   Phone Number*
                 </label>
                 <input
-                  id="phone"
+                  id="phoneNumber"
                   type="text"
                   placeholder="Enter the phone number"
                   className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
-                    errors?.phone && " border-red-500"
+                    errors?.phoneNumber && " border-red-500"
                   } rounded-md`}
-                  {...register("phone", {
+                  {...register("phoneNumber", {
                     required: "Phone Number is required",
                   })}
                 />
                 <span className="relative text-red-600 font-medium mt-2">
-                  {errors?.phone &&
-                    (errors?.phone?.message || "Please enter valid input data")}
+                  {errors?.phoneNumber &&
+                    (errors?.phoneNumber?.message ||
+                      "Please enter valid input data")}
                 </span>
               </div>
+
               <div className="relative flex flex-col mb-6">
+                <Controller
+                  name="role"
+                  control={control}
+                  rules={{ required: "User role is required" }}
+                  render={({ field }) => (
+                    <>
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="role"
+                      >
+                        Role*
+                      </label>
+                      <select
+                        {...field}
+                        className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]  mb-2 ${
+                          errors?.phoneNumber && " border-red-500"
+                        } rounded-md`}
+                      >
+                        <option value="">Select user role</option>
+                        {USER_ROLE_TYPE.map((status, index) => (
+                          <option key={index} value={status}>
+                            {status}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                />
+
                 <label
-                  htmlFor="password"
-                  className="relative text-[1.5rem] font-semibold mb-2"
+                  htmlFor="phoneNumber"
+                  className="relative text-[1.5rem] font-semibold mb-2 mt-6"
                 >
-                  Password
+                  Phone Number*
                 </label>
                 <input
-                  id="password"
+                  id="phoneNumber"
                   type="text"
-                  placeholder="Enter the password"
-                  className="relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]"
-                  {...register("password")}
+                  placeholder="Enter the phone number"
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                    errors?.phoneNumber && " border-red-500"
+                  } rounded-md`}
+                  {...register("phoneNumber", {
+                    required: "Phone Number is required",
+                  })}
                 />
+                <span className="relative text-red-600 font-medium mt-2">
+                  {errors?.phoneNumber &&
+                    (errors?.phoneNumber?.message ||
+                      "Please enter valid input data")}
+                </span>
               </div>
 
+              {!selectedId && (
+                <div className="relative flex flex-col mb-6">
+                  <label
+                    htmlFor="password"
+                    className="relative text-[1.5rem] font-semibold mb-2"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    type="text"
+                    placeholder="Enter the password"
+                    className="relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]"
+                    {...register("password")}
+                  />
+                </div>
+              )}
               <div className="relative flex gap-5 mt-12">
                 <button
                   onClick={handleClose}

@@ -11,8 +11,8 @@ import { isApiError } from "../../../types/Api";
 
 const Users = () => {
   const api = useAPI();
-  const [seletedDetails, setSelectedDetails] = useState<number>();
-  const [, startLoading, endLoading, isLoading] = useLoadingIndicator();
+  const [seletedDetails, setSelectedDetails] = useState<number| null>(null);
+  const [, startLoading, endLoading] = useLoadingIndicator();
 
   const [data, setData] = useState<UserDetails[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -28,6 +28,11 @@ const Users = () => {
       endLoading("/getContactDetailList");
     }
   };
+
+  const handleClose=()=>{
+    setSelectedDetails(null);
+    setOpenModal(false);
+  }
 
   useEffect(() => {
     fetchAllUsers();
@@ -61,12 +66,13 @@ const Users = () => {
     []
   );
 
+
   return (
     <React.Fragment>
       <SaveUser
         selectedId={seletedDetails}
         open={openModal}
-        close={() => setOpenModal(false)}
+        close={handleClose}
       />
 
       <div className="relative">
