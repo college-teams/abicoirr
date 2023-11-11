@@ -1,44 +1,109 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Modal from "../../Modal";
 import { AddUserContainer, CloseIcon, Wrapper } from "./styled";
-import toast from "react-hot-toast";
+import { useAPI } from "../../../hooks/useApi";
+import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
+import { SignupRequest, UserDetails } from "../../../types/User";
+import { useCallback, useEffect } from "react";
+import { isApiError } from "../../../types/Api";
+import { getUserDetailsById, userSignup } from "../../../api";
+import useToast from "../../../hooks/useToast";
+import { useConfirmModal } from "../../../hooks/useConfirmModal";
+import { ConfirmationModal } from "../../ConfirmModal";
 
 interface CreateUserProps {
   open: boolean;
   close: () => void;
+  selectedId: number | null;
+  refreshList: () => Promise<void>;
 }
 
-interface UserType {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-}
-const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
+const SaveUser = ({
+  open,
+  close,
+  refreshList,
+  selectedId,
+}: CreateUserProps): JSX.Element => {
   const {
     register,
     reset,
+    control,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: { name: "", email: "", phone: "", password: "" },
-  });
+    setValue,
+    formState: { errors, isDirty },
+  } = useForm<SignupRequest | UserDetails>();
+  const api = useAPI();
+  const showToast = useToast();
+  const [, startLoading, endLoading] = useLoadingIndicator();
+  const [props, activateConfirmModal] = useConfirmModal();
 
   const EMAIL_REGREX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  const onSubmit = (data: UserType): void => {
-    console.log(data);
-    toast.success("User successfully saved!!", {
-      className: "relative font-semibold",
-    });
-    handleClose();
+  const fetchUserDetailsById = async (id: number) => {
+    startLoading("/getUserDetailsById");
+    try {
+      const res = await getUserDetailsById(api, id);
+      if (!isApiError(res)) {
+        setFormValues(res);
+      }
+    } finally {
+      endLoading("/getUserDetailsById");
+    }
   };
 
-  const handleClose = () => {
+  useEffect(() => {
+    if (selectedId && open) {
+      fetchUserDetailsById(selectedId);
+    }
+  }, [selectedId, open]);
+
+  const setFormValues = useCallback(
+    (data: UserDetails) => {
+      Object.keys(data).forEach((key) => {
+        setValue(key as keyof UserDetails, data[key as keyof UserDetails]);
+      });
+    },
+    [setValue]
+  );
+
+  const onSubmit = async (data: SignupRequest | UserDetails): Promise<void> => {
+    startLoading("/userAuth");
+    let res;
+    if (selectedId) {
+      // Call edit api
+      console.log(data)
+    } else {
+      res = await userSignup(api, data as SignupRequest);
+    }
+    if (!res || !isApiError(res)) {
+      showToast(
+        `User ${selectedId ? "updated" : "saved"} successfully`,
+        "success"
+      );
+      refreshList();
+      reset();
+      close();
+    }
+
+    endLoading("/userAuth");
+  };
+
+  const handleClose = async () => {
+    if (
+      isDirty &&
+      !(await activateConfirmModal(
+        "The form has unsaved changes, do you want to close ?"
+      ))
+    ) {
+      return;
+    }
+    refreshList();
     reset();
     close();
   };
+
+  const USER_ROLE_TYPE = ["ADMIN", "USER"];
 
   const modalContent = (
     <Wrapper>
@@ -60,22 +125,49 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
               <div className="relative flex flex-col mb-6">
                 <label
                   className="relative text-[1.5rem] font-semibold mb-2"
-                  htmlFor="name"
+                  htmlFor="firstName"
                 >
-                  Name*
+                  First Name*
                 </label>
                 <input
-                  id="name"
+                  id="firstName"
                   type="text"
-                  placeholder="Enter the name"
+                  placeholder="Enter the firstName"
                   className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
-                    errors?.name && " border-red-500"
+                    errors?.firstName && " border-red-500"
                   } rounded-md`}
-                  {...register("name", { required: "Name is required" })}
+                  {...register("firstName", {
+                    required: "FirstName is required",
+                  })}
                 />
                 <span className="relative text-red-600 font-medium mt-2">
-                  {errors?.name &&
-                    (errors?.name?.message || "Please enter valid input data")}
+                  {errors?.firstName &&
+                    (errors?.firstName?.message ||
+                      "Please enter valid input data")}
+                </span>
+              </div>
+              <div className="relative flex flex-col mb-6">
+                <label
+                  className="relative text-[1.5rem] font-semibold mb-2"
+                  htmlFor="lastName"
+                >
+                  Last Name*
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  placeholder="Enter the lastName"
+                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
+                    errors?.lastName && " border-red-500"
+                  } rounded-md`}
+                  {...register("lastName", {
+                    required: "LastName is required",
+                  })}
+                />
+                <span className="relative text-red-600 font-medium mt-2">
+                  {errors?.lastName &&
+                    (errors?.lastName?.message ||
+                      "Please enter valid input data")}
                 </span>
               </div>
               <div className="relative flex flex-col mb-6">
@@ -105,45 +197,84 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
                     (errors?.email?.message || "Please enter valid input data")}
                 </span>
               </div>
+
               <div className="relative flex flex-col mb-6">
                 <label
-                  htmlFor="phone"
+                  htmlFor="phoneNumber"
                   className="relative text-[1.5rem] font-semibold mb-2"
                 >
                   Phone Number*
                 </label>
                 <input
-                  id="phone"
+                  id="phoneNumber"
                   type="text"
                   placeholder="Enter the phone number"
                   className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
-                    errors?.phone && " border-red-500"
+                    errors?.phoneNumber && " border-red-500"
                   } rounded-md`}
-                  {...register("phone", {
+                  {...register("phoneNumber", {
                     required: "Phone Number is required",
+                    pattern: {
+                      value: /^\+?\d[\d -]{8,12}\d$/,
+                      message: "Invalid phone number format",
+                    },
                   })}
                 />
                 <span className="relative text-red-600 font-medium mt-2">
-                  {errors?.phone &&
-                    (errors?.phone?.message || "Please enter valid input data")}
+                  {errors?.phoneNumber &&
+                    (errors?.phoneNumber?.message ||
+                      "Please enter valid input data")}
                 </span>
               </div>
+
               <div className="relative flex flex-col mb-6">
-                <label
-                  htmlFor="password"
-                  className="relative text-[1.5rem] font-semibold mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="text"
-                  placeholder="Enter the password"
-                  className="relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]"
-                  {...register("password")}
+                <Controller
+                  name="role"
+                  control={control}
+                  rules={{ required: "User role is required" }}
+                  render={({ field }) => (
+                    <>
+                      <label
+                        className="relative text-[1.5rem] font-semibold mb-2"
+                        htmlFor="role"
+                      >
+                        Role*
+                      </label>
+                      <select
+                        {...field}
+                        className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]  mb-2 ${
+                          errors?.phoneNumber && " border-red-500"
+                        } rounded-md`}
+                      >
+                        <option value="">Select user role</option>
+                        {USER_ROLE_TYPE.map((status, index) => (
+                          <option key={index} value={status}>
+                            {status}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
                 />
               </div>
 
+              {!selectedId && (
+                <div className="relative flex flex-col mb-6">
+                  <label
+                    htmlFor="password"
+                    className="relative text-[1.5rem] font-semibold mb-2"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    type="text"
+                    placeholder="Enter the password"
+                    className="relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem]"
+                    {...register("password")}
+                  />
+                </div>
+              )}
               <div className="relative flex gap-5 mt-12">
                 <button
                   onClick={handleClose}
@@ -161,7 +292,12 @@ const SaveUser = ({ open, close }: CreateUserProps): JSX.Element => {
       </AddUserContainer>
     </Wrapper>
   );
-  return <Modal open={open} content={modalContent} />;
+  return (
+    <>
+      <ConfirmationModal {...props} />
+      <Modal open={open} content={modalContent} />
+    </>
+  );
 };
 
 export default SaveUser;

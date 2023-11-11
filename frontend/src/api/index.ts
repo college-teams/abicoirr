@@ -9,26 +9,34 @@ import {
   DeleteFile,
   DeleteProduct,
   DeleteProductImage,
+  GetAdminOrderById,
   GetAdminOrders,
+  GetAllUsers,
   GetCategoryById,
   GetCategoryList,
   GetCategoryProducts,
   GetContactDetailList,
   GetContactDetailsById,
+  GetCurrentUser,
   GetDashboardEntityItemsCount,
   GetLatestProductList,
   GetPopularProductList,
   GetProductById,
   GetProductList,
   GetUnReadMessageCount,
+  GetUserDetailsById,
   HttpMethod,
+  SaveAdminOrder,
   SaveCategory,
   SaveContactDetails,
   SaveProduct,
+  UpdateAdminOrder,
   UpdateCategory,
   UpdateProduct,
   UploadFile,
   UploadFiles,
+  UserLogin,
+  UserSignup,
 } from "../types/Api";
 import {
   AdminOrderResponseData,
@@ -41,6 +49,7 @@ import {
   Product,
 } from "../types/Admin";
 import { DashboardEntityItemsCount } from "../types/Dashboard";
+import { LoginResponse, UserDetails } from "../types/User";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const showToast = useToast();
@@ -141,6 +150,45 @@ export const getAdminOrders: GetAdminOrders = async (api) => {
     "getAdminOrders",
     "Error occurred while fetching admin orders",
     "GET"
+  );
+};
+
+export const getAdminOrderById: GetAdminOrderById = async (
+  api,
+  adminOrderId
+) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/${adminOrderId}`,
+    "getAdminOrderById",
+    "Error occurred while fetching admin order",
+    "GET"
+  );
+};
+
+export const saveAdminOrder: SaveAdminOrder = async (api, data) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/`,
+    "saveAdminOrder",
+    "Error occurred while saving admin details",
+    "POST",
+    data
+  );
+};
+
+export const updateAdminOrder: UpdateAdminOrder = async (
+  api,
+  adminOrderId,
+  data
+) => {
+  return makeRequest<AdminOrderResponseData>(
+    api,
+    `/admin-orders/${adminOrderId}`,
+    "saveAdminOrder",
+    "Error occurred while updating admin details",
+    "PUT",
+    data
   );
 };
 
@@ -456,16 +504,67 @@ export const getPopularProductList: GetPopularProductList = async (
 };
 
 // Dashboard
-export const getDashboardEntityItemsCount: GetDashboardEntityItemsCount = async (
-  api,
-) => {
+export const getDashboardEntityItemsCount: GetDashboardEntityItemsCount =
+  async (api) => {
+    return makeRequest<DashboardEntityItemsCount>(
+      api,
+      "dashboard/entityItemsCount",
+      "getDashboardEntityItemsCount",
+      "Error occurred while fetching entity items count",
+      "GET",
+      null
+    );
+  };
 
-  return makeRequest<DashboardEntityItemsCount>(
+// Users
+export const getCurrentUser: GetCurrentUser = async (api) => {
+  return makeRequest<UserDetails>(
     api,
-    "dashboard/entityItemsCount",
-    "getDashboardEntityItemsCount",
-    "Error occurred while fetching entity items count",
-    "GET",
-    null
+    "/users/self",
+    "getCurrentUser",
+    "Error occurred while fetching loggedIn user details",
+    "GET"
+  );
+};
+
+export const userLogin: UserLogin = async (api, data) => {
+  return makeRequest<LoginResponse>(
+    api,
+    "/users/login",
+    "userLogin",
+    "Error occurred while login to the system",
+    "POST",
+    data
+  );
+};
+
+export const userSignup: UserSignup = async (api, data) => {
+  return makeRequest(
+    api,
+    "/users/register",
+    "userLogin",
+    "Error occurred while registering to the system",
+    "POST",
+    data
+  );
+};
+
+export const getAllUsers: GetAllUsers = async (api) => {
+  return makeRequest<UserDetails[]>(
+    api,
+    "/users/",
+    "getAllUsers",
+    "Error occurred while fetching users list",
+    "GET"
+  );
+};
+
+export const getUserDetailsById: GetUserDetailsById = async (api, userId) => {
+  return makeRequest<UserDetails>(
+    api,
+    `/users/${userId}`,
+    "getUserDetailsById",
+    "Error occurred while fetching user details",
+    "GET"
   );
 };

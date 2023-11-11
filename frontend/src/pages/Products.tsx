@@ -1,5 +1,6 @@
 import NoImage from "/assets/noImage.png";
 import PageImg from "/assets/productsPageImg.jpeg";
+import EmptyProductsList from "/assets/notfound.webp";
 import Card from "../components/Card";
 import { useAPI } from "../hooks/useApi";
 import { useLoadingIndicator } from "../hooks/useLoadingIndicator";
@@ -191,25 +192,35 @@ const Products = () => {
             <p className="relative text-[1.4rem] mb-8 font-medium text-black/60 mt-[5rem]">
               Showing all {productList.length} result(s)
             </p>
-            <ProductListContainer className="">
-              {productList.map((e, i) => {
-                const image =
-                  e.images.length > 0 ? e.images[0].imagePath : NoImage;
-                return (
-                  <Card
-                    key={i}
-                    id={e.id}
-                    name={e.productName}
-                    sellingPrice={e.sellingPrice}
-                    actualPrice={e.actualPrice}
-                    image={image}
-                    stockQuantity={e.stockQuantity}
-                    externalSites={e.links}
-                    buttonText={"Shop now"}
-                  />
-                );
-              })}
-            </ProductListContainer>
+
+            {productList && productList.length <= 0 ? (
+              <div className="relative flex flex-col items-center justify-center">
+                <img src={EmptyProductsList} alt="Empty products" />
+                <span className="relative text-[3rem] font-medium">
+                  Product list is empty
+                </span>
+              </div>
+            ) : (
+              <ProductListContainer className="">
+                {productList.map((e, i) => {
+                  const image =
+                    e.images.length > 0 ? e.images[0].imagePath : NoImage;
+                  return (
+                    <Card
+                      key={i}
+                      id={e.id}
+                      name={e.productName}
+                      sellingPrice={e.sellingPrice}
+                      actualPrice={e.actualPrice}
+                      image={image}
+                      stockQuantity={e.stockQuantity}
+                      externalSites={e.links}
+                      buttonText={"Shop now"}
+                    />
+                  );
+                })}
+              </ProductListContainer>
+            )}
           </div>
         </div>
       </div>

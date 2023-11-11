@@ -5,13 +5,16 @@ import {
   CategoryList,
   ContactDetails,
   ContactDetailsList,
+  CreateAdminOrderRequest,
   CreateProductRequest,
   FileResponse,
   MessageCount,
   Product,
+  UpdateAdminOrderRequest,
   UpdateProductRequest,
 } from "./Admin";
 import { DashboardEntityItemsCount } from "./Dashboard";
+import { LoginRequest, LoginResponse, SignupRequest, UserDetails } from "./User";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -37,6 +40,22 @@ export const isApiError = (data: unknown): data is ApiError => {
 export type GetAdminOrders = (
   api: AxiosInstance
 ) => Promise<AdminOrderResponseData[] | ApiError>;
+
+export type GetAdminOrderById = (
+  api: AxiosInstance,
+  id: number
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type SaveAdminOrder = (
+  api: AxiosInstance,
+  data: CreateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
+
+export type UpdateAdminOrder = (
+  api: AxiosInstance,
+  adminOrderId: number,
+  data: UpdateAdminOrderRequest
+) => Promise<AdminOrderResponseData | ApiError>;
 
 export type GetContactDetailList = (
   api: AxiosInstance
@@ -155,3 +174,27 @@ export type GetCategoryProducts = (
 export type GetDashboardEntityItemsCount = (
   api: AxiosInstance
 ) => Promise<DashboardEntityItemsCount | ApiError>;
+
+export type GetCurrentUser = (
+  api: AxiosInstance
+) => Promise<UserDetails | ApiError>;
+
+export type UserLogin = (
+  api: AxiosInstance,
+  data: LoginRequest
+) => Promise<LoginResponse | ApiError>;
+
+export type UserSignup = (
+  api: AxiosInstance,
+  data: SignupRequest
+) => Promise<void | ApiError>;
+
+export type GetAllUsers = (
+  api: AxiosInstance
+) => Promise<UserDetails[] | ApiError>;
+
+export type GetUserDetailsById = (
+  api: AxiosInstance,
+  userId:number
+) => Promise<UserDetails | ApiError>;
+

@@ -11,8 +11,29 @@ spring:
     multipart:
       max-file-size: 15MB # Maximum file size allowed
       max-request-size: 50MB  # Maximum request size allowed
+  flyway:
+    enabled: true
+    table: flyway_schema_table
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: abicoirr.noreply@gmail.com
+    password: cqyanmyhxxywohrl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   servlet:
     context-path: /api/v1
   port: 8000
+
+jwt:
+  secret-key: 400857d99aa816063fb87d0a35166b7a79b69abe046e7ea4537cf78d5d16d219
+
+application:
+  backend-url: ${application.backend-url}
+  frontend-url: ${application.frontend-url}

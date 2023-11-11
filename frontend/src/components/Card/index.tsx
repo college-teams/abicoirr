@@ -10,9 +10,10 @@ import {
   CardPrice,
 } from "./styled";
 import RedirectSite from "../RedirectSite";
-import { calculateDiscountPercentage } from "../../utils";
+import { calculateDiscountPercentage, isLoggedIn } from "../../utils";
 import NoImage from "/assets/noImage.png";
 import ImageWithFallback from "../../utils/ImageWithFallback";
+import Auth from "../Auth";
 
 const Card = ({
   id,
@@ -27,8 +28,21 @@ const Card = ({
 }: CardProps) => {
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
 
   const isOutOfStock = (stockQuantity || 0) <= 0;
+
+  const handleRedirect = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (isLoggedIn()) {
+      setRedirect(true);
+    } else {
+      setShowAuth(true);
+    }
+    e.stopPropagation();
+  };
+
   return (
     <React.Fragment>
       <CardContainer
@@ -66,13 +80,7 @@ const Card = ({
               {calculateDiscountPercentage(actualPrice, sellingPrice)}% off
             </span> */}
           </CardPrice>
-          <CardButton
-            disabled={isOutOfStock}
-            onClick={(e) => {
-              setRedirect(true);
-              e.stopPropagation();
-            }}
-          >
+          <CardButton disabled={isOutOfStock} onClick={handleRedirect}>
             {isOutOfStock ? "Out of stock" : buttonText}
           </CardButton>
         </CardDetailsContainer>
@@ -83,6 +91,8 @@ const Card = ({
         open={redirect}
         close={() => setRedirect(false)}
       />
+
+      <Auth open={showAuth} close={() => setShowAuth(false)} />
     </React.Fragment>
   );
 };

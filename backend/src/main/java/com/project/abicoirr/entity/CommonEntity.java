@@ -27,7 +27,7 @@ public abstract class CommonEntity {
   protected long id;
 
   @Version
-  @Column(name = "version")
+  @Column(name = "version", nullable = false)
   protected Long version = 0L;
 
   @CreationTimestamp

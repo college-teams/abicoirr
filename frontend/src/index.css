@@ -121,3 +121,10 @@ table th {
   background-color: #3068ec;
   color: white;
 }
+
+
+/* React slick */
+
+.slick-dots {
+  z-index: 1000;
+}

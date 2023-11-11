@@ -1,6 +1,7 @@
 package com.project.abicoirr.service;
 
 import static com.project.abicoirr.codes.ErrorCodes.ADMIN_ORDER_NOT_FOUND;
+import static com.project.abicoirr.codes.SuccessCodes.ADMIN_ORDER_COUNT_BY_MONTH_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.ADMIN_ORDER_CREATED;
 import static com.project.abicoirr.codes.SuccessCodes.ADMIN_ORDER_DELETE_SUCCESS;
 import static com.project.abicoirr.codes.SuccessCodes.ADMIN_ORDER_LIST_FETCHED;
@@ -12,12 +13,17 @@ import com.project.abicoirr.exception.BaseException;
 import com.project.abicoirr.models.AdminOrder.AdminOrderResponse;
 import com.project.abicoirr.models.AdminOrder.CreateAdminOrderRequest;
 import com.project.abicoirr.models.AdminOrder.UpdateAdminOrderRequest;
+import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.AbstractResponse.StatusType;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.AdminOrderRepository;
+import com.project.abicoirr.util.Util;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +58,7 @@ public class AdminOrderService {
       Product product = productService.getProductById(productId);
       products.add(product);
     }
-
+    createAdminOrderRequest.setOrderTimestamp(LocalDateTime.now());
     AdminOrder adminOrder = CreateAdminOrderRequest.from(createAdminOrderRequest, products);
     adminOrderRepository.save(adminOrder);
 
@@ -125,5 +131,30 @@ public class AdminOrderService {
     existingAdminOrder.setSpecialInstructions(updateAdminOrderRequest.getSpecialInstructions());
     existingAdminOrder.setOrderNotes(updateAdminOrderRequest.getOrderNotes());
     existingAdminOrder.setTrackingNumber(updateAdminOrderRequest.getTrackingNumber());
+  }
+
+  private List<AdminOrder> getFullAdminOrderList() {
+    return adminOrderRepository.findAll();
+  }
+
+  public ApiResponse<Map<String, Integer>> getOrderCountByMonth() throws BaseException {
+    List<AdminOrder> adminorderList = getFullAdminOrderList();
+
+    if (Util.isEmpty(adminorderList)) throw new BaseException(ADMIN_ORDER_NOT_FOUND);
+
+    Map<String, Integer> resultMap = new HashMap<>();
+    for (AdminOrder order : adminorderList) {
+      LocalDateTime createdtimeStamp = order.getCreatedAt();
+      String month = createdtimeStamp.getMonth().toString();
+
+      if (resultMap.containsKey(month)) {
+        int oldValue = resultMap.get(month);
+        resultMap.replace(month, oldValue, oldValue + 1);
+      } else {
+        resultMap.put(month, 1);
+      }
+    }
+    return new ApiResponse<>(
+        ADMIN_ORDER_COUNT_BY_MONTH_FETCHED, AbstractResponse.StatusType.SUCCESS, resultMap);
   }
 }
