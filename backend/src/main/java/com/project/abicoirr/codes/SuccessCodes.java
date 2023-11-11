@@ -83,6 +83,9 @@ public class SuccessCodes extends StatusCodes {
   public static final StatusCodes All_USER_DETAILS_FETCHED =
       new SuccessCodes(200, HttpStatus.OK, "All_USER_DETAILS_FETCHED");
 
+  public static final StatusCodes ADMIN_ORDER_COUNT_BY_MONTH_FETCHED =
+      new SuccessCodes(200, HttpStatus.OK, "ADMIN_ORDER_COUNT_BY_MONTH_FETCHED");
+
   public SuccessCodes(int statusCode, HttpStatus httpStatusCode, String internalKey) {
     setAll(statusCode, httpStatusCode, internalKey, RESOURCE_BUNDLE_NAME);
   }
