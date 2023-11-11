@@ -24,7 +24,12 @@ export const AddUserContainer = styled.div`
   position: relative;
   background: var(--white-color);
   width: 40%;
+  
   height: auto;
+  max-height: 550px;
+  overflow-y: overlay;
+  overflow-x: hidden;
+
   border-radius: 4px;
   opacity: 0;
   animation: ${OpacityAnimation} 0.5s ease-in-out forwards;

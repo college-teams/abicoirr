@@ -1,23 +1,27 @@
 import { Controller, useForm } from "react-hook-form";
 import Modal from "../../Modal";
 import { AddUserContainer, CloseIcon, Wrapper } from "./styled";
-import toast from "react-hot-toast";
 import { useAPI } from "../../../hooks/useApi";
 import { useLoadingIndicator } from "../../../hooks/useLoadingIndicator";
 import { SignupRequest, UserDetails } from "../../../types/User";
 import { useCallback, useEffect } from "react";
 import { isApiError } from "../../../types/Api";
-import { getUserDetailsById } from "../../../api";
+import { getUserDetailsById, userSignup } from "../../../api";
+import useToast from "../../../hooks/useToast";
+import { useConfirmModal } from "../../../hooks/useConfirmModal";
+import { ConfirmationModal } from "../../ConfirmModal";
 
 interface CreateUserProps {
   open: boolean;
   close: () => void;
   selectedId: number | null;
+  refreshList: () => Promise<void>;
 }
 
 const SaveUser = ({
   open,
   close,
+  refreshList,
   selectedId,
 }: CreateUserProps): JSX.Element => {
   const {
@@ -26,10 +30,12 @@ const SaveUser = ({
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<SignupRequest | UserDetails>();
   const api = useAPI();
+  const showToast = useToast();
   const [, startLoading, endLoading] = useLoadingIndicator();
+  const [props, activateConfirmModal] = useConfirmModal();
 
   const EMAIL_REGREX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -61,15 +67,38 @@ const SaveUser = ({
     [setValue]
   );
 
-  const onSubmit = (data: SignupRequest | UserDetails): void => {
-    console.log(data);
-    toast.success("User successfully saved!!", {
-      className: "relative font-semibold",
-    });
-    handleClose();
+  const onSubmit = async (data: SignupRequest | UserDetails): Promise<void> => {
+    startLoading("/userAuth");
+    let res;
+    if (selectedId) {
+      // Call edit api
+      console.log(data)
+    } else {
+      res = await userSignup(api, data as SignupRequest);
+    }
+    if (!res || !isApiError(res)) {
+      showToast(
+        `User ${selectedId ? "updated" : "saved"} successfully`,
+        "success"
+      );
+      refreshList();
+      reset();
+      close();
+    }
+
+    endLoading("/userAuth");
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
+    if (
+      isDirty &&
+      !(await activateConfirmModal(
+        "The form has unsaved changes, do you want to close ?"
+      ))
+    ) {
+      return;
+    }
+    refreshList();
     reset();
     close();
   };
@@ -185,6 +214,10 @@ const SaveUser = ({
                   } rounded-md`}
                   {...register("phoneNumber", {
                     required: "Phone Number is required",
+                    pattern: {
+                      value: /^\+?\d[\d -]{8,12}\d$/,
+                      message: "Invalid phone number format",
+                    },
                   })}
                 />
                 <span className="relative text-red-600 font-medium mt-2">
@@ -223,29 +256,6 @@ const SaveUser = ({
                     </>
                   )}
                 />
-
-                <label
-                  htmlFor="phoneNumber"
-                  className="relative text-[1.5rem] font-semibold mb-2 mt-6"
-                >
-                  Phone Number*
-                </label>
-                <input
-                  id="phoneNumber"
-                  type="text"
-                  placeholder="Enter the phone number"
-                  className={`relative border-2 border-gray-300 font-medium py-2 w-[85%] px-4 outline-none text-[1.4rem] ${
-                    errors?.phoneNumber && " border-red-500"
-                  } rounded-md`}
-                  {...register("phoneNumber", {
-                    required: "Phone Number is required",
-                  })}
-                />
-                <span className="relative text-red-600 font-medium mt-2">
-                  {errors?.phoneNumber &&
-                    (errors?.phoneNumber?.message ||
-                      "Please enter valid input data")}
-                </span>
               </div>
 
               {!selectedId && (
@@ -282,7 +292,12 @@ const SaveUser = ({
       </AddUserContainer>
     </Wrapper>
   );
-  return <Modal open={open} content={modalContent} />;
+  return (
+    <>
+      <ConfirmationModal {...props} />
+      <Modal open={open} content={modalContent} />
+    </>
+  );
 };
 
 export default SaveUser;
