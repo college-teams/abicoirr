@@ -26,17 +26,26 @@ export const AuthCard = styled.div`
   position: relative;
   background: var(--white-color);
   width: 55%;
-  min-height: 75%;
-  border-radius: 6px;
+  min-height: 70%;
+  /* border-radius: 6px; */
   display: flex;
   opacity: 0;
-  /* overflow: hidden; */
 
   animation: ${OpacityAnimation} 0.5s ease-in-out forwards;
 
   & > * {
     height: inherit;
     align-self: stretch;
+  }
+
+  @media (max-width: 768px) {
+    width: 70%;
+    min-height: 60%;
+  }
+
+  @media (max-width: 500px) {
+    width: 75%;
+    min-height: 50%;
   }
 `;
 
@@ -63,8 +72,9 @@ export const InputBox = styled.div`
     color: #000;
     border-bottom: 1px solid gray;
     padding: 6px 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
+    margin-bottom: 1.5rem;
   }
 
   input:focus {
@@ -75,6 +85,21 @@ export const InputBox = styled.div`
   input:valid ~ label {
     top: -20px;
     font-size: 12px;
+  }
+
+  @media (max-width: 500px) {
+    label {
+      font-size: 11px;
+    }
+
+    input {
+      font-size: 12px ;
+    }
+
+    input:focus ~ label,
+    input:valid ~ label {
+      font-size: 10px !important;
+    }
   }
 `;
 

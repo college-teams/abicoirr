@@ -24,7 +24,7 @@ public class JwtService {
   @Value("${jwt.secret-key}")
   private String SECRET_KEY;
 
-  private static final long EXPIRE_TIME = (1000 * 60 * 24);
+  private static final long EXPIRE_TIME = (1000 * 60 * 60 * 24);
 
   @PostConstruct
   protected void init() {

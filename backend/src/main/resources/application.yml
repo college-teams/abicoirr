@@ -35,4 +35,5 @@ jwt:
   secret-key: 400857d99aa816063fb87d0a35166b7a79b69abe046e7ea4537cf78d5d16d219
 
 application:
-  url: ${application.url}
+  backend-url: ${application.backend-url}
+  frontend-url: ${application.frontend-url}

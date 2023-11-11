@@ -1,9 +1,11 @@
 import { Icon } from "@iconify/react";
 import { TabType } from "../../../types/Admin";
-import { useAppDispatch } from "../../../store/configureStore";
 import { Link } from "react-router-dom";
-import { setAdminStatus } from "../../../store/slices/user";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../../store/configureStore";
+import { changeLayout, clearUserDetails } from "../../../store/slices/user";
+import { clearLocalStorage } from "../../../utils";
+import useToast from "../../../hooks/useToast";
 
 type NavbarProps = {
   handleTabSwitch: (tabName: TabType) => void;
@@ -12,17 +14,20 @@ type NavbarProps = {
 
 const Navbar = (props: NavbarProps) => {
   const dispatch = useAppDispatch();
+  const showToast = useToast();
+
   const [showDropDown, setShowDropDown] = useState(false);
-  // const [shoeAuth, setShowAuth] = useState(false);
-  const [isLoggedIn] = useState(true);
 
   const handleDropdown = (e: React.MouseEvent) => {
-    if (isLoggedIn) {
-      setShowDropDown((pre) => !pre);
-    } else {
-      // setShowAuth(true);
-    }
+    setShowDropDown((pre) => !pre);
     e.stopPropagation();
+  };
+
+  const logoutHandler = () => {
+    dispatch(clearUserDetails());
+    dispatch(changeLayout("USER"));
+    clearLocalStorage();
+    showToast("Logged out successfully!!","success")
   };
 
   useEffect(() => {
@@ -70,7 +75,7 @@ const Navbar = (props: NavbarProps) => {
             <ul className="relative text-[1.5rem] w-full">
               <Link to={"/"}>
                 <li
-                  onClick={() => dispatch(setAdminStatus())}
+                  onClick={() => dispatch(changeLayout("USER"))}
                   className="relative text-center w-full py-5 hover:bg-slate-300 border-b-2 text-black"
                   style={{ fontWeight: 600 }}
                 >
@@ -78,8 +83,9 @@ const Navbar = (props: NavbarProps) => {
                 </li>
               </Link>
               <li
-                className="relative text-center w-full py-5 hover:bg-slate-300 text-black"
+                className="relative text-center w-full py-5 hover:bg-slate-300 text-black cursor-pointer"
                 style={{ fontWeight: 600 }}
+                onClick={logoutHandler}
               >
                 Logout
               </li>

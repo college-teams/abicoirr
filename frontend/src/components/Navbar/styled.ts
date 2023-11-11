@@ -136,7 +136,7 @@ export const MenuBarLayout = styled.div<{ isOpen: boolean }>`
 
   @media screen and (max-width: 500px) {
     display: flex;
-  transform: translateY(-100%);
+    transform: translateY(-100%);
   }
 `;
 

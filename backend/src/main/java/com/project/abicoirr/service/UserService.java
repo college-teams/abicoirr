@@ -1,9 +1,10 @@
 package com.project.abicoirr.service;
 
+import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_ALREADY_EXISTS;
 import static com.project.abicoirr.codes.ErrorCodes.ACCOUNT_NOT_VERIFIED;
+import static com.project.abicoirr.codes.ErrorCodes.EMAIL_VERIFICATION_FAILED;
 import static com.project.abicoirr.codes.ErrorCodes.USER_ALREADY_EXISTS;
 import static com.project.abicoirr.codes.ErrorCodes.USER_NOT_EXISTS;
-import static com.project.abicoirr.codes.SuccessCodes.ACCOUNT_ALREADY_EXISTS;
 import static com.project.abicoirr.codes.SuccessCodes.All_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.CURRENT_USER_DETAILS_FETCHED;
 import static com.project.abicoirr.codes.SuccessCodes.FORGOT_PASSWORD_REQUEST_SENDS;
@@ -13,7 +14,6 @@ import static com.project.abicoirr.codes.SuccessCodes.USER_REGISTER_SUCCESS;
 import com.project.abicoirr.config.JwtService;
 import com.project.abicoirr.entity.User;
 import com.project.abicoirr.exception.BaseException;
-import com.project.abicoirr.models.Authentication.UserSignupResponse;
 import com.project.abicoirr.models.User.ForgotPasswordRequest;
 import com.project.abicoirr.models.User.UserDetailsResponse;
 import com.project.abicoirr.models.User.UserLoginRequest;
@@ -22,6 +22,8 @@ import com.project.abicoirr.models.User.UserRegisterRequest;
 import com.project.abicoirr.models.response.AbstractResponse;
 import com.project.abicoirr.models.response.ApiResponse;
 import com.project.abicoirr.repository.UserRepository;
+import com.project.abicoirr.util.Role;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -47,8 +49,24 @@ public class UserService {
   private final EmailService emailService;
   private final AccessControlService accessControlService;
 
-  @Value("${application.url}")
+  @Value("${application.backend-url}")
   private String Application_url;
+
+  @PostConstruct
+  public void adminSetup() {
+    Optional<User> userByEmail = userRepository.findByEmail("abicoirr09@gmail.com");
+    if (userByEmail.isEmpty()) {
+      User user = new User();
+      user.setFirstName("Abicoirr");
+      user.setEmail("abicoirr09@gmail.com");
+      user.setLastName("2023");
+      user.setPhoneNumber("7502919281");
+      user.setRole(Role.ADMIN);
+      user.setAccountVerified(true);
+      user.setPassword(passwordEncoder.encode("Crnational6@"));
+      userRepository.save(user);
+    }
+  }
 
   public ApiResponse<UserDetailsResponse> getUserSelf() {
     User currentUser = accessControlService.getCurrentUser();
@@ -65,6 +83,14 @@ public class UserService {
         UserDetailsResponse.from(userRepository.findAll()));
   }
 
+  public ApiResponse<UserDetailsResponse> getUserDetailsById(long userId) throws BaseException {
+    User user = getUserById(userId);
+    return new ApiResponse<>(
+        All_USER_DETAILS_FETCHED,
+        AbstractResponse.StatusType.SUCCESS,
+        UserDetailsResponse.from(user));
+  }
+
   @Transactional
   public ApiResponse<?> register(UserRegisterRequest request)
       throws BaseException, MessagingException {
@@ -79,7 +105,7 @@ public class UserService {
         userByEmail.get().setConfirmationToken(verificationCode);
         userRepository.save(userByEmail.get());
         sendVerificationEmail(userByEmail.get());
-        return new ApiResponse<>(ACCOUNT_ALREADY_EXISTS, AbstractResponse.StatusType.SUCCESS);
+        throw new BaseException(ACCOUNT_ALREADY_EXISTS);
       }
     }
 
@@ -109,7 +135,7 @@ public class UserService {
         USER_LOGIN_SUCCESS, AbstractResponse.StatusType.SUCCESS, UserLoginResponse.from(jwtToken));
   }
 
-  public UserSignupResponse signupConfirmation(String confirmationToken) {
+  public void signupConfirmation(String confirmationToken) throws BaseException {
     Optional<User> userByConfirmationToken =
         userRepository.findByConfirmationToken(confirmationToken);
     if (userByConfirmationToken.isPresent()) {
@@ -118,9 +144,8 @@ public class UserService {
       }
       userByConfirmationToken.get().setAccountVerified(true);
       userRepository.save(userByConfirmationToken.get());
-      return UserSignupResponse.builder().message("Your are successfully signed up").build();
     } else {
-      throw new RuntimeException("Id does not match! Please enter a valid ID");
+      throw new BaseException(EMAIL_VERIFICATION_FAILED);
     }
   }
 
@@ -154,9 +179,8 @@ public class UserService {
     String to = user.getEmail();
     String subject = "Account verification";
 
-    //    TODO: fetch the below link from properties file
     Context context = new Context();
-    context.setVariable("Name", "Hello, " + user.getFirstname() + " " + user.getLastname());
+    context.setVariable("Name", "Hello, " + user.getFirstName() + " " + user.getLastName());
     context.setVariable(
         "link",
         Application_url
@@ -177,9 +201,18 @@ public class UserService {
     String subject = "Otp for Forgot password";
 
     Context context = new Context();
-    context.setVariable("Name", "Hello, " + user.getFirstname() + " " + user.getLastname());
+    context.setVariable("Name", "Hello, " + user.getFirstName() + " " + user.getLastName());
     context.setVariable("otp", user.getOtp());
 
     emailService.sendEmail(to, subject, "forgotPasswordRequest", context);
+  }
+
+  public User getUserById(Long id) throws BaseException {
+    Optional<User> user = userRepository.findById(id);
+
+    if (user.isEmpty()) {
+      throw new BaseException(USER_NOT_EXISTS);
+    }
+    return user.get();
   }
 }

@@ -1,3 +1,22 @@
+CREATE TABLE `user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  `version` bigint NOT NULL,
+  `confirmation_token` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `is_account_verified` bit(1) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `otp` varchar(255) DEFAULT NULL,
+  `otp_validity_timestamp` bigint DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `role` enum('ADMIN','USER') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 CREATE TABLE `category` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
