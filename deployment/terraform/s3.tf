@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "file_bucket" {
-  bucket = "abicoirr-test"
+  bucket = "abicoirr-asset"
 
   tags = {
     Name        = "My bucket"

@@ -47,21 +47,26 @@ const Footer = () => {
           </h2>
           <p className="flex items-center gap-3 mb-3 ext-[1.5rem]">
             <Icon className="text-[2rem]" icon="solar:phone-bold" />
-            <span>+91-7502919281</span>
+            <span>+91-8610388319</span>
           </p>
           <p className="flex items-center gap-3  mb-4 ext-[1.5rem]">
             <Icon className="text-[2rem]" icon="fluent:mail-16-filled" />
             <span>abicoirr09@gmail.com</span>
           </p>
           <div className="flex items-center text-[2.5rem] gap-[1rem] text-black">
-            <Icon
-              className="cursor-pointer"
-              icon="teenyicons:instagram-solid"
-            />
-            <Icon
-              className="text-[3rem] cursor-pointer"
-              icon="ic:outline-facebook"
-            />
+            <a href="https://www.instagram.com/abicoirr" target="_blank">
+              <Icon
+                className="cursor-pointer"
+                icon="teenyicons:instagram-solid"
+              />
+            </a>
+            <a href="https://www.facebook.com/abicoirr" target="_blank">
+              <Icon
+                className="text-[3rem] cursor-pointer"
+                icon="ic:outline-facebook"
+              />
+            </a>
+
             <Icon className="text-[3.1rem] cursor-pointer" icon="bi:youtube" />
           </div>
         </div>

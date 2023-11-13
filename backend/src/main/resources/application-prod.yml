@@ -17,5 +17,5 @@ logging:
 
 application:
   url: <prod load balancer url>
-  backend-url: <prod load balancer url>
-  frontend-url: <prod load balancer url>
+  backend-url: http://instance-lb-614462927.us-east-1.elb.amazonaws.com
+  frontend-url: http://instance-lb-614462927.us-east-1.elb.amazonaws.com

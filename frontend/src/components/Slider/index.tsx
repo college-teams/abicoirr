@@ -19,8 +19,8 @@ export default function SliderCompponent(props: SliderProps) {
   return (
     <Slider {...settings}>
       {props.content.map((e, index) => (
-        <div key={index}>
-          <img src={e.imagePath} alt={e.name} />
+        <div key={index} className="w-full">
+          <img src={e.imagePath} alt={e.name} className="relative w-full bg-center" />
         </div>
       ))}
     </Slider>
