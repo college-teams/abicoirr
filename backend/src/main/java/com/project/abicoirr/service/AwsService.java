@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class AwsService {
 
-  private static final String BUCKET_NAME = "abicoirr-test";
+  private static final String BUCKET_NAME = "abicoirr-asset";
   private final AmazonS3 amazonS3;
 
   public String uploadFile(String key, MultipartFile multipartFile) throws IOException {
