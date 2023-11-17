@@ -631,10 +631,10 @@ const SaveProductDetails = ({
                               },
                             })}
                             onChange={(e) => {
-                              trigger("links");
                               const newValue = e.target.value;
-                              setValue(`links.${index}.link`, newValue);
+                              setValue(`links.${index}.link`, newValue.trim());
                               clearErrors(`links`);
+                              trigger("links");
                             }}
                             placeholder="Enter the shop link"
                             className={`relative border-2 border-gray-300 font-medium w-full  py-3 px-4 outline-none text-[1.2rem] rounded-md`}
