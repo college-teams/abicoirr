@@ -41,7 +41,7 @@ export const CardContainer = styled.div`
 export const CardImageContainer = styled.div`
   position: relative;
   /* height: 200px; */
-  height: 60%;
+  height: 55%; // 60%
   width: 100%;
   border-bottom: 2px solid #cbc911;
 
@@ -66,7 +66,7 @@ export const CardDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 45%; // 100%
   /* border-right: 2px dotted #cbc911;
   border-left: 2px dotted #cbc911; */
 `;
