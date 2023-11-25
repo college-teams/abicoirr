@@ -3,6 +3,14 @@ import Logo from "/assets/logo.svg";
 import { Icon } from "@iconify/react";
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="bg-[#f3f3f3] h-full w-full">
       <div className="footer relative flex flex-wrap lg:flex-nowrap items-center justify-center gap-[8rem] lg:gap-[12rem] py-[6rem] lg:py-[8rem] w-[90%] mx-auto">
@@ -15,7 +23,7 @@ const Footer = () => {
         <div className="relative flex flex-wrap justify-center gap-[7rem] font-medium">
           <div className="relative text-[1.4rem] text-black/60">
             <h2 className="text-[2rem] font-medium mb-5 text-black">General</h2>
-            <p className="mb-2 cursor-pointer">
+            <p className="mb-2 cursor-pointer" onClick={scrollToTop}>
               <Link to={"/"}>Home</Link>
             </p>
             <p className="mb-2 cursor-pointer">
@@ -76,7 +84,3 @@ const Footer = () => {
 };
 
 export default Footer;
-/*
-
-
-*/

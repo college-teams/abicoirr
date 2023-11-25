@@ -10,7 +10,8 @@ export const NavbarContainer = styled.div<{ active: boolean }>`
   z-index: 100;
   display: flex;
   align-items: center;
-  color: ${({ active }) => (active ? "#000" : "#555")};
+  color: ${({ active }) =>
+    active ? "#000" : "#000"}; // before it was #555 for non-active
   transition: background-color ease-in-out 0.3s;
   box-shadow: ${({ active }) => (active ? "0 1rem 2rem rgba(0,0,0,0.2)" : "0")};
 
