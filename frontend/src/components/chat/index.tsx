@@ -6,7 +6,7 @@ const Chat: FunctionComponent = () => {
     const message =
       "Hi, if you have any questions or queries, please feel free to contact us.";
     const encodedMessage = encodeURIComponent(message);
-    const whatsappLink = `https://api.whatsapp.com/send/?phone=917502919281&text=${encodedMessage}&type=phone_number&app_absent=0`;
+    const whatsappLink = `https://api.whatsapp.com/send/?phone=918610388319&text=${encodedMessage}&type=phone_number&app_absent=0`;
     window.open(whatsappLink, "_blank");
   };
 

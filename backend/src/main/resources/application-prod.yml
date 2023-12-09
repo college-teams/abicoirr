@@ -8,8 +8,8 @@ spring:
     show-sql: true
   datasource:
     url: jdbc:mysql://test-db.ctkugamfpuak.us-east-1.rds.amazonaws.com:3306/abicoirr?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: password
+    username: WmDlcwrbp4iAJ3Fh
+    password: q$tlLjhGRSb*
 logging:
   level:
     org.hibernate.SQL: INFO
@@ -17,5 +17,5 @@ logging:
 
 application:
   url: <prod load balancer url>
-  backend-url: <prod load balancer url>
-  frontend-url: <prod load balancer url>
+  backend-url: http://instance-lb-1280422799.us-east-1.elb.amazonaws.com
+  frontend-url: http://instance-lb-1280422799.us-east-1.elb.amazonaws.com

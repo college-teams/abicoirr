@@ -192,8 +192,8 @@ resource "aws_db_instance" "mysql_db" {
   engine_version       = "8.0"
   instance_class       = "db.t2.micro"
   db_name              = "test"
-  username             = "root"
-  password             = "password"
+  username             = "WmDlcwrbp4iAJ3Fh"
+  password             = "q$tlLjhGRSb*"
   port                 = 3306
   parameter_group_name = aws_db_parameter_group.mysql.name
   publicly_accessible  = true

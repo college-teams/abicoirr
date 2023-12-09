@@ -9,7 +9,7 @@ interface PropType {
 
 const BulkOrder = ({ open, close }: PropType) => {
   const onClickHandler = (): void => {
-    const whatsappLink = `https://api.whatsapp.com/send/?phone=917502919281&type=phone_number&app_absent=0`;
+    const whatsappLink = `https://api.whatsapp.com/send/?phone=918610388319&type=phone_number&app_absent=0`;
     window.open(whatsappLink, "_blank");
   };
 
@@ -26,7 +26,7 @@ const BulkOrder = ({ open, close }: PropType) => {
           <span className="relative mt-4 inline-block">
             You can reach out to us via phone at
             <span className="relative text-blue-500 cursor-pointer font-medium mx-4">
-              +91-7502919281
+              +91-8610388319
             </span>
             or message us on
           </span>
