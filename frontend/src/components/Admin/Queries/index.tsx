@@ -44,7 +44,7 @@ const Queries = ({ updateUnReadMessageCount }: QueriesProps) => {
         Cell: ({ cell }): JSX.Element => {
           return (
             <div
-              className="relative cursor-pointer font-medium text-black hover:text-blue-500"
+              className="relative cursor-pointer font-medium text-blue-500"
               onClick={() => {
                 setSelectedDetails(cell.row.original.id);
                 setOpenModal(true);
