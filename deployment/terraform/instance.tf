@@ -180,10 +180,15 @@ resource "aws_lb_listener" "instance_lb_tg_listener_ssl" {
   protocol          = "HTTP" // TODO: change to https when ssl is added
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.instance_lb_tg.arn
+    type             = "redirect"
+    redirect {
+      port        = "80"
+      protocol    = "HTTP"
+      status_code = "HTTP_301"
+    }
   }
 }
+
 
 # DB config
 resource "aws_db_instance" "mysql_db" {
