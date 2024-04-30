@@ -19,5 +19,6 @@ terraform {
     bucket = "abicoir-state-file"
     key    = "terraform.tfstate"
     region = "us-east-1"
+    profile = "default"
   }
 }
